@@ -49,12 +49,12 @@ const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
 			>
 				<Container key={movie.id}>
 					<ImageContainer>
-						<Image bgUrl={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />{' '}
+						<Image bgUrl={movie.poster_path} />{' '}
 						<Rating>
 							<span role="img" aria-label="rating">
 								⭐️
 							</span>{' '}
-							{movie.vote_average}/10
+							{movie.vote_average}
 						</Rating>
 					</ImageContainer>
 					<Title>

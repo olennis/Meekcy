@@ -23,11 +23,20 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 			<Container>
 				<Section title="Now Playing">
 					{movie?.data.results.map((movie, index) => {
+						let listMovie = {
+							id: movie.id,
+							poster_path: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+							original_title: movie.original_title,
+							release_date: movie.release_date,
+							runningTime: movie.runningTime,
+							vote_average: `${movie.vote_average}` + '/10',
+							overview: movie.overview,
+						};
 						return (
 							<Poster
 								setDetailAction={setDetailAction}
 								key={index}
-								movie={movie}
+								movie={listMovie}
 								changeModalTrue={changeModalTrue}
 							></Poster>
 						);

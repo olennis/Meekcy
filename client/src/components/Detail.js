@@ -39,10 +39,29 @@ const Description = styled.div`
 	font-size: 13px;
 	line-height: 1.8;
 `;
+// const BGIMG = styled.div`
+// 	padding: 20px;
+// 	width: 100%;
+// 	height: 100%;
+// 	background-color: rgba(0, 0, 0, 0.8);
+// `;
+// const ModalContent = styled.div`
+// 	background-image: url(${(props) => props.bgUrl});
+// 	float: left;
+// 	background-size: cover;
+// 	border-radius: 4px;
+// 	background-position: center center;
+// 	transition: opacity 0.1s linear;
+// 	position: relative;
+// 	margin: 10% auto; /* 15% from the top and centered */
+// 	width: 100%;
+// 	height: 60vh;
+// 	min-height: 450px;
+// `;
 
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	console.log('window:', window);
+	console.log('detail:', storeState);
 	return (
 		<Container>
 			<ModalHeader>

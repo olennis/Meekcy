@@ -4,6 +4,7 @@ import { loginCheck } from './modules/actions/changeLoginStatus';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ListPage from './pages/ListPage';
 import Login from './pages/LoginPage';
+import StreamingPage from './pages/StreamingPage';
 // import Loading from './components/Loading';
 import GlobalStyles from './components/GlobalStyles';
 
@@ -25,13 +26,13 @@ function App() {
 			<Router>
 				<Switch>
 					{isLogin ? (
-						<Route path="/" component={ListPage}></Route>
+						<Route path="/" exact component={ListPage}></Route>
 					) : (
 						<Route path="/" exact component={Login}></Route>
 					)}
 					{/* <Route path="/" exact component={Login}></Route>
 				<Route path="/list" component={ListPage}></Route> */}
-					<Route path="/streaming/:id" component={ListPage}></Route>
+					<Route path="/streaming/:id" component={StreamingPage}></Route>
 				</Switch>
 			</Router>
 			<GlobalStyles />

@@ -82,14 +82,15 @@ const NewModal = ({ changeModalFalse }) => {
 	const playButton = () => {
 		changeModalFalse();
 		console.log('history 상태 확인:', history);
-		history.push(`/streaming/${storeState.id}`);
+		history.push(`/streaming/:${storeState.id}`);
 	};
 	const modalState = useSelector((state) => state.changeModalStatus, []);
+	console.log('storeState', storeState);
 	return (
 		<>
 			{modalState === true ? (
 				<TrueContainer>
-					<ModalContent bgUrl={`https://image.tmdb.org/t/p/w300${storeState.poster}`}>
+					<ModalContent bgUrl={storeState.poster}>
 						<BGIMG>
 							<Detail changeModalFalse={changeModalFalse}></Detail>
 							<PlayBtn onClick={() => playButton()}>

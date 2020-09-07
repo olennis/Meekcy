@@ -12,7 +12,7 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://ec2-13-125-163-234.ap-northeast-2.compute.amazonaws.com:4000/videos', {
+			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

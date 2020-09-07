@@ -29,7 +29,7 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 							original_title: movie.original_title,
 							release_date: movie.release_date,
 							runningTime: movie.runningTime,
-							vote_average: `${movie.vote_average}` + '/10',
+							vote_average: `${movie.vote_average} /10`,
 							overview: movie.overview,
 						};
 						return (

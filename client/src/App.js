@@ -6,17 +6,16 @@ import ListPage from './pages/ListPage';
 import Login from './pages/LoginPage';
 import StreamingPage from './pages/StreamingPage';
 // import Loading from './components/Loading';
+import Video from './components/Video';
 import GlobalStyles from './components/GlobalStyles';
 
 function App() {
 	const dispatch = useDispatch();
 	const isLogin = useSelector((state) => state.changeLoginStatus.isLogin);
-	console.log('isLogin', isLogin);
 	const localStoragetokenCheck = localStorage.getItem('token');
 
 	useEffect(() => {
 		if (localStoragetokenCheck) {
-			// 로그인유지를 위해서 isLogin을 true로 변경해줘야한다.
 			dispatch(loginCheck());
 		}
 	}, []);

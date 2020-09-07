@@ -29,7 +29,6 @@ const FalseContainer = styled.div`
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 `;
-//뒷 배경
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
 	float: left;
@@ -38,7 +37,7 @@ const ModalContent = styled.div`
 	background-position: center center;
 	transition: opacity 0.1s linear;
 	position: relative;
-	margin: 10% auto; /* 15% from the top and centered */
+	margin: 10% auto;
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
@@ -85,7 +84,6 @@ const NewModal = ({ changeModalFalse }) => {
 		history.push(`/streaming/:${storeState.id}`);
 	};
 	const modalState = useSelector((state) => state.changeModalStatus, []);
-	console.log('storeState', storeState);
 	return (
 		<>
 			{modalState === true ? (

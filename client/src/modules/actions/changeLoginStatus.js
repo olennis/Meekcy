@@ -21,7 +21,6 @@ const changeLoginStatus = (state = initialStore, action) => {
 		case LOGINCHECK:
 			return { ...state, isLogin: true };
 		case LOGOUTCHECK:
-			console.log('enter');
 			return { ...state, isLogin: false };
 		default:
 			return state;

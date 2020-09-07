@@ -82,6 +82,7 @@ const NewModal = ({ changeModalFalse }) => {
 		changeModalFalse();
 		console.log('history 상태 확인:', history);
 		history.push(`/streaming/:${storeState.id}`);
+		history.go(0);
 	};
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 	return (

@@ -20,27 +20,18 @@ const Video = () => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	// const videoSrc = storeState.video;
 	// const poster = storeState.poster;
-	const history = useHistory();
-	const goToBack = () => {
-		history.push(`/`);
-	};
+
 	return (
 		<div>
 			{/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-			<button
-				onClick={() => {
-					goToBack();
-				}}
-			>
-				Back
-			</button>
+
 			<video
 				id="my-video"
 				className="video-js vjs-default-skin vjs-big-play-centered"
 				controls
 				preload="auto"
-				width="640"
-				height="268"
+				width="1080"
+				height="720"
 				data-setup="{}"
 			>
 				<source
@@ -50,14 +41,14 @@ const Video = () => {
 					label="720P"
 				></source>
 				<source
+					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
 					// src={videoSrc}
-					src="http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_1mb.mp4"
 					type="video/mp4"
 					label="480P"
 				></source>
 				<source
+					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
 					// src={videoSrc}
-					src="http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_1mb.mp4"
 					type="video/mp4"
 					label="360P"
 				></source>

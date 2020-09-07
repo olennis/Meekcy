@@ -10,9 +10,6 @@ const Container = styled.div`
 `;
 const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
-	// const detailState = useSelector((state) => state.changeDetaildata, []);
-	// const modalState = useSelector((state) => state.changeModalStatus, []);
-	console.log('로컬스토리지체크:', localStorage.getItem('token'));
 	useEffect(() => {
 		axios
 			.get('http://ec2-13-125-163-234.ap-northeast-2.compute.amazonaws.com:4000/videos', {
@@ -23,7 +20,6 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 			.then((res) => setMovie(res))
 			.catch((err) => console.log(err));
 	}, []);
-	console.log('movie:', movie);
 	return (
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>

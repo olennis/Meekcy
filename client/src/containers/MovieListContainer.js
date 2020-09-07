@@ -25,28 +25,3 @@ const MovieListContainer = () => {
 	);
 };
 export default MovieListContainer;
-
-// setDetailAction={dispatch(setDetailAction(...arg))}
-
-// import React from 'react';
-// import MovieList from '../components/MovieList';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { modalFalse, modalTrue } from '../modules/actions/index';
-
-// const MovieListContainer = () => {
-// 	const status = useSelector((state) => state.changeModalStatus, []);
-// 	const dispatch = useDispatch();
-// 	// const [changeToTrue, changeToFalse] = useActions([modalFalse, modalTrue], []);
-// 	// const [modalStatus, setStatus] = useState({ modalstatus: false });
-// 	return (
-// 		<>
-// 			<MovieList
-// 				// changeFalse={() => dispatch({ type: MODALFALSE })}
-// 				// changeTrue={() => dispatch({ type: MODALTRUE })}
-// 				status={status}
-// 			/>
-// 		</>
-// 	);
-// };
-
-// export default MovieListContainer;

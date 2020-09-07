@@ -14,7 +14,6 @@ const Title = styled.span`
 `;
 const Year = styled.span`
 	font-size: 10px;
-	/* color: rgba(255, 255, 255, 0.5); */
 `;
 const Rating = styled.span`
 	bottom: 5px;

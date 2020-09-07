@@ -17,7 +17,6 @@ const Title = styled.div`
 
 const Close = styled.div`
 	color: #aaa;
-	/* float: right; */
 	margin: 0;
 	font-size: 28px;
 	font-weight: bold;
@@ -29,7 +28,6 @@ const Close = styled.div`
 `;
 
 const DescriptionWrap = styled.div`
-	/* background-color: green; */
 	width: 25%;
 	padding: 20px 0px;
 `;
@@ -39,26 +37,6 @@ const Description = styled.div`
 	font-size: 13px;
 	line-height: 1.8;
 `;
-// const BGIMG = styled.div`
-// 	padding: 20px;
-// 	width: 100%;
-// 	height: 100%;
-// 	background-color: rgba(0, 0, 0, 0.8);
-// `;
-// const ModalContent = styled.div`
-// 	background-image: url(${(props) => props.bgUrl});
-// 	float: left;
-// 	background-size: cover;
-// 	border-radius: 4px;
-// 	background-position: center center;
-// 	transition: opacity 0.1s linear;
-// 	position: relative;
-// 	margin: 10% auto; /* 15% from the top and centered */
-// 	width: 100%;
-// 	height: 60vh;
-// 	min-height: 450px;
-// `;
-
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	console.log('detail:', storeState);
@@ -68,7 +46,6 @@ const Detail = ({ changeModalFalse }) => {
 				<Title>{storeState.title}</Title>
 				<Close onClick={() => changeModalFalse()}>X</Close>
 			</ModalHeader>
-			{/* <Image bgUrl={`https://image.tmdb.org/t/p/w300${storeState.poster}`}></Image> */}
 			<DescriptionWrap>
 				<Description>{storeState.description}</Description>
 			</DescriptionWrap>

@@ -9,7 +9,6 @@ const Nav = styled.div`
 	font-size: 13px;
 	display: flex;
 	justify-content: space-between;
-	/* background-color: red; */
 `;
 
 const LogoWrap = styled.h1`
@@ -23,8 +22,6 @@ const LogoWrap = styled.h1`
 const Logo = styled.div`
 	width: 40px;
 	height: 40px;
-	/* max-width: 50px;
-	max-height: 50px; */
 	position: absolute;
 	top: 20px;
 	left: 20px;

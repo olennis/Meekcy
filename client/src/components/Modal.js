@@ -78,9 +78,11 @@ const NewModal = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 
 	const history = useHistory();
+
 	const playButton = () => {
 		changeModalFalse();
 		console.log('history 상태 확인:', history);
+		// 서버에서 받아오고
 		history.push(`/streaming/:${storeState.id}`);
 		history.go(0);
 	};

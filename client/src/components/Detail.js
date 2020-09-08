@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-const Container = styled.div``;
+const Container = styled.div`
+	position: relative;
+`;
 
 const ModalHeader = styled.div`
 	display: flex;
@@ -38,13 +40,31 @@ const Description = styled.div`
 	line-height: 1.8;
 `;
 const Video = styled.video`
-	width: 25%;
-	height: 15%;
-	float: right;
+	width: 60vw;
+	height: 45vh;
+	max-width: 700px;
+	position: absolute;
+	top: 70px;
+	right: 60px;
 `;
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	console.log('detail:', storeState);
+	const [size, setSize] = useState([]);
+
+	const useWindowSize = () => {
+		useLayoutEffect(() => {
+			function updateSize() {
+				setSize([window.innerWidth]);
+			}
+			window.addEventListener('resize', updateSize);
+			updateSize();
+			return () => window.removeEventListener('resize', updateSize);
+		}, []);
+		return size;
+	};
+
+	const [width] = useWindowSize();
+
 	return (
 		<Container>
 			<ModalHeader>
@@ -52,9 +72,23 @@ const Detail = ({ changeModalFalse }) => {
 				<Close onClick={() => changeModalFalse()}>X</Close>
 			</ModalHeader>
 			<DescriptionWrap>
-				<Description>{storeState.description}</Description>
+				{width < 961 ? (
+					<Description>
+						{storeState.description.length > 300
+							? `${storeState.description.substring(0, 300)}...`
+							: storeState.description}
+					</Description>
+				) : (
+					<Description>{storeState.description}</Description>
+				)}
 			</DescriptionWrap>
-			<Video src={storeState.video} autoPlay controls="controls" muted></Video>
+			<Video
+				src={storeState.video}
+				autoPlay
+				// controls="controls"
+				muted
+				poster={storeState.poster}
+			></Video>
 		</Container>
 	);
 };

@@ -4,8 +4,14 @@ import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
 import qualityselector from '@silvermine/videojs-quality-selector';
 import 'video.js/dist/video-js.min.css';
+import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+const Container = styled.div`
+	width: 100%;
+	height: 100%;
+`;
+
 const Video = () => {
 	useEffect(() => {
 		var player = videojs('my-video');
@@ -22,7 +28,7 @@ const Video = () => {
 	// const poster = storeState.poster;
 
 	return (
-		<div>
+		<Container>
 			{/* eslint-disable-next-line jsx-a11y/media-has-caption */}
 
 			<video
@@ -30,8 +36,7 @@ const Video = () => {
 				className="video-js vjs-default-skin vjs-big-play-centered"
 				controls
 				preload="auto"
-				width="1080"
-				height="720"
+				style={{ width: '100%', height: '100%' }}
 				data-setup="{}"
 			>
 				<source
@@ -53,7 +58,7 @@ const Video = () => {
 					label="360P"
 				></source>
 			</video>
-		</div>
+		</Container>
 	);
 };
 export default Video;

@@ -33,6 +33,7 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 							release_date: movie.releaseDay,
 							runningTime: movie.runningTime,
 							overview: movie.detail,
+							video: movie.url,
 						};
 						return (
 							<Poster

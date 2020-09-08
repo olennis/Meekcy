@@ -4,8 +4,8 @@ import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
 import qualityselector from '@silvermine/videojs-quality-selector';
 import 'video.js/dist/video-js.min.css';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
 	width: 100%;
@@ -40,12 +40,12 @@ const Video = () => {
 				style={{ width: '100%', height: '100%' }}
 			>
 				<source
-					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
+					src={storeState.video}
 					// src={videoSrc}
 					type="video/mp4"
 					label="720P"
 				></source>
-				<source
+				{/* <source
 					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
 					// src={videoSrc}
 					type="video/mp4"
@@ -56,7 +56,7 @@ const Video = () => {
 					// src={videoSrc}
 					type="video/mp4"
 					label="360P"
-				></source>
+				></source> */}
 			</video>
 		</Container>
 	);

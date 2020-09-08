@@ -14,6 +14,7 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	useEffect(() => {
 		moviesApi.nowPlaying().then((response) => {
 			setMovie(response);
+			console.log(response);
 		});
 	}, []);
 

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
-import Chat from '../components/Chat';
+import Chat from '../containers/chattingContainer';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
+//import { connectSocket } from '../utils/socket';
+import io from 'socket.io-client';
 
 const Container = styled.div`
 	width: 100%;
@@ -101,12 +103,24 @@ const ChatToggle = styled.div`
 	}
 `;
 
+const token = localStorage.getItem('token');
+
+const socket = io.connect('http://localhost:4000', {
+	query: 'token=' + token,
+});
+export { socket };
+
 const StreamingPage = () => {
 	const [chatState, setChatState] = useState(true);
+	//const [socket, setSocket] = useState();
 	const history = useHistory();
 	const goToBack = () => {
 		history.push(`/`);
+		history.go(0);
 	};
+	// useEffect(() => {
+	// 	connectSocket();
+	// }, []);
 	return (
 		<Container>
 			<VideoWrap ChatToggleState={chatState}>
@@ -134,7 +148,7 @@ const StreamingPage = () => {
 			</VideoWrap>
 
 			<ChatWrqp ChatToggleState={chatState}>
-				<Chat></Chat>
+				<Chat socket={socket}></Chat>
 			</ChatWrqp>
 		</Container>
 	);

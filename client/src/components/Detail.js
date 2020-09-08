@@ -37,6 +37,11 @@ const Description = styled.div`
 	font-size: 13px;
 	line-height: 1.8;
 `;
+const Video = styled.video`
+	width: 25%;
+	height: 15%;
+	float: right;
+`;
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	console.log('detail:', storeState);
@@ -49,6 +54,7 @@ const Detail = ({ changeModalFalse }) => {
 			<DescriptionWrap>
 				<Description>{storeState.description}</Description>
 			</DescriptionWrap>
+			<Video src={storeState.video} autoPlay controls="controls" muted></Video>
 		</Container>
 	);
 };

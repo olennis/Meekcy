@@ -20,10 +20,15 @@ const ChattingContainer = (roomName) => {
 	//message and caption socket.io 통신
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
-			console.log(value);
-
 			receivedMessage(value);
 			//scroll
+			const chatpg = document.getElementById('chatpg');
+			chatpg.scrollTop = chatpg.scrollHeight;
+		});
+		socket.on('receiveHistoryMessages', (value) => {
+			console.log(value);
+
+			setMessages(value);
 			const chatpg = document.getElementById('chatpg');
 			chatpg.scrollTop = chatpg.scrollHeight;
 		});
@@ -47,6 +52,11 @@ const ChattingContainer = (roomName) => {
 		let roomName = 'testRoom';
 		socket.emit('joinRoom', { roomName });
 		console.log('client room join');
+
+		socket.on('overlapUser', () => {
+			console.log('this is ....');
+			//socket.disconnect();
+		});
 	}, []);
 	//socket으로 받은 메세지를 render하는 chatting state에 추가
 	function receivedMessage(message) {

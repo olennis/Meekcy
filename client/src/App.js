@@ -6,7 +6,6 @@ import ListPage from './pages/ListPage';
 import Login from './pages/LoginPage';
 import StreamingPage from './pages/StreamingPage';
 // import Loading from './components/Loading';
-import Video from './components/Video';
 import GlobalStyles from './components/GlobalStyles';
 
 function App() {
@@ -30,8 +29,6 @@ function App() {
 					) : (
 						<Route path="/" exact component={Login}></Route>
 					)}
-					{/* <Route path="/" exact component={Login}></Route>
-				<Route path="/list" component={ListPage}></Route> */}
 					<Route path={`/streaming/:id`} component={StreamingPage}></Route>
 				</Switch>
 			</Router>

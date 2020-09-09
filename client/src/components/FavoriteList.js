@@ -6,8 +6,14 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const Container = styled.div`
-	padding: 15px;
+	padding-left: 30px;
+	padding-top: 20px;
+	margin-bottom: 50px;
+	@media (max-width: 667px) {
+		padding-top: 10px;
+	}
 `;
+
 const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {

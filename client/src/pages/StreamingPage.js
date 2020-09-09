@@ -3,14 +3,27 @@ import styled, { css } from 'styled-components';
 import Video from '../components/Video';
 import Chat from '../components/Chat';
 import { useHistory } from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faComments as faCommentsRegular } from '@fortawesome/free-regular-svg-icons';
+import { faComments as faCommentsSolid } from '@fortawesome/free-solid-svg-icons';
+library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
 	width: 100%;
 	height: 100vh;
 	display: flex;
-	@media (max-width: 960px) {
+
+	@media (max-width: 375px) {
+		display: grid;
+	}
+
+	@media (min-width: 376px) and (max-width: 667px) {
+		display: flex;
+	}
+
+	@media (min-width: 668px) and (max-width: 960px) {
 		display: grid;
 	}
 `;
@@ -34,7 +47,44 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	@media (max-width: 960px) {
+	@media (max-width: 375px) {
+		width: 100%;
+		height: 65vh;
+		${(props) => {
+			if (props.ChatToggleState) {
+				return css`
+					height: 65vh;
+					transition: height 0.3s;
+				`;
+			} else {
+				return css`
+					height: 100vh;
+					transition: height 0.3s;
+				`;
+			}
+		}}
+	}
+
+	@media (min-width: 376px) and (max-width: 667px) {
+		width: 80%;
+		height: 100vh;
+		${(props) => {
+			if (props.ChatToggleState) {
+				return css`
+					height: 100vh;
+					transition: height 0.3s;
+				`;
+			} else {
+				return css`
+					width: 100%;
+					height: 100vh;
+					transition: height 0.3s;
+				`;
+			}
+		}}
+	}
+
+	@media (min-width: 668px) and (max-width: 960px) {
 		width: 100%;
 		height: 65vh;
 		${(props) => {
@@ -71,7 +121,17 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	@media (max-width: 960px) {
+	@media (max-width: 375px) {
+		width: 100%;
+		height: 35vh;
+	}
+
+	@media (min-width: 376px) and (max-width: 667px) {
+		width: 20%;
+		height: 100vh;
+	}
+
+	@media (min-width: 668px) and (max-width: 960px) {
 		width: 100%;
 		height: 35vh;
 	}
@@ -97,8 +157,6 @@ const ChatToggle = styled.div`
 	padding: 5px;
 	padding-right: 20px;
 	cursor: pointer;
-	@media (max-width: 960px) {
-	}
 `;
 
 const StreamingPage = () => {
@@ -127,9 +185,9 @@ const StreamingPage = () => {
 						}}
 					>
 						{chatState ? (
-							<FontAwesomeIcon icon={faStepForward} size={'2x'} />
+							<FontAwesomeIcon icon={['fas', 'comments']} size={'2x'} />
 						) : (
-							<FontAwesomeIcon icon={faStepBackward} size={'2x'} />
+							<FontAwesomeIcon icon={['far', 'comments']} size={'2x'} />
 						)}
 					</ChatToggle>
 				</VideoIcon>

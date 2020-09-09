@@ -6,7 +6,8 @@ import NewModal from './Modal';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	padding: 15px;
+	padding-left: 30px;
+	padding-top: 20px;
 `;
 const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
@@ -14,7 +15,6 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	useEffect(() => {
 		moviesApi.nowPlaying().then((response) => {
 			setMovie(response);
-			console.log(response);
 		});
 	}, []);
 

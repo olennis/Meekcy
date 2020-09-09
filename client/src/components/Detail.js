@@ -15,6 +15,9 @@ const Title = styled.div`
 	font-size: 50px;
 	padding-bottom: 10px;
 	color: white;
+	@media (max-width: 667px) {
+		font-size: 35px;
+	}
 `;
 
 const Close = styled.div`
@@ -32,6 +35,21 @@ const Close = styled.div`
 const DescriptionWrap = styled.div`
 	width: 25%;
 	padding: 20px 0px;
+
+	@media (max-width: 375px) {
+		position: fixed;
+		top: 400px;
+		left: 0;
+		width: 100vw;
+		padding: 10px;
+	}
+	@media (min-width: 376px) and (max-width: 667px) {
+		position: fixed;
+		top: 55px;
+		left: 0;
+		width: 45vw;
+		padding-left: 10px;
+	}
 `;
 
 const Description = styled.div`
@@ -40,12 +58,18 @@ const Description = styled.div`
 	line-height: 1.8;
 `;
 const Video = styled.video`
-	width: 60vw;
+	width: 50vw;
 	height: 45vh;
 	max-width: 700px;
 	position: absolute;
 	top: 70px;
 	right: 60px;
+	@media (min-width: 376px) and (max-width: 667px) {
+		position: absolute;
+		top: 65px;
+		right: 0px;
+		height: 50vh;
+	}
 `;
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);

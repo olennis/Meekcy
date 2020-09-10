@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
@@ -87,7 +86,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('/avatars', {
+				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -105,7 +104,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://localhost:4000/user/profile',
+				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},

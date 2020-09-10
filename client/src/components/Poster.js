@@ -39,7 +39,25 @@ const ImageContainer = styled.div`
 const Container = styled.div`
 	font-size: 12px;
 `;
+const EndBarWrap = styled.div``;
+const EndBarRed = styled.div`
+	background-color: #900c3f;
+	height: 5px;
+	width: ${(props) => props.EndPoint || '1px'};
+	border-radius: 5px;
+	position: fixed;
+`;
+const EndBar = styled.div`
+	width: 125px;
+	height: 5px;
+	border-radius: 5px;
+	background-color: gray;
+	margin-bottom: 5px;
+`;
+
 const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
+	let EndPoint = `${125 * (movie.endTime / movie.runningTime)}px`;
+
 	return (
 		<div>
 			<span
@@ -58,6 +76,15 @@ const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
 							{movie.vote_average}
 						</Rating>
 					</ImageContainer>
+					{movie.endTime ? (
+						<EndBarWrap>
+							<EndBarRed EndPoint={EndPoint}></EndBarRed>
+							<EndBar></EndBar>
+						</EndBarWrap>
+					) : (
+						<></>
+					)}
+
 					<Title>
 						{movie.original_title.length > 18
 							? `${movie.original_title.substring(0, 18)}...`

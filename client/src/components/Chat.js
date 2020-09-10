@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Popover, Button, Avatar } from 'antd';
+import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 
 //style Component
@@ -127,12 +127,12 @@ const Chatting = ({
 					);
 				})}
 			</ChatChatpg>
-			<ChatForm onSubmit={sendMessageEnterEvent} autocomplete="off">
+			<ChatForm onSubmit={sendMessageEnterEvent} autoComplete="off">
 				<ChatFormInput
 					id="chatInput"
 					onChange={handleChange}
 					placeholder="Type messages..."
-					autocomplete="off"
+					autoComplete="off"
 				></ChatFormInput>
 			</ChatForm>
 		</Chat>

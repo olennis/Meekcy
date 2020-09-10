@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { moviesApi } from '../containers/moviesApi';
 
 const TrueContainer = styled.div`
 	display: block;
@@ -134,7 +133,7 @@ const NewModal = ({ changeModalFalse }) => {
 
 		axios
 			.post(
-				'http://localhost:4000/rooms',
+				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
 					video_id: storeState.id,
 					end_time: 0,
@@ -148,7 +147,7 @@ const NewModal = ({ changeModalFalse }) => {
 			)
 			.then((res) => {
 				console.log(res.data.roomname);
-				history.push(`/streaming/${res.data.roomname}`);
+				history.push(`/streaming/:${res.data.roomname}`);
 			})
 			.catch((err) => {
 				console.log(err);

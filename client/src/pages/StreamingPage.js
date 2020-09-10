@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
-import Chat from '../components/Chat';
+import Chat from '../containers/chattingContainer';
 import { useHistory } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -159,13 +160,20 @@ const ChatToggle = styled.div`
 	cursor: pointer;
 `;
 
+const token = localStorage.getItem('token');
+
+const socket = io.connect('http://localhost:4000', {
+	query: 'token=' + token,
+});
+export { socket };
+
 const StreamingPage = () => {
 	const [chatState, setChatState] = useState(true);
-
 	const history = useHistory();
 
 	const goToBack = () => {
 		history.push(`/`);
+		history.go(0);
 	};
 
 	return (
@@ -195,7 +203,7 @@ const StreamingPage = () => {
 			</VideoWrap>
 
 			<ChatWrqp ChatToggleState={chatState}>
-				<Chat></Chat>
+				<Chat socket={socket}></Chat>
 			</ChatWrqp>
 		</Container>
 	);

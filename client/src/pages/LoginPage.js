@@ -62,6 +62,7 @@ const LoginWrap = styled.div`
 
 const LoginTitle = styled.h2`
 	font-size: 50px;
+	color: white;
 `;
 
 const LoginDetailText = styled.p`
@@ -80,7 +81,8 @@ const Login = (props) => {
 
 	const responseGoogle = (res) => {
 		axios
-			.post('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth', {
+			.post('http://localhost:4000/auth', {
+				//http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth     http://localhost:4000/auth
 				id_token: res.tokenId,
 			})
 			.then(function (response) {

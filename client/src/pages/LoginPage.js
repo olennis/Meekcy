@@ -62,6 +62,7 @@ const LoginWrap = styled.div`
 
 const LoginTitle = styled.h2`
 	font-size: 50px;
+	color: white;
 `;
 
 const LoginDetailText = styled.p`

@@ -9,11 +9,13 @@ const Image = styled.div`
 	transition: opacity 0.1s linear;
 `;
 const Title = styled.span`
+	font-size: 13px;
 	display: block;
 	margin-bottom: 3px;
 `;
 const Year = styled.span`
-	font-size: 10px;
+	font-size: 11px;
+	color: gray;
 `;
 const Rating = styled.span`
 	bottom: 5px;

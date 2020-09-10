@@ -29,7 +29,6 @@ const Video = () => {
 
 	return (
 		<Container>
-			{/* eslint-disable-next-line jsx-a11y/media-has-caption */}
 			<video
 				id="my-video"
 				className="video-js vjs-default-skin vjs-big-play-centered"
@@ -39,38 +38,22 @@ const Video = () => {
 				style={{ width: '100%', height: '100%' }}
 			>
 				<source
-					label=""
+					label="720p"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					type="application/x-mpegURL"
+				/>
+				<source
+					label="480p"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					type="application/x-mpegURL"
+				/>
+
+				<source
+					label="360p"
 					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
 					type="application/x-mpegURL"
 				/>
 			</video>
-			{/* <video
-				id="my-video"
-				className="video-js vjs-default-skin vjs-big-play-centered"
-				controls
-				preload="auto"
-				data-setup="{}"
-				style={{ width: '100%', height: '100%' }}
-			>
-				<source
-					src={storeState.video}
-					// src={videoSrc}
-					type="video/mp4"
-					label="720P"
-				></source>
-				{ <source
-					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
-					// src={videoSrc}
-					type="video/mp4"
-					label="480P"
-				></source>
-				<source
-					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
-					// src={videoSrc}
-					type="video/mp4"
-					label="360P"
-				></source> }
-			</video> */}
 		</Container>
 	);
 };

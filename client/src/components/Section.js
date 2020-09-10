@@ -6,12 +6,21 @@ const Container = styled.div`
 	:not(:last-child) {
 		margin-bottom: 50px;
 	}
+	@media (max-width: 375px) {
+		margin-top: 30px;
+	}
 `;
 
 const Title = styled.span`
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	&:hover {
+		padding-bottom: 4px;
+		border-bottom: 2px solid #900c3f;
+	}
+
+	@media (max-width: 667px) {
+		margin-left: -30px;
 		padding-bottom: 4px;
 		border-bottom: 2px solid #900c3f;
 	}

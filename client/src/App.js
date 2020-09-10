@@ -12,7 +12,6 @@ function App() {
 	const dispatch = useDispatch();
 	const isLogin = useSelector((state) => state.changeLoginStatus.isLogin);
 	const localStoragetokenCheck = localStorage.getItem('token');
-	const storeState = useSelector((state) => state.changeDetaildata, []);
 
 	useEffect(() => {
 		if (localStoragetokenCheck) {
@@ -29,8 +28,6 @@ function App() {
 					) : (
 						<Route path="/" exact component={Login}></Route>
 					)}
-					{/* <Route path="/" exact component={Login}></Route>
-				<Route path="/list" component={ListPage}></Route> */}
 					<Route path={`/streaming/:roomName`} component={StreamingPage}></Route>
 				</Switch>
 			</Router>

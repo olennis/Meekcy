@@ -108,7 +108,7 @@ const ChatWrqp = styled.div`
 	width: 20%;
 	height: 100vh;
 	font-size: 20px;
-	background-color: red;
+	background-color: gray;
 
 	${(props) => {
 		if (props.ChatToggleState) {
@@ -162,7 +162,7 @@ const ChatToggle = styled.div`
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://localhost:4000', {
+const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000', {
 	query: 'token=' + token,
 });
 export { socket };

@@ -81,8 +81,7 @@ const Login = (props) => {
 
 	const responseGoogle = (res) => {
 		axios
-			.post('http://localhost:4000/auth', {
-				//http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth     http://localhost:4000/auth
+			.post('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth', {
 				id_token: res.tokenId,
 			})
 			.then(function (response) {
@@ -99,7 +98,7 @@ const Login = (props) => {
 	const responseFailGoogle = (err) => {
 		console.log(err);
 	};
-	// console.log(props);
+
 	return (
 		<Container>
 			<BGIMG></BGIMG>

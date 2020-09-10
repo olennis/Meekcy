@@ -7,12 +7,15 @@ import axios from 'axios';
 
 const Container = styled.div`
 	padding: 15px;
+	@media (max-width: 667px) {
+		padding-left: 30px;
+	}
 `;
 const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://localhost:4000/videos', {
+			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
@@ -25,7 +28,7 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>
 			<Container>
-				<Section title="시청중인 컨텐츠">
+				<Section title="Recommendation">
 					{movie?.data.map((movie, index) => {
 						let favoriteMovie = {
 							id: movie.id,

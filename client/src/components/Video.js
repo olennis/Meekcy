@@ -24,8 +24,6 @@ const Video = () => {
 		player.controlBar.addChild('QualitySelector');
 	}, []);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	// const videoSrc = storeState.video;
-	// const poster = storeState.poster;
 
 	return (
 		<Container>
@@ -37,12 +35,13 @@ const Video = () => {
 				data-setup="{}"
 				style={{ width: '100%', height: '100%' }}
 			>
+				{}
 				<source
 					label="720p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/avengers/1080/output.m3u8"
 					type="application/x-mpegURL"
 				/>
-				<source
+				{/* <source
 					label="480p"
 					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
 					type="application/x-mpegURL"
@@ -52,7 +51,7 @@ const Video = () => {
 					label="360p"
 					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
 					type="application/x-mpegURL"
-				/>
+				/> */}
 			</video>
 		</Container>
 	);

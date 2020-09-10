@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const Nav = styled.div`
 	width: 100%;
 	height: 8vh;
+	min-height: 50px;
 	font-size: 13px;
 	display: flex;
 	justify-content: space-between;
@@ -52,7 +53,6 @@ const Header = () => {
 			</LogoWrap>
 			<LogoutBtn
 				onClick={() => {
-					console.log('logout');
 					localStorage.removeItem('token');
 					dispatch(logoutClickevent());
 				}}

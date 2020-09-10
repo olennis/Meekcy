@@ -71,6 +71,7 @@ const Video = styled.video`
 		height: 50vh;
 	}
 `;
+
 const Detail = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	const [size, setSize] = useState([]);
@@ -106,6 +107,7 @@ const Detail = ({ changeModalFalse }) => {
 					<Description>{storeState.description}</Description>
 				)}
 			</DescriptionWrap>
+
 			<Video
 				src={storeState.video}
 				autoPlay

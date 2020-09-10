@@ -6,19 +6,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const Container = styled.div`
-	padding-left: 30px;
-	padding-top: 20px;
-	margin-bottom: 50px;
-	@media (max-width: 667px) {
-		padding-top: 10px;
-	}
+	padding: 15px;
 `;
-
 const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos', {
+			.get('http://localhost:4000/videos', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

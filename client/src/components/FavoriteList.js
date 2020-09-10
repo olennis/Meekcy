@@ -26,6 +26,7 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 			.then((res) => setMovie(res))
 			.catch((err) => console.log(err));
 	}, []);
+
 	return (
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>

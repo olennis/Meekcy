@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { moviesApi } from '../containers/moviesApi';
 
 const TrueContainer = styled.div`
 	display: block;
@@ -74,17 +76,76 @@ const PlayBtn = styled.button`
 	}
 `;
 
+const PreviewBtn = styled.button`
+	width: 130px;
+	height: 40px;
+	border-radius: 5px;
+	padding: 10px 25px;
+	background: transparent;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1),
+		4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+	border: none;
+	color: white;
+	background-color: gray;
+	cursor: pointer;
+	font-size: 15px;
+	position: absolute;
+	bottom: 30px;
+	left: 170px;
+	&:hover {
+		background-color: #900c3f;
+		color: white;
+	}
+`;
+
 const NewModal = ({ changeModalFalse }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-
 	const history = useHistory();
+
+	const createRoom = () => {
+		let token = localStorage.getItem('token');
+
+		axios
+			.post(
+				'http://localhost:4000/rooms',
+				{
+					video_id: storeState.id,
+					end_time: 0,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				},
+			)
+			.then((res) => {
+				console.log(res.data.roomname);
+				history.push(`/streaming/${res.data.roomname}`);
+				//history.go(0);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	const playButton = () => {
 		changeModalFalse();
-		console.log('history 상태 확인:', history);
-		history.push(`/streaming/:${storeState.id}`);
-		history.go(0);
+		createRoom();
 	};
+
 	const modalState = useSelector((state) => state.changeModalStatus, []);
+
+	// themoviedb api 영상불러오기
+	const [youtube, setYoutube] = useState(null);
+	useEffect(() => {
+		moviesApi.youtubeVideo(storeState.id).then((response) => {
+			setYoutube(`https://youtu.be/${response.data.results[0].key}`);
+		});
+	}, []);
+
 	return (
 		<>
 			{modalState === true ? (
@@ -92,10 +153,12 @@ const NewModal = ({ changeModalFalse }) => {
 					<ModalContent bgUrl={storeState.poster}>
 						<BGIMG>
 							<Detail changeModalFalse={changeModalFalse}></Detail>
+
 							<PlayBtn onClick={() => playButton()}>
 								<FontAwesomeIcon icon={faPlay} />
 								{`  PLAY`}
 							</PlayBtn>
+							<PreviewBtn>예고편</PreviewBtn>
 						</BGIMG>
 					</ModalContent>
 				</TrueContainer>

@@ -4,7 +4,8 @@ import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-const ChattingContainer = (roomName) => {
+import { useParams } from 'react-router-dom';
+const ChattingContainer = () => {
 	/**
 	 * state hook style
 	 * avatarPopover : 아바타 설정 popup창 visible상태
@@ -17,6 +18,8 @@ const ChattingContainer = (roomName) => {
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
 
+	const { roomName } = useParams();
+
 	//message and caption socket.io 통신
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
@@ -26,8 +29,6 @@ const ChattingContainer = (roomName) => {
 			chatpg.scrollTop = chatpg.scrollHeight;
 		});
 		socket.on('receiveHistoryMessages', (value) => {
-			console.log(value);
-
 			setMessages(value);
 			const chatpg = document.getElementById('chatpg');
 			chatpg.scrollTop = chatpg.scrollHeight;
@@ -49,14 +50,14 @@ const ChattingContainer = (roomName) => {
 	}, []);
 	useEffect(() => {
 		// streaming page component에서 room정보를 받아 chatting componet에 준다. 받은정보를 이용해 서버의 room 정보를 준다.
-		let roomName = 'testRoom';
+
 		socket.emit('joinRoom', { roomName });
 		console.log('client room join');
 
-		socket.on('overlapUser', () => {
-			console.log('this is ....');
-			//socket.disconnect();
-		});
+		// socket.on('overlapUser', () => {
+		// 	console.log('this is ....');
+		// 	//socket.disconnect();
+		// });
 	}, []);
 	//socket으로 받은 메세지를 render하는 chatting state에 추가
 	function receivedMessage(message) {
@@ -95,11 +96,33 @@ const ChattingContainer = (roomName) => {
 					setAvatars(res?.data);
 				});
 		}
-		socket.emit('changeAvartar', { changeurl: 'http://naver.com' });
+		//socket.emit('changeAvartar', {});
 	}
 	//나열된 avartar들 중 하나를 클릭하면 해당 url을 server에 전달
 	function changeAvartarClickEvent(e) {
-		socket.emit('sendChangeAvatar', { user: { avatar: e.target?.src } });
+		e.persist();
+		const token = localStorage.getItem('token');
+
+		axios
+			.patch(
+				'http://localhost:4000/user/profile',
+				{
+					avatar_id: e.target.parentNode.id,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				},
+			)
+			.then((response) => {
+				localStorage.setItem('token', response.data.token);
+				socket.emit('sendChangeAvatar', { user: { avatar: e.target?.src } });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 	//링크 복사 click event
 	function copyLinkClickEvent() {

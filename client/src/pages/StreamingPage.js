@@ -86,7 +86,7 @@ const VideoIcon = styled.div`
 	display: flex;
 	justify-content: space-between;
 	line-height: 6;
-	z-index: 1;
+	z-index: 2;
 `;
 
 const BackBtn = styled.div`
@@ -112,15 +112,13 @@ export { socket };
 
 const StreamingPage = () => {
 	const [chatState, setChatState] = useState(true);
-	//const [socket, setSocket] = useState();
 	const history = useHistory();
+
 	const goToBack = () => {
 		history.push(`/`);
 		history.go(0);
 	};
-	// useEffect(() => {
-	// 	connectSocket();
-	// }, []);
+
 	return (
 		<Container>
 			<VideoWrap ChatToggleState={chatState}>

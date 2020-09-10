@@ -94,6 +94,7 @@ const Chatting = ({
 							<Avatar
 								key={index}
 								size="32"
+								id={value.id}
 								src={value.url}
 								onClick={changeAvartarClickEvent}
 							></Avatar>

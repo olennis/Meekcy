@@ -4,8 +4,14 @@ import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
 import qualityselector from '@silvermine/videojs-quality-selector';
 import 'video.js/dist/video-js.min.css';
-
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+
+const Container = styled.div`
+	width: 100%;
+	height: 100%;
+`;
+
 const Video = () => {
 	useEffect(() => {
 		var player = videojs('my-video');
@@ -22,25 +28,37 @@ const Video = () => {
 	// const poster = storeState.poster;
 
 	return (
-		<div>
+		<Container>
 			{/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-
 			<video
 				id="my-video"
 				className="video-js vjs-default-skin vjs-big-play-centered"
 				controls
 				preload="auto"
-				width="1080"
-				height="720"
 				data-setup="{}"
+				style={{ width: '100%', height: '100%' }}
 			>
 				<source
-					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
+					label=""
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					type="application/x-mpegURL"
+				/>
+			</video>
+			{/* <video
+				id="my-video"
+				className="video-js vjs-default-skin vjs-big-play-centered"
+				controls
+				preload="auto"
+				data-setup="{}"
+				style={{ width: '100%', height: '100%' }}
+			>
+				<source
+					src={storeState.video}
 					// src={videoSrc}
 					type="video/mp4"
 					label="720P"
 				></source>
-				<source
+				{ <source
 					src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
 					// src={videoSrc}
 					type="video/mp4"
@@ -51,9 +69,9 @@ const Video = () => {
 					// src={videoSrc}
 					type="video/mp4"
 					label="360P"
-				></source>
-			</video>
-		</div>
+				></source> }
+			</video> */}
+		</Container>
 	);
 };
 export default Video;

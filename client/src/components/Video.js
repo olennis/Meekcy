@@ -38,8 +38,8 @@ const Video = () => {
 				{}
 				<source
 					label="720p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/avengers/1080/output.m3u8"
-					type="application/x-mpegURL"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/720/reply-1997_720.mp4"
+					type="video/mp4"
 				/>
 				{/* <source
 					label="480p"

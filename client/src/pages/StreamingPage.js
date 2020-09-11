@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faComments as faCommentsRegular } from '@fortawesome/free-regular-svg-icons';
 import { faComments as faCommentsSolid } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
@@ -108,7 +109,7 @@ const ChatWrqp = styled.div`
 	width: 20%;
 	height: 100vh;
 	font-size: 20px;
-	background-color: gray;
+	background-color: red;
 
 	${(props) => {
 		if (props.ChatToggleState) {
@@ -168,45 +169,69 @@ const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazo
 export { socket };
 
 const StreamingPage = () => {
+	// 	const a = useParams();
+	//   console.log(a);
+
+	const [videoUrl, setVideoUrl] = useState(null);
 	const [chatState, setChatState] = useState(true);
 	const history = useHistory();
-
 	const goToBack = () => {
 		history.push(`/`);
 		history.go(0);
 	};
+	const roomName = history.location.pathname.substring(7);
+
+	useEffect(() => {
+		console.log('roomName:', roomName);
+		axios
+			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
+				headers: {
+					Authorization: 'Bearer ' + localStorage.getItem('token'),
+				},
+			})
+			.then((res) => setVideoUrl(res.data))
+
+			.catch((err) => console.log(err));
+	}, []);
 
 	return (
 		<Container>
-			<VideoWrap ChatToggleState={chatState}>
-				<VideoIcon>
-					<BackBtn
-						onClick={() => {
-							goToBack();
-						}}
-					>
-						<FontAwesomeIcon icon={faArrowLeft} size={'2x'} />
-					</BackBtn>
-					<ChatToggle
-						onClick={() => {
-							setChatState(!chatState);
-						}}
-					>
-						{chatState ? (
-							<FontAwesomeIcon icon={['fas', 'comments']} size={'2x'} />
-						) : (
-							<FontAwesomeIcon icon={['far', 'comments']} size={'2x'} />
-						)}
-					</ChatToggle>
-				</VideoIcon>
-				<Video></Video>
-			</VideoWrap>
+			{videoUrl ? (
+				<>
+					<VideoWrap ChatToggleState={chatState}>
+						<VideoIcon>
+							<BackBtn
+								onClick={() => {
+									goToBack();
+								}}
+							>
+								<FontAwesomeIcon icon={faArrowLeft} size={'2x'} />
+							</BackBtn>
+							<ChatToggle
+								onClick={() => {
+									setChatState(!chatState);
+								}}
+							>
+								{chatState ? (
+									<FontAwesomeIcon icon={['fas', 'comments']} size={'2x'} />
+								) : (
+									<FontAwesomeIcon icon={['far', 'comments']} size={'2x'} />
+								)}
+							</ChatToggle>
+						</VideoIcon>
+						<Video videoUrl={videoUrl}></Video>
+					</VideoWrap>
 
-			<ChatWrqp ChatToggleState={chatState}>
-				<Chat socket={socket}></Chat>
-			</ChatWrqp>
+					<ChatWrqp ChatToggleState={chatState}>
+						<Chat socket={socket}></Chat>
+					</ChatWrqp>
+				</>
+			) : (
+				<div>loading</div>
+			)}
 		</Container>
 	);
 };
 
 export default StreamingPage;
+//401 페이지 만들기

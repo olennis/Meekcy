@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 
 //style Component
 const Chat = styled.div`
@@ -20,8 +22,7 @@ const ChatHeader = styled.div`
 const ChatHeaderLink = styled.button`
 	border: none;
 	background-position: center center;
-	background-size: cover;
-	background-image: url('images/Logo.png');
+
 	height: 32px;
 	width: 32px;
 `;
@@ -84,9 +85,9 @@ const Chatting = ({
 		<Chat>
 			<ChatHeader>
 				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
-				<ChatHeaderLink type="primary" onClick={copyLinkClickEvent}>
-					link
-				</ChatHeaderLink>
+				{/* <ChatHeaderLink type="primary" > */}
+				<FontAwesomeIcon icon={faPaperclip} size={'1x'} onClick={copyLinkClickEvent} />
+				{/* </ChatHeaderLink> */}
 
 				<ChatHeaderProfile
 					content={avatars.map((value, index) => {

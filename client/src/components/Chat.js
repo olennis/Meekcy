@@ -127,12 +127,12 @@ const Chatting = ({
 					);
 				})}
 			</ChatChatpg>
-			<ChatForm onSubmit={sendMessageEnterEvent} autocomplete="off">
+			<ChatForm onSubmit={sendMessageEnterEvent} autoComplete="off">
 				<ChatFormInput
 					id="chatInput"
 					onChange={handleChange}
 					placeholder="Type messages..."
-					autocomplete="off"
+					autoComplete="off"
 				></ChatFormInput>
 			</ChatForm>
 		</Chat>

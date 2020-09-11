@@ -96,7 +96,6 @@ const ChattingContainer = () => {
 					setAvatars(res?.data);
 				});
 		}
-		//socket.emit('changeAvartar', {});
 	}
 	//나열된 avartar들 중 하나를 클릭하면 해당 url을 server에 전달
 	function changeAvartarClickEvent(e) {

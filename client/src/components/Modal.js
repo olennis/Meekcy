@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
@@ -123,8 +123,7 @@ const NewModal = ({ changeModalFalse }) => {
 			)
 			.then((res) => {
 				console.log(res.data.roomname);
-				history.push(`/streaming/${res.data.roomname}`);
-				history.go(0);
+				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {
 				console.log(err);

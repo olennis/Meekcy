@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
@@ -19,9 +18,8 @@ const ChattingContainer = () => {
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
 
-	const { roomName } = useParams();
 	const history = useHistory();
-	const url = history.location.pathname.substring(11);
+	const roomName = history.location.pathname.substring(7);
 
 	//message and caption socket.io 통신
 	useEffect(() => {
@@ -90,7 +88,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('/avatars', {
+				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -108,7 +106,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'hhttp://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
+				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -130,7 +128,8 @@ const ChattingContainer = () => {
 	//링크 복사 click event
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
-		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${url}`;
+
+		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`;
 		document.body.appendChild(tempTextArea);
 		tempTextArea.focus();
 		tempTextArea.select();

@@ -99,7 +99,7 @@ const Login = (props) => {
 	const responseFailGoogle = (err) => {
 		console.log(err);
 	};
-	// console.log(props);
+
 	return (
 		<Container>
 			<BGIMG></BGIMG>

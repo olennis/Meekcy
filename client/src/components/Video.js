@@ -13,8 +13,9 @@ const Container = styled.div`
 `;
 
 const Video = ({ videoUrl }) => {
+	//videojs options추가,m3u8 샘플 찾아서 구현
 	useEffect(() => {
-		var player = videojs('my-video');
+		var player = videojs('my-video'); //리액트가 아닐 때 사용 법 , 리액트일때 사용법 찾기
 		qualityselector(videojs);
 		player.seekButtons({
 			forward: 3,
@@ -36,9 +37,9 @@ const Video = ({ videoUrl }) => {
 				style={{ width: '100%', height: '100%' }}
 			>
 				<source label="720p" src={videoUrl.url_720} type="application/x-mpegURL" />
-				<source label="480p" src={videoUrl.url_480} type="application/x-mpegURL" select="true" />
+				{/* <source label="480p" src={videoUrl.url_480} type="application/x-mpegURL" select="true" />
 
-				<source label="360p" src={videoUrl.url_360} type="application/x-mpegURL" />
+				<source label="360p" src={videoUrl.url_360} type="application/x-mpegURL" /> */}
 			</video>
 		</Container>
 	);

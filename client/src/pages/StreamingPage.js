@@ -179,11 +179,12 @@ const StreamingPage = () => {
 		history.push(`/`);
 		history.go(0);
 	};
-	const url = history.location.pathname.substring(11);
+	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {
+		console.log('roomName:', roomName);
 		axios
-			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${url}`, {
+			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
@@ -233,3 +234,4 @@ const StreamingPage = () => {
 };
 
 export default StreamingPage;
+//401 페이지 만들기

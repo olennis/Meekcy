@@ -147,7 +147,7 @@ const NewModal = ({ changeModalFalse }) => {
 			)
 			.then((res) => {
 				console.log(res.data.roomname);
-				history.push(`/streaming/:${res.data.roomname}`);
+				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {
 				console.log(err);

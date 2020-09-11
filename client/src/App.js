@@ -29,9 +29,7 @@ function App() {
 					) : (
 						<Route path="/" exact component={Login}></Route>
 					)}
-					{/* <Route path="/" exact component={Login}></Route>
-				<Route path="/list" component={ListPage}></Route> */}
-					<Route path={`/streaming/:roomName`} component={StreamingPage}></Route>
+					<Route path={`/streaming/:id`} component={StreamingPage}></Route>
 				</Switch>
 			</Router>
 			<GlobalStyles />

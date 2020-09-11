@@ -12,7 +12,7 @@ const Container = styled.div`
 	height: 100%;
 `;
 
-const Video = () => {
+const Video = ({ videoUrl }) => {
 	useEffect(() => {
 		var player = videojs('my-video');
 		qualityselector(videojs);
@@ -24,9 +24,7 @@ const Video = () => {
 		player.controlBar.addChild('QualitySelector');
 	}, []);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	// const videoSrc = storeState.video;
-	// const poster = storeState.poster;
-
+	console.log('videourl:', videoUrl);
 	return (
 		<Container>
 			<video
@@ -37,22 +35,10 @@ const Video = () => {
 				data-setup="{}"
 				style={{ width: '100%', height: '100%' }}
 			>
-				<source
-					label="720p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
-					type="application/x-mpegURL"
-				/>
-				<source
-					label="480p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
-					type="application/x-mpegURL"
-				/>
+				<source label="720p" src={videoUrl.url_720} type="application/x-mpegURL" />
+				<source label="480p" src={videoUrl.url_480} type="application/x-mpegURL" select="true" />
 
-				<source
-					label="360p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
-					type="application/x-mpegURL"
-				/>
+				<source label="360p" src={videoUrl.url_360} type="application/x-mpegURL" />
 			</video>
 		</Container>
 	);

@@ -4,7 +4,8 @@ import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+
 const ChattingContainer = () => {
 	/**
 	 * state hook style
@@ -19,6 +20,8 @@ const ChattingContainer = () => {
 	const [myinfo, setMyinfo] = useState({});
 
 	const { roomName } = useParams();
+	const history = useHistory();
+	const url = history.location.pathname.substring(11);
 
 	//message and caption socket.io 통신
 	useEffect(() => {
@@ -105,7 +108,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://localhost:4000/user/profile',
+				'hhttp://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -127,7 +130,7 @@ const ChattingContainer = () => {
 	//링크 복사 click event
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
-		tempTextArea.value = 'taeha.com';
+		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${url}`;
 		document.body.appendChild(tempTextArea);
 		tempTextArea.focus();
 		tempTextArea.select();

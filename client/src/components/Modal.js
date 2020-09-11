@@ -18,9 +18,6 @@ const TrueContainer = styled.div`
 	height: 100vh;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
-	@media (max-width: 667px) {
-		background-color: rgba(0, 0, 0);
-	}
 `;
 const FalseContainer = styled.div`
 	display: none;
@@ -46,20 +43,6 @@ const ModalContent = styled.div`
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
-	@media (max-width: 375px) {
-		width: 100vw;
-		height: 100vh;
-		position: fixed;
-		left: 0;
-		top: -35px;
-	}
-	@media (min-width: 376px) and (max-width: 667px) {
-		width: 100vw;
-		height: 100vh;
-		position: fixed;
-		left: 0;
-		top: -70px;
-	}
 `;
 
 const BGIMG = styled.div`
@@ -91,14 +74,10 @@ const PlayBtn = styled.button`
 		background-color: #900c3f;
 		color: white;
 	}
-	@media (min-width: 376px) and (max-width: 667px) {
-		position: absolute;
-		bottom: 90px;
-	}
 `;
 
-const PreviewBtn = styled.a`
-	width: 90px;
+const PreviewBtn = styled.button`
+	width: 130px;
 	height: 40px;
 	border-radius: 5px;
 	padding: 10px 25px;
@@ -115,13 +94,9 @@ const PreviewBtn = styled.a`
 	position: absolute;
 	bottom: 30px;
 	left: 170px;
-	line-height: 1.3;
 	&:hover {
 		background-color: #900c3f;
 		color: white;
-	}
-	@media (max-width: 667px) {
-		display: none;
 	}
 `;
 
@@ -134,7 +109,7 @@ const NewModal = ({ changeModalFalse }) => {
 
 		axios
 			.post(
-				'http://localhost:4000/rooms',
+				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
 					video_id: storeState.id,
 					end_time: 0,
@@ -149,6 +124,7 @@ const NewModal = ({ changeModalFalse }) => {
 			.then((res) => {
 				console.log(res.data.roomname);
 				history.push(`/streaming/${res.data.roomname}`);
+				history.go(0);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -163,13 +139,12 @@ const NewModal = ({ changeModalFalse }) => {
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
 	// themoviedb api 영상불러오기
-	// const [youtube, setYoutube] = useState(null);
-	// useEffect(() => {
-	// 	moviesApi.youtubeVideo(storeState.id).then((response) => {
-	// 		console.log(response);
-	// 		setYoutube(`https://youtu.be/${response.data.results[0].key}`);
-	// 	});
-	// }, []);
+	const [youtube, setYoutube] = useState(null);
+	useEffect(() => {
+		moviesApi.youtubeVideo(storeState.id).then((response) => {
+			setYoutube(`https://youtu.be/${response.data.results[0].key}`);
+		});
+	}, []);
 
 	return (
 		<>
@@ -183,9 +158,7 @@ const NewModal = ({ changeModalFalse }) => {
 								<FontAwesomeIcon icon={faPlay} />
 								{`  PLAY`}
 							</PlayBtn>
-							<PreviewBtn href="https://www.youtube.com" target="_blank" rel="noopener" primary>
-								예고편
-							</PreviewBtn>
+							<PreviewBtn>예고편</PreviewBtn>
 						</BGIMG>
 					</ModalContent>
 				</TrueContainer>

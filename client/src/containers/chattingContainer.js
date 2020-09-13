@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 const ChattingContainer = () => {
 	/**
 	 * state hook style
@@ -18,20 +18,22 @@ const ChattingContainer = () => {
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
 
-	const { roomName } = useParams();
+	const chatPg = useRef(null);
+	const chatInput = useRef(null);
+
+	const history = useHistory();
+	const roomName = history.location.pathname.substring(7);
 
 	//message and caption socket.io 통신
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
 			//scroll
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 		socket.on('receiveHistoryMessages', (value) => {
 			setMessages(value);
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 	}, []);
 	//avatar change socket.io 통신
@@ -66,11 +68,10 @@ const ChattingContainer = () => {
 	//message 입력후 server로 socket을 날려주는 이벤트
 	const sendMessageEnterEvent = (e) => {
 		e.preventDefault();
-		const inputBox = document.getElementById('chatInput');
-		if (inputBox.value === '') {
+		if (chatInput.current.value === '') {
 			return;
 		}
-		inputBox.value = '';
+		chatInput.current.value = '';
 		setMessage('');
 		socket.emit('sendMessage', { message: message });
 	};
@@ -87,7 +88,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('/avatars', {
+				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -104,7 +105,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://localhost:4000/user/profile',
+				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -126,7 +127,7 @@ const ChattingContainer = () => {
 	//링크 복사 click event
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
-		tempTextArea.value = 'taeha.com';
+		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`;
 		document.body.appendChild(tempTextArea);
 		tempTextArea.focus();
 		tempTextArea.select();
@@ -148,6 +149,8 @@ const ChattingContainer = () => {
 			copyLinkClickEvent={copyLinkClickEvent}
 			changeAvartarClickEvent={changeAvartarClickEvent}
 			myinfo={myinfo}
+			chatPg={chatPg}
+			chatInput={chatInput}
 		/>
 	);
 };

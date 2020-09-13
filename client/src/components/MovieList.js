@@ -6,8 +6,11 @@ import NewModal from './Modal';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	padding-left: 30px;
+	padding-left: 15px;
 	padding-top: 20px;
+	@media (max-width: 667px) {
+		padding-left: 30px;
+	}
 `;
 const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);

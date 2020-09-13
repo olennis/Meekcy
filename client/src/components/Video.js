@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
@@ -25,15 +25,14 @@ const Video = () => {
 	}, []);
 	useEffect(() => {
 		window.onunload = function () {
+			//var player = videojs(videoTag.current);
 			var player = videojs('my-video');
 			let currentTime = player.currentTime();
 
-			socket.emit('testevent', currentTime);
+			socket.emit('sendLastVideoCurrnetTime', { currentTime });
 		};
 	}, []);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	// const videoSrc = storeState.video;
-	// const poster = storeState.poster;
 	return (
 		<Container>
 			<video
@@ -44,15 +43,25 @@ const Video = () => {
 				data-setup="{}"
 				style={{ width: '100%', height: '100%' }}
 			>
+				{}
 				<source
 					label="720p"
-					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/720/reply-1997_720.mp4"
-					type="video/mp4"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/avengers/1080/output.m3u8"
+					type="application/x-mpegURL"
 				/>
+				{/* <source
+					label="480p"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					type="application/x-mpegURL"
+				/>
+
+				<source
+					label="360p"
+					src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/video/reply-1997/main.m3u8"
+					type="application/x-mpegURL"
+				/> */}
 			</video>
 		</Container>
 	);
 };
 export default Video;
-//{storeState.video}
-//"application/x-mpegURL"

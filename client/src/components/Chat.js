@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Popover, Button, Avatar } from 'antd';
+import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 //style Component
 const Chat = styled.div`
 	height: 100vh;
@@ -79,15 +80,14 @@ const Chatting = ({
 	copyLinkClickEvent,
 	changeAvartarClickEvent,
 	myinfo,
+	chatPg,
+	chatInput,
 }) => {
 	return (
 		<Chat>
 			<ChatHeader>
 				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
-				<ChatHeaderLink type="primary" onClick={copyLinkClickEvent}>
-					link
-				</ChatHeaderLink>
-
+				<FontAwesomeIcon icon={faPaperclip} size={'1x'} onClick={copyLinkClickEvent} />
 				<ChatHeaderProfile
 					content={avatars.map((value, index) => {
 						return (
@@ -112,7 +112,7 @@ const Chatting = ({
 					></ChatHeaderProfileButton>
 				</ChatHeaderProfile>
 			</ChatHeader>
-			<ChatChatpg id="chatpg">
+			<ChatChatpg id="chatpg" ref={chatPg}>
 				{chatList.map(({ value }, index) => {
 					return (
 						<ChatChatpgMessage key={index}>
@@ -133,6 +133,7 @@ const Chatting = ({
 					onChange={handleChange}
 					placeholder="Type messages..."
 					autoComplete="off"
+					ref={chatInput}
 				></ChatFormInput>
 			</ChatForm>
 		</Chat>

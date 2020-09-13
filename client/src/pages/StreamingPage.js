@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
+import Loading from '../components/Loading';
 import Chat from '../containers/chattingContainer';
 import { useHistory } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -182,7 +183,6 @@ const StreamingPage = () => {
 	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {
-		console.log('roomName:', roomName);
 		axios
 			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
@@ -192,6 +192,14 @@ const StreamingPage = () => {
 			.then((res) => setVideoUrl(res.data))
 
 			.catch((err) => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		let LoginChecking = localStorage.getItem('token');
+		if (!LoginChecking) {
+			history.push(`/`);
+			history.go(0);
+		}
 	}, []);
 
 	return (
@@ -227,11 +235,10 @@ const StreamingPage = () => {
 					</ChatWrqp>
 				</>
 			) : (
-				<div>loading</div>
+				<Loading></Loading>
 			)}
 		</Container>
 	);
 };
 
 export default StreamingPage;
-//401 페이지 만들기

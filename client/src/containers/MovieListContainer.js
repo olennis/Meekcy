@@ -30,7 +30,10 @@ const MovieListContainer = () => {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
 			})
-			.then((res) => setEndmovie(res.data))
+			.then((res) => {
+				// console.log('res', res);
+				setEndmovie(res.data);
+			})
 			.catch((err) => console.log(err));
 	}, []);
 

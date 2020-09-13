@@ -35,7 +35,8 @@ const MovieListContainer = () => {
 	}, []);
 
 	return (
-		<Container>
+		<>
+			<Container />
 			{Endmovie ? (
 				<EndTimeList
 					Endmovie={Endmovie}
@@ -59,7 +60,7 @@ const MovieListContainer = () => {
 				changeModalTrue={() => dispatch({ type: CHANGETRUE })}
 				changeModalFalse={() => dispatch({ type: CHANGEFALSE })}
 			/>
-		</Container>
+		</>
 	);
 };
 export default MovieListContainer;

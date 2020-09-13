@@ -3,7 +3,7 @@ import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const ChattingContainer = () => {
 	/**
@@ -127,7 +127,8 @@ const ChattingContainer = () => {
 	//링크 복사 click event
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
-		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`;
+
+		tempTextArea.value = `http://meekcy.s3-website.ap-northeast-2.amazonaws.com/rooms/${roomName}`;
 		document.body.appendChild(tempTextArea);
 		tempTextArea.focus();
 		tempTextArea.select();

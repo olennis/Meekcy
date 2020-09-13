@@ -21,8 +21,7 @@ const ChatHeader = styled.div`
 const ChatHeaderLink = styled.button`
 	border: none;
 	background-position: center center;
-	background-size: cover;
-	background-image: url('images/Logo.png');
+
 	height: 32px;
 	width: 32px;
 `;

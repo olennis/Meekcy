@@ -28,6 +28,9 @@
 		"styled-components": "^5.1.1",
 		"styled-reset": "^4.2.2",
 		"video.js": "^7.8.4",
+		"videojs-contrib-quality-levels": "^2.0.9",
+		"videojs-hls-quality-selector": "^1.1.1",
+		"videojs-resolution-switcher": "^0.4.2",
 		"videojs-seek-buttons": "^1.6.0"
 	},
 	"scripts": {

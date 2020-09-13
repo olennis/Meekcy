@@ -129,7 +129,7 @@ const ChattingContainer = () => {
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
 
-		tempTextArea.value = `http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`;
+		tempTextArea.value = `http://meekcy.s3-website.ap-northeast-2.amazonaws.com/rooms/${roomName}`;
 		document.body.appendChild(tempTextArea);
 		tempTextArea.focus();
 		tempTextArea.select();

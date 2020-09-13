@@ -9,7 +9,7 @@ import '@silvermine/videojs-quality-selector';
 
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
-
+import { socket } from '../pages/StreamingPage';
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
@@ -63,10 +63,15 @@ const Video = ({ videoUrl }) => {
 			console.log('Player Ready', player);
 		});
 	}, []);
+	useEffect(() => {
+		window.onunload = function () {
+			//var player = videojs(videoTag.current);
+			var player = videojs('my-video');
+			let currentTime = player.currentTime();
 
-	console.log('videourl:', videoUrl);
-
-	////////////////////////////////////////
+			socket.emit('sendLastVideoCurrnetTime', { currentTime });
+		};
+	}, []);
 	return (
 		<Container>
 			<video

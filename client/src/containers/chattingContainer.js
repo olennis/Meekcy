@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
 import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
@@ -18,6 +18,9 @@ const ChattingContainer = () => {
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
 
+	const chatPg = useRef(null);
+	const chatInput = useRef(null);
+
 	const history = useHistory();
 	const roomName = history.location.pathname.substring(7);
 
@@ -26,13 +29,11 @@ const ChattingContainer = () => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
 			//scroll
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 		socket.on('receiveHistoryMessages', (value) => {
 			setMessages(value);
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 	}, []);
 	//avatar change socket.io 통신
@@ -67,11 +68,10 @@ const ChattingContainer = () => {
 	//message 입력후 server로 socket을 날려주는 이벤트
 	const sendMessageEnterEvent = (e) => {
 		e.preventDefault();
-		const inputBox = document.getElementById('chatInput');
-		if (inputBox.value === '') {
+		if (chatInput.current.value === '') {
 			return;
 		}
-		inputBox.value = '';
+		chatInput.current.value = '';
 		setMessage('');
 		socket.emit('sendMessage', { message: message });
 	};
@@ -97,7 +97,6 @@ const ChattingContainer = () => {
 					setAvatars(res?.data);
 				});
 		}
-		//socket.emit('changeAvartar', {});
 	}
 	//나열된 avartar들 중 하나를 클릭하면 해당 url을 server에 전달
 	function changeAvartarClickEvent(e) {
@@ -151,6 +150,8 @@ const ChattingContainer = () => {
 			copyLinkClickEvent={copyLinkClickEvent}
 			changeAvartarClickEvent={changeAvartarClickEvent}
 			myinfo={myinfo}
+			chatPg={chatPg}
+			chatInput={chatInput}
 		/>
 	);
 };

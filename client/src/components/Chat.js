@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 const Chat = styled.div`
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	padding: 14px 18.5px;

@@ -81,11 +81,12 @@ const Chatting = ({
 	myinfo,
 	chatPg,
 	chatInput,
+	participats,
 }) => {
 	return (
 		<Chat>
 			<ChatHeader>
-				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
+				<ChatHeaderTitle>Meekcy Party 참여자 수 : {participats}</ChatHeaderTitle>
 				<FontAwesomeIcon icon={faPaperclip} size={'1x'} onClick={copyLinkClickEvent} />
 				<ChatHeaderProfile
 					content={avatars.map((value, index) => {

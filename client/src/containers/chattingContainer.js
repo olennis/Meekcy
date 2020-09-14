@@ -17,6 +17,7 @@ const ChattingContainer = () => {
 	const [message, setMessage] = useState('');
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
+	const [participats, setParticipant] = useState(0);
 
 	const chatPg = useRef(null);
 	const chatInput = useRef(null);
@@ -61,6 +62,11 @@ const ChattingContainer = () => {
 		// 	//socket.disconnect();
 		// });
 	}, []);
+	useEffect(() => {
+		socket.on('receiveParticipants', (value) => {
+			setParticipant(value.countParticipants);
+		});
+	});
 	//socket으로 받은 메세지를 render하는 chatting state에 추가
 	function receivedMessage(message) {
 		setMessages((oldMsgs) => [...oldMsgs, message]);
@@ -88,7 +94,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
+				.get('http://localhost:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -105,7 +111,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
+				'http://localhost:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -152,6 +158,7 @@ const ChattingContainer = () => {
 			myinfo={myinfo}
 			chatPg={chatPg}
 			chatInput={chatInput}
+			participats={participats}
 		/>
 	);
 };

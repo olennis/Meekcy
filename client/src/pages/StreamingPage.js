@@ -163,7 +163,7 @@ const ChatToggle = styled.div`
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000', {
+const socket = io.connect('http://localhost:4000', {
 	query: 'token=' + token,
 });
 export { socket };
@@ -184,7 +184,7 @@ const StreamingPage = () => {
 	useEffect(() => {
 		console.log('roomName:', roomName);
 		axios
-			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
+			.get(`http://localhost:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

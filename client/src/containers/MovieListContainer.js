@@ -25,7 +25,7 @@ const MovieListContainer = () => {
 	const [Endmovie, setEndmovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos/watched', {
+			.get('http://localhost:4000/videos/watched', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

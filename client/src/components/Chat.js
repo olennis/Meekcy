@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 const Chat = styled.div`
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	padding: 14px 18.5px;
@@ -35,11 +35,14 @@ const ChatHeaderProfileButton = styled(Avatar)`
 const ChatChatpg = styled.div`
 	flex: 1;
 	overflow: scroll;
+	width: 100%;
 `;
 const ChatChatpgMessage = styled.div`
 	display: flex;
 	align-items: center;
 	padding-left: 10px;
+	background-color: green;
+	width: 100%;
 `;
 const MessageProfile = styled(Avatar)`
 	width: 52px;
@@ -49,9 +52,17 @@ const MessageText = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	padding-left: 5px;
+	background-color: blue;
 `;
 const MessageTextName = styled.div``;
-const MessageTextExplain = styled.div``;
+const MessageTextExplain = styled.div`
+	background-color: yellow;
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	width: 100%;
+`;
 const ChatForm = styled.form``;
 const ChatFormInput = styled.input`
 	border-left-width: 0;
@@ -61,8 +72,7 @@ const ChatFormInput = styled.input`
 	background-color: rgba(20, 20, 20, 1);
 	font-size: 15px;
 	border-bottom: 1.2px solid;
-	width: 100vw;
-
+	width: 100%;
 	&:focus {
 		outline: none;
 	}

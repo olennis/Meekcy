@@ -12,7 +12,7 @@ const Container = styled.div`
 		padding-left: 30px;
 	}
 `;
-const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
+const NowPlaying = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 
 	useEffect(() => {
@@ -50,4 +50,4 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 		</>
 	);
 };
-export default MovieList;
+export default NowPlaying;

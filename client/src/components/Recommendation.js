@@ -11,11 +11,11 @@ const Container = styled.div`
 		padding-left: 30px;
 	}
 `;
-const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
+const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://localhost:4000/videos', {
+			.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videos', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
@@ -53,4 +53,4 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 		</>
 	);
 };
-export default FavoriteList;
+export default Recommendation;

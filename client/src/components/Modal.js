@@ -109,7 +109,7 @@ const NewModal = ({ changeModalFalse }) => {
 
 		axios
 			.post(
-				'http://localhost:4000/rooms',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
 					video_id: storeState.id,
 					end_time: 0,
@@ -122,7 +122,6 @@ const NewModal = ({ changeModalFalse }) => {
 				},
 			)
 			.then((res) => {
-				console.log(res.data.roomname);
 				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {

@@ -108,13 +108,7 @@ const Detail = ({ changeModalFalse }) => {
 				)}
 			</DescriptionWrap>
 
-			<Video
-				src={storeState.video}
-				autoPlay
-				// controls="controls"
-				muted
-				poster={storeState.poster}
-			></Video>
+			<Video src={storeState.video} autoPlay muted poster={storeState.poster}></Video>
 		</Container>
 	);
 };

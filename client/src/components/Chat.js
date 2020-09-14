@@ -4,7 +4,6 @@ import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
-//style Component
 const Chat = styled.div`
 	height: 100vh;
 	display: flex;
@@ -53,7 +52,6 @@ const MessageText = styled.div`
 `;
 const MessageTextName = styled.div``;
 const MessageTextExplain = styled.div``;
-
 const ChatForm = styled.form``;
 const ChatFormInput = styled.input`
 	border-left-width: 0;

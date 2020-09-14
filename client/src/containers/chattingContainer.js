@@ -88,7 +88,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
+				.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},

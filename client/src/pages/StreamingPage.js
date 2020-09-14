@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
+import Loading from '../components/Loading';
 import Chat from '../containers/chattingContainer';
 import { useHistory } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -163,15 +164,12 @@ const ChatToggle = styled.div`
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000', {
+const socket = io.connect('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000', {
 	query: 'token=' + token,
 });
 export { socket };
 
 const StreamingPage = () => {
-	// 	const a = useParams();
-	//   console.log(a);
-
 	const [videoUrl, setVideoUrl] = useState(null);
 	const [chatState, setChatState] = useState(true);
 	const history = useHistory();
@@ -182,9 +180,8 @@ const StreamingPage = () => {
 	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {
-		console.log('roomName:', roomName);
 		axios
-			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
+			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
@@ -192,6 +189,14 @@ const StreamingPage = () => {
 			.then((res) => setVideoUrl(res.data))
 
 			.catch((err) => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		let LoginChecking = localStorage.getItem('token');
+		if (!LoginChecking) {
+			history.push(`/`);
+			history.go(0);
+		}
 	}, []);
 
 	return (
@@ -227,11 +232,10 @@ const StreamingPage = () => {
 					</ChatWrqp>
 				</>
 			) : (
-				<div>loading</div>
+				<Loading></Loading>
 			)}
 		</Container>
 	);
 };
 
 export default StreamingPage;
-//401 페이지 만들기

@@ -10,7 +10,7 @@ const Container = styled.div`
 		padding-left: 30px;
 	}
 `;
-const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse, Endmovie }) => {
+const EndTimeList = ({ setDetailAction, changeModalTrue, changeModalFalse, Endmovie }) => {
 	return (
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>
@@ -41,4 +41,4 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse, Endm
 		</>
 	);
 };
-export default FavoriteList;
+export default EndTimeList;

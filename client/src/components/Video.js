@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
 import 'videojs-contrib-quality-levels';
@@ -16,9 +17,8 @@ const Container = styled.div`
 `;
 
 const Video = ({ videoUrl }) => {
-	console.log('src:', videoUrl.url);
+	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
-
 	const videoPlayerRef = useRef(null);
 	const options = {
 		fluid: true,
@@ -28,8 +28,7 @@ const Video = ({ videoUrl }) => {
 		sources: [
 			{
 				src: `${videoUrl.url}`,
-				// src: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-				type: 'application/x-mpegURL',
+				type: 'application/x-mpegurl',
 			},
 		],
 		controlBar: {
@@ -46,11 +45,11 @@ const Video = ({ videoUrl }) => {
 	useEffect(() => {
 		//리액트일때 사용법 찾기
 		//옵션값 넣는 법 찾기
-
 		const player = videojs(videoPlayerRef.current, options, () => {
 			player.on('ended', () => {
 				console.log('ended');
 			});
+
 			player.seekButtons({
 				forward: 10,
 				back: 10,
@@ -60,16 +59,15 @@ const Video = ({ videoUrl }) => {
 			player.hlsQualitySelector({
 				displayCurrentQuality: false,
 			});
-
-			console.log('Player Ready', player);
+			if (storeState.endTime) {
+				player.currentTime(storeState.endTime);
+			}
 		});
 	}, []);
 	useEffect(() => {
 		window.onunload = function () {
-			//var player = videojs(videoTag.current);
-			var player = videojs('my-video');
+			let player = videojs(videoPlayerRef.current);
 			let currentTime = player.currentTime();
-
 			socket.emit('sendLastVideoCurrnetTime', { currentTime });
 		};
 	}, []);

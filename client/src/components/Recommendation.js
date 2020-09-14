@@ -1,46 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import Poster from './Poster';
-import { moviesApi } from '../containers/moviesApi';
 import Section from './Section';
 import NewModal from './Modal';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Container = styled.div`
-	padding-left: 15px;
-	padding-top: 20px;
+	padding: 15px;
 	@media (max-width: 667px) {
 		padding-left: 30px;
 	}
 `;
-const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
+const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
-
 	useEffect(() => {
-		moviesApi.nowPlaying().then((response) => {
-			setMovie(response);
-		});
+		axios
+			.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videos', {
+				headers: {
+					Authorization: 'Bearer ' + localStorage.getItem('token'),
+				},
+			})
+			.then((res) => setMovie(res))
+			.catch((err) => console.log(err));
 	}, []);
 
 	return (
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>
 			<Container>
-				<Section title="Now Playing">
-					{movie?.data.results.map((movie, index) => {
-						let listMovie = {
+				<Section title="Recommendation">
+					{movie?.data.map((movie, index) => {
+						let favoriteMovie = {
 							id: movie.id,
-							poster_path: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
-							original_title: movie.original_title,
-							release_date: movie.release_date,
+							poster_path: movie.thumbnail,
+							original_title: movie.title,
+							release_date: movie.releaseDay,
 							runningTime: movie.runningTime,
-							vote_average: `${movie.vote_average} /10`,
-							overview: movie.overview,
+							overview: movie.detail,
+							video: movie.url,
 						};
 						return (
 							<Poster
 								setDetailAction={setDetailAction}
 								key={index}
-								movie={listMovie}
+								movie={favoriteMovie}
 								changeModalTrue={changeModalTrue}
 							></Poster>
 						);
@@ -50,4 +53,4 @@ const MovieList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 		</>
 	);
 };
-export default MovieList;
+export default Recommendation;

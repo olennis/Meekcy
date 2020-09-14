@@ -164,15 +164,12 @@ const ChatToggle = styled.div`
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000', {
+const socket = io.connect('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000', {
 	query: 'token=' + token,
 });
 export { socket };
 
 const StreamingPage = () => {
-	// 	const a = useParams();
-	//   console.log(a);
-
 	const [videoUrl, setVideoUrl] = useState(null);
 	const [chatState, setChatState] = useState(true);
 	const history = useHistory();
@@ -184,7 +181,7 @@ const StreamingPage = () => {
 
 	useEffect(() => {
 		axios
-			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
+			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

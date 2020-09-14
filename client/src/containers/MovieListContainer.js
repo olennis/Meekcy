@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MovieList from '../components/MovieList';
-import FavoriteList from '../components/FavoriteList';
+import NowPlaying from '../components/NowPlaying';
+import Recommendation from '../components/Recommendation';
 import EndTimeList from '../components/EndTimeList';
 import { useSelector, useDispatch } from 'react-redux';
 import { SETDETAIL } from '../modules/actions/changeDetaildata';
@@ -25,14 +25,15 @@ const MovieListContainer = () => {
 	const [Endmovie, setEndmovie] = useState(null);
 	useEffect(() => {
 		axios
-			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos/watched', {
+			.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videos/watched', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
 			})
 			.then((res) => {
-				// console.log('res', res);
-				setEndmovie(res.data);
+				if (res.data.length > 0) {
+					setEndmovie(res.data);
+				}
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -51,13 +52,13 @@ const MovieListContainer = () => {
 			) : (
 				<></>
 			)}
-			<FavoriteList
+			<Recommendation
 				storeState={storeState}
 				setDetailAction={(e) => dispatch({ type: SETDETAIL, data: e })}
 				changeModalTrue={() => dispatch({ type: CHANGETRUE })}
 				changeModalFalse={() => dispatch({ type: CHANGEFALSE })}
 			/>
-			<MovieList
+			<NowPlaying
 				storeState={storeState}
 				setDetailAction={(e) => dispatch({ type: SETDETAIL, data: e })}
 				changeModalTrue={() => dispatch({ type: CHANGETRUE })}

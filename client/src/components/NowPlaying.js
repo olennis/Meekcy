@@ -1,49 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import Poster from './Poster';
+import { moviesApi } from '../containers/moviesApi';
 import Section from './Section';
 import NewModal from './Modal';
 import styled from 'styled-components';
-import axios from 'axios';
 
 const Container = styled.div`
-	padding: 15px;
+	padding-left: 15px;
+	padding-top: 20px;
 	@media (max-width: 667px) {
 		padding-left: 30px;
 	}
 `;
-const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
+const NowPlaying = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
+
 	useEffect(() => {
-		axios
-			.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/videos', {
-				headers: {
-					Authorization: 'Bearer ' + localStorage.getItem('token'),
-				},
-			})
-			.then((res) => setMovie(res))
-			.catch((err) => console.log(err));
+		moviesApi.nowPlaying().then((response) => {
+			setMovie(response);
+		});
 	}, []);
 
 	return (
 		<>
 			<NewModal changeModalFalse={changeModalFalse}></NewModal>
 			<Container>
-				<Section title="Recommendation">
-					{movie?.data.map((movie, index) => {
-						let favoriteMovie = {
+				<Section title="Now Playing">
+					{movie?.data.results.map((movie, index) => {
+						let listMovie = {
 							id: movie.id,
-							poster_path: movie.thumbnail,
-							original_title: movie.title,
-							release_date: movie.releaseDay,
+							poster_path: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+							original_title: movie.original_title,
+							release_date: movie.release_date,
 							runningTime: movie.runningTime,
-							overview: movie.detail,
-							video: movie.url,
+							vote_average: `${movie.vote_average} /10`,
+							overview: movie.overview,
 						};
 						return (
 							<Poster
 								setDetailAction={setDetailAction}
 								key={index}
-								movie={favoriteMovie}
+								movie={listMovie}
 								changeModalTrue={changeModalTrue}
 							></Poster>
 						);
@@ -53,4 +50,4 @@ const FavoriteList = ({ setDetailAction, changeModalTrue, changeModalFalse }) =>
 		</>
 	);
 };
-export default FavoriteList;
+export default NowPlaying;

@@ -174,7 +174,7 @@ const StreamingPage = () => {
 	const history = useHistory();
 	const goToBack = () => {
 		history.push(`/`);
-		history.go(0);
+		// history.go(0);
 	};
 	const roomName = history.location.pathname.substring(7);
 
@@ -194,7 +194,6 @@ const StreamingPage = () => {
 		let LoginChecking = localStorage.getItem('token');
 		if (!LoginChecking) {
 			history.push(`/`);
-			history.go(0);
 		}
 	}, []);
 

@@ -65,12 +65,11 @@ const Video = ({ videoUrl }) => {
 		});
 	}, []);
 	useEffect(() => {
-		window.onunload = function () {
-			//socket.emit('sendLastVideoCurrnetTime', { currentTime: 12 });
-			//var player = videojs(videoTag.current);
-			var player = videojs(videoPlayerRef.current);
-			let currentTime = player.currentTime();
-		};
+		window.addEventListener('beforeunload', (e) => {
+			e.preventDefault();
+			console.log('beforeunload');
+			window.alert('beforeunload');
+		});
 	}, []);
 	return (
 		<Container>

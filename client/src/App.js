@@ -29,7 +29,7 @@ function App() {
 					) : (
 						<Route path="/" exact component={Login}></Route>
 					)}
-					<Route path={`/rooms/:roomName`} component={StreamingPage}></Route>
+					<Route path={`/rooms/:roomName`} exact component={StreamingPage}></Route>
 				</Switch>
 			</Router>
 			<GlobalStyles />

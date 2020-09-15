@@ -136,14 +136,6 @@ const NewModal = ({ changeModalFalse }) => {
 
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
-	// themoviedb api 영상불러오기
-	const [youtube, setYoutube] = useState(null);
-	useEffect(() => {
-		moviesApi.youtubeVideo(storeState.id).then((response) => {
-			setYoutube(`https://youtu.be/${response.data.results[0].key}`);
-		});
-	}, []);
-
 	return (
 		<>
 			{modalState === true ? (

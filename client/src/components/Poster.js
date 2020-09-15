@@ -40,14 +40,8 @@ const Container = styled.div`
 	font-size: 12px;
 `;
 const EndBarWrap = styled.div``;
-const EndBarRed = styled.div`
-	background-color: #900c3f;
-	height: 5px;
-	width: ${(props) => props.EndPoint || '1px'};
-	border-radius: 5px;
-	position: fixed;
-`;
-const EndBar = styled.div`
+
+const EndBar = styled.progress`
 	width: 125px;
 	height: 5px;
 	border-radius: 5px;
@@ -56,8 +50,7 @@ const EndBar = styled.div`
 `;
 
 const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
-	let EndPoint = `${125 * (movie.endTime / movie.runningTime)}px`;
-
+	console.log(movie.endTime);
 	return (
 		<div>
 			<span
@@ -78,8 +71,7 @@ const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
 					</ImageContainer>
 					{movie.endTime ? (
 						<EndBarWrap>
-							<EndBarRed EndPoint={EndPoint}></EndBarRed>
-							<EndBar></EndBar>
+							<EndBar value={movie.endTime} max={movie.runningTime}></EndBar>
 						</EndBarWrap>
 					) : (
 						<></>

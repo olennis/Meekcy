@@ -40,6 +40,7 @@ const ChattingContainer = () => {
 	//avatar change socket.io 통신
 	useEffect(() => {
 		socket.on('receiveChangeAvatar', (value) => {
+			console.log(value);
 			setMessages((oldMsgs) => {
 				const chagedMsg = oldMsgs.map((element) => {
 					if (element.value.id === value.userId) {
@@ -57,10 +58,10 @@ const ChattingContainer = () => {
 		socket.emit('joinRoom', { roomName });
 		console.log('client room join');
 
-		// socket.on('overlapUser', () => {
-		// 	console.log('this is ....');
-		// 	//socket.disconnect();
-		// });
+		socket.on('overlapUser', () => {
+			console.log('this is ....');
+			//socket.disconnect();
+		});
 	}, []);
 	useEffect(() => {
 		socket.on('receiveParticipants', (value) => {
@@ -111,7 +112,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://localhost:4000/user/profile',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -146,6 +147,7 @@ const ChattingContainer = () => {
 		}
 		document.body.removeChild(tempTextArea);
 	}
+
 	return (
 		<Chatting
 			sendMessageEnterEvent={sendMessageEnterEvent}

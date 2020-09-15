@@ -53,6 +53,7 @@ const ChatChatpgMessage = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 5px 0px 5px 10px;
+	word-break: break-word;
 	@media (min-width: 376px) and (max-width: 667px) {
 		overflow: auto;
 		overflow-x: hidden;
@@ -145,7 +146,6 @@ const Chatting = ({
 			</ChatHeader>
 			<ChatChatpg id="chatpg" ref={chatPg}>
 				{chatList.map(({ value }, index) => {
-					console.log(value);
 					return (
 						<ChatChatpgMessage key={index}>
 							<MessageProfile src={value.avatar}></MessageProfile>

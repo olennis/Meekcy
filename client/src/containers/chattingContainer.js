@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
-import { socket } from '../pages/StreamingPage';
+//import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 
-const ChattingContainer = () => {
+const ChattingContainer = ({ socket }) => {
 	/**
 	 * state hook style
 	 * avatarPopover : 아바타 설정 popup창 visible상태
@@ -29,6 +29,7 @@ const ChattingContainer = () => {
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
+			console.log(value);
 			//scroll
 			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
@@ -56,11 +57,6 @@ const ChattingContainer = () => {
 
 		socket.emit('joinRoom', { roomName });
 		console.log('client room join');
-
-		// socket.on('overlapUser', () => {
-		// 	console.log('this is ....');
-		// 	//socket.disconnect();
-		// });
 	}, []);
 	useEffect(() => {
 		socket.on('receiveParticipants', (value) => {
@@ -111,7 +107,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://localhost:4000/user/profile',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},

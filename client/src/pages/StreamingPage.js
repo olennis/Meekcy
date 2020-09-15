@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
@@ -11,6 +11,8 @@ import { faArrowLeft, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faComments as faCommentsRegular } from '@fortawesome/free-regular-svg-icons';
 import { faComments as faCommentsSolid } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import videojs from 'video.js';
+import { useSelector } from 'react-redux';
 library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
@@ -163,21 +165,50 @@ const ChatToggle = styled.div`
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000', {
-	query: 'token=' + token,
-});
-export { socket };
-
 const StreamingPage = () => {
 	const [videoUrl, setVideoUrl] = useState(null);
 	const [chatState, setChatState] = useState(true);
 	const history = useHistory();
-	const goToBack = () => {
+	const [socketIo, setSocketIO] = useState();
+	const videoPlayerRef = useRef(null);
+	const storeState = useSelector((state) => state.changeDetaildata, []);
+
+	const goToBack = async () => {
+		socketIo.disconnect();
+		const player = videojs(videoPlayerRef.current);
+		const currentTime = player.currentTime();
+
+		await axios.post(
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
+			{
+				video_id: storeState.id,
+				endTime: currentTime,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
 		history.push(`/`);
-		history.go(0);
 	};
 	const roomName = history.location.pathname.substring(7);
 
+	useEffect(() => {
+		let socketIO = io.connect(
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000',
+			{
+				query: 'token=' + token,
+			},
+		);
+
+		setSocketIO(socketIO);
+		socketIO.on('overlapUser', (value) => {
+			console.log('this is ....', value);
+			history.push(`/warn`);
+			history.go(0);
+		});
+	}, []);
 	useEffect(() => {
 		axios
 			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
@@ -194,9 +225,10 @@ const StreamingPage = () => {
 		let LoginChecking = localStorage.getItem('token');
 		if (!LoginChecking) {
 			history.push(`/`);
-			history.go(0);
 		}
 	}, []);
+
+	useEffect(() => {});
 
 	return (
 		<Container>
@@ -223,11 +255,11 @@ const StreamingPage = () => {
 								)}
 							</ChatToggle>
 						</VideoIcon>
-						<Video videoUrl={videoUrl}></Video>
+						<Video videoUrl={videoUrl} videoPlayerRef={videoPlayerRef}></Video>
 					</VideoWrap>
 
 					<ChatWrqp ChatToggleState={chatState}>
-						<Chat socket={socket}></Chat>
+						<Chat socket={socketIo}></Chat>
 					</ChatWrqp>
 				</>
 			) : (

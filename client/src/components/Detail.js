@@ -33,7 +33,7 @@ const Close = styled.div`
 `;
 
 const DescriptionWrap = styled.div`
-	width: 25%;
+	width: 40%;
 	padding: 20px 0px;
 
 	@media (max-width: 375px) {
@@ -41,11 +41,13 @@ const DescriptionWrap = styled.div`
 		top: 400px;
 		left: 0;
 		width: 100vw;
+		height: 100vh;
 		padding: 10px;
+		min-width: 20%;
 	}
-	@media (min-width: 376px) and (max-width: 667px) {
+	@media (max-width: 700px) {
 		position: fixed;
-		top: 55px;
+		top: 20%;
 		left: 0;
 		width: 45vw;
 		padding-left: 10px;
@@ -64,9 +66,16 @@ const Video = styled.video`
 	position: absolute;
 	top: 70px;
 	right: 60px;
-	@media (min-width: 376px) and (max-width: 667px) {
+	@media (max-width: 667px) {
 		position: absolute;
-		top: 65px;
+		top: 90%;
+		right: 0px;
+		height: 30vh;
+		width: 90vw;
+	}
+	@media (max-width: 375px) {
+		position: absolute;
+		top: 0px;
 		right: 0px;
 		height: 50vh;
 	}

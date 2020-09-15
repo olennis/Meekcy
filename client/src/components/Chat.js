@@ -3,47 +3,64 @@ import styled from 'styled-components';
 import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+
 const Chat = styled.div`
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
-	padding: 14px 18.5px;
-	padding-left: 10px;
-	padding-right: 10px;
 `;
 const ChatHeader = styled.div`
+	width: 100%;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
-`;
-const ChatHeaderLink = styled.button`
-	border: none;
-	background-position: center center;
-
-	height: 32px;
-	width: 32px;
+	background-color: #333333;
+	line-height: 1.8;
 `;
 const ChatHeaderTitle = styled.span`
-	flex: 1;
+	@media (min-width: 376px) and (max-width: 667px) {
+		display: none;
+	}
 `;
-const ChatHeaderProfile = styled(Popover)``;
+const HeaderLeftWrap = styled.div`
+	display: flex;
+	font-size: 14px;
+`;
+const Participant = styled.div`
+	@media (min-width: 376px) and (max-width: 667px) {
+		display: none;
+	}
+`;
+const ClipWrap = styled.div`
+	cursor: pointer;
+	padding: 0px 15px 0px 20px;
+`;
+const ChatHeaderProfile = styled(Popover)`
+	margin-right: 20px;
+`;
 const ChatHeaderProfileButton = styled(Avatar)`
-	height: 38px;
-	width: 38px;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
 `;
 const ChatChatpg = styled.div`
 	flex: 1;
 	overflow: scroll;
+	padding: 10px 0px;
 `;
 const ChatChatpgMessage = styled.div`
 	display: flex;
 	align-items: center;
-	padding-left: 10px;
+	padding: 5px 0px 5px 10px;
+	@media (min-width: 376px) and (max-width: 667px) {
+		overflow: auto;
+		overflow-x: hidden;
+	}
 `;
 const MessageProfile = styled(Avatar)`
-	width: 52px;
-	height: 47px;
+	min-width: 30px;
+	min-height: 30px;
 `;
 const MessageText = styled.div`
 	width: 100%;
@@ -51,23 +68,35 @@ const MessageText = styled.div`
 	padding-left: 5px;
 `;
 const MessageTextName = styled.div``;
-const MessageTextExplain = styled.div``;
+const MessageTextExplain = styled.div`
+	width: 100%;
+`;
+const MessageTextChating = styled.div`
+	font-size: 14px;
+`;
+const MessageTextCaption = styled.div`
+	font-size: 12px;
+	color: gray;
+`;
 const ChatForm = styled.form``;
 const ChatFormInput = styled.input`
 	border-left-width: 0;
 	border-right-width: 0;
 	border-top-width: 0;
 	border-bottom-width: 1;
-	background-color: rgba(20, 20, 20, 1);
-	font-size: 15px;
+	background-color: #333333;
+	font-size: 18px;
 	border-bottom: 1.2px solid;
-	width: 100vw;
-
+	width: 100%;
+	height: 4vh;
+	padding: 3px 5px 3px 10px;
 	&:focus {
 		outline: none;
 	}
+	@media (min-width: 376px) and (max-width: 667px) {
+		font-size: 13px;
+	}
 `;
-
 const Chatting = ({
 	sendMessageEnterEvent,
 	chatList,
@@ -84,8 +113,17 @@ const Chatting = ({
 	return (
 		<Chat>
 			<ChatHeader>
-				<ChatHeaderTitle>Meekcy Party 참여자 수 : {participats}</ChatHeaderTitle>
-				<FontAwesomeIcon icon={faPaperclip} size={'1x'} onClick={copyLinkClickEvent} />
+				<HeaderLeftWrap>
+					<ClipWrap onClick={copyLinkClickEvent}>
+						<FontAwesomeIcon icon={faPaperclip} size={'1x'} />
+					</ClipWrap>
+					<Participant>
+						<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+						{participats}
+					</Participant>
+				</HeaderLeftWrap>
+				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
+
 				<ChatHeaderProfile
 					content={avatars.map((value, index) => {
 						return (
@@ -102,23 +140,23 @@ const Chatting = ({
 					title="Avatar"
 					trigger="click"
 				>
-					<ChatHeaderProfileButton
-						size="100"
-						src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/avatar/1.jpg"
-						type="primary"
-						onClick={popoverAvatarClickEvent}
-					></ChatHeaderProfileButton>
+					<FontAwesomeIcon icon={faUserCircle} onClick={popoverAvatarClickEvent}></FontAwesomeIcon>
 				</ChatHeaderProfile>
 			</ChatHeader>
 			<ChatChatpg id="chatpg" ref={chatPg}>
 				{chatList.map(({ value }, index) => {
+					console.log(value);
 					return (
 						<ChatChatpgMessage key={index}>
 							<MessageProfile src={value.avatar}></MessageProfile>
 							<MessageText>
-								<MessageTextName></MessageTextName>
+								<MessageTextName>{value.username}</MessageTextName>
 								<MessageTextExplain>
-									{value.message ? value.message : value.caption}
+									{value.message ? (
+										<MessageTextChating>{value.message}</MessageTextChating>
+									) : (
+										<MessageTextCaption>{value.caption}</MessageTextCaption>
+									)}
 								</MessageTextExplain>
 							</MessageText>
 						</ChatChatpgMessage>
@@ -137,5 +175,4 @@ const Chatting = ({
 		</Chat>
 	);
 };
-
 export default Chatting;

@@ -27,7 +27,8 @@ const Video = ({ videoUrl }) => {
 		aspectRatio: '16:9',
 		sources: [
 			{
-				src: `${videoUrl.url}`,
+				// src: `${videoUrl.url}`,
+				src: 'https://meekcyvideo.s3.ap-northeast-2.amazonaws.com/s3/video/avengers/master.m3u8',
 				type: 'application/x-mpegurl',
 			},
 		],

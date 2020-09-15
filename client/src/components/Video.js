@@ -74,7 +74,7 @@ const Video = ({ videoUrl, videoPlayerRef }) => {
 			console.log(currentTime);
 
 			await axios.post(
-				'http://localhost:4000/videoHistory',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 				{
 					video_id: storeState.id,
 					endTime: currentTime,
@@ -86,26 +86,6 @@ const Video = ({ videoUrl, videoPlayerRef }) => {
 				},
 			);
 		});
-		// window.onunload = function () {
-		// 	//socket.emit('sendLastVideoCurrnetTime', { currentTime: 12 });
-		// 	//var player = videojs(videoTag.current);
-		// 	debugger;
-		// 	const token = localStorage.getItem('token');
-		// 	// let player = videojs(videoPlayerRef.current);
-		// 	// let currentTime = player.currentTime();
-		// 	axios.post(
-		// 		'http://localhost:4000/videoHistory',
-		// 		{
-		// 			video_id: 1,
-		// 			endTime: 3,
-		// 		},
-		// 		{
-		// 			headers: {
-		// 				Authorization: `Bearer ${token}`,
-		// 			},
-		// 		},
-		// 	);
-		// };
 	}, []);
 	return (
 		<Container>

@@ -24,8 +24,10 @@ const MovieListContainer = () => {
 
 	const [Endmovie, setEndmovie] = useState(null);
 	useEffect(() => {
+		console.log('시청목록요청');
+
 		axios
-			.get('http://localhost:4000/videos/watched', {
+			.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videos/watched', {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},

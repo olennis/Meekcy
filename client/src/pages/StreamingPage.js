@@ -174,14 +174,12 @@ const StreamingPage = () => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 
 	const goToBack = async () => {
-		history.push(`/`);
-		//history.go(0);
 		socketIo.disconnect();
 		const player = videojs(videoPlayerRef.current);
 		const currentTime = player.currentTime();
-		console.log(currentTime);
+
 		await axios.post(
-			'http://localhost:4000/videoHistory',
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 			{
 				video_id: storeState.id,
 				endTime: currentTime,
@@ -192,25 +190,28 @@ const StreamingPage = () => {
 				},
 			},
 		);
+		history.push(`/`);
 	};
 	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {
-		let socketIO = io.connect('http://localhost:4000', {
-			query: 'token=' + token,
-		});
+		let socketIO = io.connect(
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000',
+			{
+				query: 'token=' + token,
+			},
+		);
 
 		setSocketIO(socketIO);
 		socketIO.on('overlapUser', (value) => {
 			console.log('this is ....', value);
 			history.push(`/warn`);
 			history.go(0);
-			//socket.disconnect();
 		});
 	}, []);
 	useEffect(() => {
 		axios
-			.get(`http://localhost:4000/rooms/${roomName}`, {
+			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
@@ -224,7 +225,6 @@ const StreamingPage = () => {
 		let LoginChecking = localStorage.getItem('token');
 		if (!LoginChecking) {
 			history.push(`/`);
-			//history.go(0);
 		}
 	}, []);
 

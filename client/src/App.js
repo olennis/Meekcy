@@ -6,7 +6,7 @@ import ListPage from './pages/ListPage';
 import Login from './pages/LoginPage';
 import StreamingPage from './pages/StreamingPage';
 // import Loading from './components/Loading';
-// import Warning from './components/Warning';
+import Warning from './components/Warning';
 import GlobalStyles from './components/GlobalStyles';
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
 						<Route path="/" exact component={Login}></Route>
 					)}
 					<Route path={`/rooms/:roomName`} component={StreamingPage}></Route>
+					<Route path={`/warn`} component={Warning}></Route>
 				</Switch>
 			</Router>
 			<GlobalStyles />

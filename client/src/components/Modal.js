@@ -109,7 +109,7 @@ const NewModal = ({ changeModalFalse }) => {
 
 		axios
 			.post(
-				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms',
+				'http://localhost:4000/rooms',
 				{
 					video_id: storeState.id,
 					end_time: 0,
@@ -137,12 +137,6 @@ const NewModal = ({ changeModalFalse }) => {
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
 	// themoviedb api 영상불러오기
-	const [youtube, setYoutube] = useState(null);
-	useEffect(() => {
-		moviesApi.youtubeVideo(storeState.id).then((response) => {
-			setYoutube(`https://youtu.be/${response.data.results[0].key}`);
-		});
-	}, []);
 
 	return (
 		<>

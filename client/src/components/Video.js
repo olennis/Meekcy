@@ -11,15 +11,16 @@ import '@silvermine/videojs-quality-selector';
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import { socket } from '../pages/StreamingPage';
+import axios from 'axios';
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
 `;
 
-const Video = ({ videoUrl }) => {
+const Video = ({ videoUrl, videoPlayerRef }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
-	const videoPlayerRef = useRef(null);
+
 	const options = {
 		fluid: true,
 		controls: true,
@@ -65,12 +66,45 @@ const Video = ({ videoUrl }) => {
 		});
 	}, []);
 	useEffect(() => {
-		window.onunload = function () {
-			//socket.emit('sendLastVideoCurrnetTime', { currentTime: 12 });
-			//var player = videojs(videoTag.current);
-			var player = videojs(videoPlayerRef.current);
-			let currentTime = player.currentTime();
-		};
+		window.addEventListener('beforeunload', async function () {
+			const token = localStorage.getItem('token');
+			const player = videojs(videoPlayerRef.current);
+			const currentTime = player.currentTime();
+			console.log(currentTime);
+
+			await axios.post(
+				'http://localhost:4000/videoHistory',
+				{
+					video_id: storeState.id,
+					endTime: currentTime,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		});
+		// window.onunload = function () {
+		// 	//socket.emit('sendLastVideoCurrnetTime', { currentTime: 12 });
+		// 	//var player = videojs(videoTag.current);
+		// 	debugger;
+		// 	const token = localStorage.getItem('token');
+		// 	// let player = videojs(videoPlayerRef.current);
+		// 	// let currentTime = player.currentTime();
+		// 	axios.post(
+		// 		'http://localhost:4000/videoHistory',
+		// 		{
+		// 			video_id: 1,
+		// 			endTime: 3,
+		// 		},
+		// 		{
+		// 			headers: {
+		// 				Authorization: `Bearer ${token}`,
+		// 			},
+		// 		},
+		// 	);
+		// };
 	}, []);
 	return (
 		<Container>

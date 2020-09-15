@@ -24,5 +24,5 @@ export const moviesApi = {
 				query: encodeURIComponent(term),
 			},
 		}),
-	youtubeVideo: (id) => api.get(`/movie/${id}/videos`),
+	//youtubeVideo: (id) => api.get(`/movie/${id}/videos`),
 };

@@ -112,7 +112,6 @@ const ChatWrqp = styled.div`
 	width: 20%;
 	height: 100vh;
 	font-size: 20px;
-	background-color: red;
 
 	${(props) => {
 		if (props.ChatToggleState) {

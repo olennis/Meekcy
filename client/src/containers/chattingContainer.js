@@ -17,7 +17,7 @@ const ChattingContainer = ({ socket }) => {
 	const [message, setMessage] = useState('');
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
-	const [participats, setParticipant] = useState(0);
+	const [participant, setParticipant] = useState(0);
 
 	const chatPg = useRef(null);
 	const chatInput = useRef(null);
@@ -154,7 +154,7 @@ const ChattingContainer = ({ socket }) => {
 			myinfo={myinfo}
 			chatPg={chatPg}
 			chatInput={chatInput}
-			participats={participats}
+			participant={participant}
 		/>
 	);
 };

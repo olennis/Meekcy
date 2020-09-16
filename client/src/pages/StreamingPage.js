@@ -24,12 +24,12 @@ const Container = styled.div`
 		display: grid;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* @media (min-width: 376px) and (max-width: 667px) {
 		display: flex;
-	}
+	} */
 
-	@media (min-width: 668px) and (max-width: 960px) {
-		display: grid;
+	@media (max-width: 823px) and (max-height: 540px) {
+		display: flex;
 	}
 `;
 
@@ -70,7 +70,7 @@ const VideoWrap = styled.div`
 		}}
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 80%;
 		height: 100vh;
 		${(props) => {
@@ -89,13 +89,13 @@ const VideoWrap = styled.div`
 		}}
 	}
 
-	@media (min-width: 668px) and (max-width: 960px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 100%;
-		height: 65vh;
+		height: 100vh;
 		${(props) => {
 			if (props.ChatToggleState) {
 				return css`
-					height: 65vh;
+					height: 100vh;
 					transition: height 0.3s;
 				`;
 			} else {
@@ -130,14 +130,14 @@ const ChatWrqp = styled.div`
 		height: 35vh;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* @media (min-width: 376px) and (max-width: 667px) {
 		width: 20%;
 		height: 100vh;
-	}
+	} */
 
-	@media (min-width: 668px) and (max-width: 960px) {
-		width: 100%;
-		height: 35vh;
+	@media (max-width: 823px) and (max-height: 540px) {
+		width: 30%;
+		height: 100vh;
 	}
 `;
 
@@ -155,12 +155,26 @@ const BackBtn = styled.div`
 	padding: 5px;
 	padding-left: 25px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+		/* opacity: 0.4; */
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const ChatToggle = styled.div`
 	padding: 5px;
 	padding-right: 20px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+		/* opacity: 0.4; */
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const token = localStorage.getItem('token');

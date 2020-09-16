@@ -7,8 +7,9 @@ import axios from 'axios';
 
 const Container = styled.div`
 	padding: 15px;
-	@media (max-width: 667px) {
-		padding-left: 30px;
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		text-align: center;
 	}
 `;
 const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {

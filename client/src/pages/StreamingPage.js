@@ -174,22 +174,24 @@ const StreamingPage = () => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 
 	const goToBack = async () => {
-		socketIo.disconnect();
-		const player = videojs(videoPlayerRef.current);
-		const currentTime = player.currentTime();
-
-		await axios.post(
-			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
-			{
-				video_id: storeState.id,
-				endTime: currentTime,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
+		try {
+			socketIo.disconnect();
+			const player = videojs(videoPlayerRef.current);
+			const currentTime = player.currentTime();
+			await axios.post(
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
+				{
+					video_id: storeState.id,
+					endTime: currentTime,
 				},
-			},
-		);
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		} catch (error) {}
+
 		history.push(`/`);
 	};
 	const roomName = history.location.pathname.substring(7);
@@ -204,13 +206,10 @@ const StreamingPage = () => {
 
 		setSocketIO(socketIO);
 		socketIO.on('overlapUser', (value) => {
+			socketIO.disconnect();
 			console.log('this is ....', value);
 			history.push(`/warn`);
-			history.go(0);
 		});
-	}, []);
-
-	useEffect(() => {
 		axios
 			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
@@ -221,8 +220,11 @@ const StreamingPage = () => {
 
 			.catch((err) => {
 				console.log(err);
+				socketIO.disconnect();
+				history.push('/');
 			});
 	}, []);
+	useEffect(() => {}, []);
 
 	useEffect(() => {
 		let LoginChecking = localStorage.getItem('token');
@@ -256,7 +258,12 @@ const StreamingPage = () => {
 								)}
 							</ChatToggle>
 						</VideoIcon>
-						<Video videoUrl={videoUrl} videoPlayerRef={videoPlayerRef} socket={socketIo}></Video>
+						<Video
+							videoUrl={videoUrl}
+							videoPlayerRef={videoPlayerRef}
+							socket={socketIo}
+							history={history}
+						></Video>
 					</VideoWrap>
 
 					<ChatWrqp ChatToggleState={chatState}>

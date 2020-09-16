@@ -109,7 +109,7 @@ const Chatting = ({
 	myinfo,
 	chatPg,
 	chatInput,
-	participats,
+	participant,
 }) => {
 	return (
 		<Chat>
@@ -120,7 +120,7 @@ const Chatting = ({
 					</ClipWrap>
 					<Participant>
 						<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-						{participats}
+						{` ${participant}`}
 					</Participant>
 				</HeaderLeftWrap>
 				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
@@ -150,7 +150,7 @@ const Chatting = ({
 						<ChatChatpgMessage key={index}>
 							<MessageProfile src={value.avatar}></MessageProfile>
 							<MessageText>
-								<MessageTextName>{value.username}</MessageTextName>
+								<MessageTextName>{value.nickname}</MessageTextName>
 								<MessageTextExplain>
 									{value.message ? (
 										<MessageTextChating>{value.message}</MessageTextChating>

@@ -40,17 +40,30 @@ const Container = styled.div`
 	font-size: 12px;
 `;
 const EndBarWrap = styled.div``;
-
 const EndBar = styled.progress`
+	display: block;
 	width: 125px;
-	height: 5px;
+	height: 8px;
+	padding: 1px;
+	border: 0 none;
 	border-radius: 5px;
-	background-color: gray;
 	margin-bottom: 5px;
+	background-color: gray;
+	border: none;
+	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+	&::-moz-progress-bar {
+		background-color: #900c3f;
+		border-radius: 5px;
+		box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.4), 0 2px 5px 0px rgba(0, 0, 0, 0.3);
+	}
+	&::-webkit-progress-value {
+		background-color: #900c3f;
+		border-radius: 4px;
+		box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.4), 0 2px 5px 0px rgba(0, 0, 0, 0.3);
+	}
 `;
 
 const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
-	console.log(movie.endTime);
 	return (
 		<div>
 			<span
@@ -69,7 +82,7 @@ const Poster = ({ changeModalTrue, movie, setDetailAction }) => {
 							{movie.vote_average}
 						</Rating>
 					</ImageContainer>
-					{movie.endTime ? (
+					{movie.endTime >= 0 ? (
 						<EndBarWrap>
 							<EndBar value={movie.endTime} max={movie.runningTime}></EndBar>
 						</EndBarWrap>

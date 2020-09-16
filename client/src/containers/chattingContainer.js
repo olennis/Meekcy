@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
-import { socket } from '../pages/StreamingPage';
+//import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 
-const ChattingContainer = () => {
+const ChattingContainer = ({ socket }) => {
 	/**
 	 * state hook style
 	 * avatarPopover : 아바타 설정 popup창 visible상태
@@ -17,7 +17,7 @@ const ChattingContainer = () => {
 	const [message, setMessage] = useState('');
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
-	const [participats, setParticipant] = useState(0);
+	const [participant, setParticipant] = useState(0);
 
 	const chatPg = useRef(null);
 	const chatInput = useRef(null);
@@ -29,6 +29,7 @@ const ChattingContainer = () => {
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
+			console.log(value);
 			//scroll
 			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
@@ -56,12 +57,6 @@ const ChattingContainer = () => {
 		// streaming page component에서 room정보를 받아 chatting componet에 준다. 받은정보를 이용해 서버의 room 정보를 준다.
 
 		socket.emit('joinRoom', { roomName });
-		console.log('client room join');
-
-		socket.on('overlapUser', () => {
-			console.log('this is ....');
-			//socket.disconnect();
-		});
 	}, []);
 	useEffect(() => {
 		socket.on('receiveParticipants', (value) => {
@@ -160,7 +155,7 @@ const ChattingContainer = () => {
 			myinfo={myinfo}
 			chatPg={chatPg}
 			chatInput={chatInput}
-			participats={participats}
+			participant={participant}
 		/>
 	);
 };

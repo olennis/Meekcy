@@ -38,6 +38,7 @@ const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) 
 							runningTime: movie.runningTime,
 							overview: movie.detail,
 							video: movie.url,
+							trailer: movie.trailer,
 						};
 						return (
 							<Poster

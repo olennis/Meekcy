@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+
 const Chat = styled.div`
 	height: 100%;
 	display: flex;
@@ -17,12 +18,20 @@ const ChatHeader = styled.div`
 	background-color: #333333;
 	line-height: 1.8;
 `;
-const ChatHeaderTitle = styled.span``;
+const ChatHeaderTitle = styled.span`
+	@media (min-width: 376px) and (max-width: 667px) {
+		display: none;
+	}
+`;
 const HeaderLeftWrap = styled.div`
 	display: flex;
 	font-size: 14px;
 `;
-const Participant = styled.div``;
+const Participant = styled.div`
+	@media (min-width: 376px) and (max-width: 667px) {
+		display: none;
+	}
+`;
 const ClipWrap = styled.div`
 	cursor: pointer;
 	padding: 0px 15px 0px 20px;
@@ -44,6 +53,11 @@ const ChatChatpgMessage = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 5px 0px 5px 10px;
+	word-break: break-word;
+	@media (min-width: 376px) and (max-width: 667px) {
+		overflow: auto;
+		overflow-x: hidden;
+	}
 `;
 const MessageProfile = styled(Avatar)`
 	min-width: 30px;
@@ -54,16 +68,12 @@ const MessageText = styled.div`
 	box-sizing: border-box;
 	padding-left: 5px;
 `;
-const MessageTextName = styled.div`
-	font-size: 14px;
-	padding-bottom: 2px;
-`;
+const MessageTextName = styled.div``;
 const MessageTextExplain = styled.div`
 	width: 100%;
 `;
 const MessageTextChating = styled.div`
 	font-size: 14px;
-	color: #c4c4c4;
 `;
 const MessageTextCaption = styled.div`
 	font-size: 12px;
@@ -84,8 +94,10 @@ const ChatFormInput = styled.input`
 	&:focus {
 		outline: none;
 	}
+	@media (min-width: 376px) and (max-width: 667px) {
+		font-size: 13px;
+	}
 `;
-
 const Chatting = ({
 	sendMessageEnterEvent,
 	chatList,
@@ -128,12 +140,7 @@ const Chatting = ({
 					title="Avatar"
 					trigger="click"
 				>
-					<ChatHeaderProfileButton
-						size="100"
-						src="https://meekcy2.s3.ap-northeast-2.amazonaws.com/avatar/1.jpg"
-						type="primary"
-						onClick={popoverAvatarClickEvent}
-					></ChatHeaderProfileButton>
+					<FontAwesomeIcon icon={faUserCircle} onClick={popoverAvatarClickEvent}></FontAwesomeIcon>
 				</ChatHeaderProfile>
 			</ChatHeader>
 			<ChatChatpg id="chatpg" ref={chatPg}>
@@ -167,5 +174,4 @@ const Chatting = ({
 		</Chat>
 	);
 };
-
 export default Chatting;

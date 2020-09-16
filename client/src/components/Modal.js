@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { moviesApi } from '../containers/moviesApi';
@@ -136,6 +136,9 @@ const NewModal = ({ changeModalFalse }) => {
 
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
+	// themoviedb api 영상불러오기
+	let trailer = storeState.trailer || 'https://www.youtube.com';
+
 	return (
 		<>
 			{modalState === true ? (
@@ -148,7 +151,9 @@ const NewModal = ({ changeModalFalse }) => {
 								<FontAwesomeIcon icon={faPlay} />
 								{`  PLAY`}
 							</PlayBtn>
-							<PreviewBtn>예고편</PreviewBtn>
+							<a href={trailer} target="_blank">
+								<PreviewBtn>예고편</PreviewBtn>
+							</a>
 						</BGIMG>
 					</ModalContent>
 				</TrueContainer>

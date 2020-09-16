@@ -20,7 +20,6 @@ const Container = styled.div`
 const Video = ({ videoUrl, videoPlayerRef, socket }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
-
 	const options = {
 		fluid: true,
 		controls: true,

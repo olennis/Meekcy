@@ -11,7 +11,8 @@ import axios from 'axios';
 const Container = styled.div`
 	padding-bottom: 20px;
 
-	@media (max-width: 667px) {
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
 		text-align: center;
 		padding-left: 20px;
 		padding-bottom: 20px;

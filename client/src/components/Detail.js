@@ -4,10 +4,37 @@ import { useSelector } from 'react-redux';
 
 const Container = styled.div`
 	position: relative;
+
+	@media (max-width: 823px) and (max-height: 540px) {
+		width: 100%;
+		grid-area: detail;
+		display: grid;
+		grid-template-areas:
+			'title title'
+			'description video';
+		grid-gap: 10px;
+		grid-template-rows: 10vh 90vh;
+
+		/* background-color: aquamarine; */
+	}
 `;
 
 const ModalHeader = styled.div`
 	display: flex;
+	padding-top: 10px;
+	@media (max-width: 823px) and (max-height: 540px) {
+		grid-area: title;
+		top: 20px;
+		/* background-color: red; */
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		padding: 0;
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding: 10;
+	}
 `;
 
 const Title = styled.div`
@@ -15,8 +42,15 @@ const Title = styled.div`
 	font-size: 50px;
 	padding-bottom: 10px;
 	color: white;
-	@media (max-width: 667px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		font-size: 35px;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		top: 0;
+		left: 0;
+		padding: 0;
+		font-size: 25px;
 	}
 `;
 
@@ -30,27 +64,26 @@ const Close = styled.div`
 		text-decoration: none;
 		cursor: pointer;
 	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		top: 0;
+		left: 0;
+		font-size: 25px;
+	}
 `;
 
 const DescriptionWrap = styled.div`
 	width: 40%;
 	padding: 20px 0px;
 
-	@media (max-width: 375px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		position: fixed;
-		top: 400px;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		padding: 10px;
-		min-width: 20%;
-	}
-	@media (max-width: 700px) {
-		position: fixed;
-		top: 20%;
-		left: 0;
+		top: 25vh;
+		grid-area: description;
+		/* background-color: blue; */
+		overflow: auto;
+		height: 160px;
 		width: 45vw;
-		padding-left: 10px;
 	}
 `;
 
@@ -58,6 +91,24 @@ const Description = styled.div`
 	color: white;
 	font-size: 13px;
 	line-height: 1.8;
+	@media (max-width: 540px) {
+		top: 55vh;
+		position: fixed;
+		left: 0;
+		width: 100vw;
+		padding-bottom: 10px;
+		min-width: 20%;
+		padding: 5%;
+	}
+	@media (max-width: 321px) {
+		position: fixed;
+		top: 56vh;
+		grid-area: description;
+		/* background-color: blue; */
+		overflow: auto;
+		height: 185px;
+		width: 100vw;
+	}
 `;
 const Video = styled.video`
 	width: 50vw;
@@ -66,18 +117,28 @@ const Video = styled.video`
 	position: absolute;
 	top: 70px;
 	right: 60px;
-	@media (max-width: 667px) {
-		position: absolute;
-		top: 90%;
-		right: 0px;
-		height: 30vh;
-		width: 90vw;
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		grid-area: video;
+		/* background-color: pink; */
+		height: 70vh;
+		width: 40vw;
+		top: 8vh;
 	}
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
 		position: absolute;
 		top: 0px;
-		right: 0px;
-		height: 50vh;
+		left: 0.5%;
+		height: 30vh;
+		width: 100%;
+		padding: 2%;
+	}
+	/*태블릿 */
+	@media (max-width: 775px) {
+		right: 15px;
+		height: 40vh;
+		top: 10vh;
 	}
 `;
 

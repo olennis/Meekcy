@@ -8,8 +8,12 @@ import styled from 'styled-components';
 const Container = styled.div`
 	padding-left: 15px;
 	padding-top: 20px;
-	@media (max-width: 667px) {
-		padding-left: 30px;
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-left: 30;
+	}
+	@media (max-width: 540px) {
+		text-align: center;
 	}
 `;
 const NowPlaying = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {

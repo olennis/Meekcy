@@ -10,7 +10,6 @@ import '@silvermine/videojs-quality-selector';
 
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
-import { socket } from '../pages/StreamingPage';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -67,7 +66,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	useEffect(() => {
 		//리액트일때 사용법 찾기
 		//옵션값 넣는 법 찾기
-		const player = videojs(videoPlayerRef.current, options, () => {
+		let player = videojs(videoPlayerRef.current, options, () => {
 			player.on('ended', () => {
 				console.log('ended');
 			});
@@ -84,34 +83,41 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			if (storeState.endTime) {
 				player.currentTime(storeState.endTime);
 			}
-			// player.on('seeking', () => {
-			// 	player.pause();
-			// 	socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
-			// });
 
 			player.controlBar.playToggle.on('click', () => {
-				console.log('playbuttonclickevent');
 				if (player.controlBar.playToggle.controlText_ === 'Play') {
-					console.log('play');
 					socket.emit('sendChangePlay');
 				} else {
-					console.log('pause');
 					socket.emit('sendChangePause');
 				}
 			});
 
 			player.controlBar.progressControl.on('click', () => {
-				console.log(player.currentTime());
-
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
 
 			player.controlBar.progressControl.children_[0].on('click', () => {
-				console.log(player.currentTime());
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
 		});
 	}, []);
+
+	useEffect(() => {
+		const player = videojs(videoPlayerRef.current);
+		socket.on('receiveSeeked', (value) => {
+			let time = player.currentTime();
+			if (time === value.currentTime) {
+				player.currentTime(value.currentTime);
+			}
+		});
+		socket.on('receivePlay', () => {
+			player.play();
+		});
+		socket.on('receivePause', () => {
+			player.pause();
+		});
+	}, []);
+
 	useEffect(() => {
 		window.addEventListener('beforeunload', async function (event) {
 			socket.disconnect();
@@ -132,10 +138,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			);
 		});
-		window.addEventListener('popstate', async () => {
-			console.log('onpopstate');
-			console.log('useEffect Return');
-		});
 
 		return saveVideoHistory;
 	}, []);
@@ -143,18 +145,12 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
-			console.log('receiveSeeked');
-
 			player.currentTime(value.currentTime);
 		});
 		socket.on('receivePlay', () => {
-			console.log('receivePlay');
-
 			player.play();
 		});
 		socket.on('receivePause', () => {
-			console.log('receivePause');
-
 			player.pause();
 		});
 	}, []);
@@ -162,12 +158,9 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	function overClick(e) {
 		const player = videojs(videoPlayerRef.current);
 		if (e.target.className === 'vjs-tech') {
-			console.log('click');
 			if (player.controlBar.playToggle.controlText_ === 'Play') {
-				console.log('play');
 				socket.emit('sendChangePlay');
 			} else {
-				console.log('pause');
 				socket.emit('sendChangePause');
 			}
 		}

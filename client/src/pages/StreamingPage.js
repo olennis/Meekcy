@@ -210,7 +210,6 @@ const StreamingPage = () => {
 			console.log('this is ....', value);
 			history.push(`/warn`);
 		});
-
 		axios
 			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {

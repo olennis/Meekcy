@@ -124,7 +124,6 @@ const Chatting = ({
 					</Participant>
 				</HeaderLeftWrap>
 				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
-
 				<ChatHeaderProfile
 					content={avatars.map((value, index) => {
 						return (

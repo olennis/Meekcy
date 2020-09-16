@@ -12,12 +12,13 @@ import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import { socket } from '../pages/StreamingPage';
 import axios from 'axios';
+
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
 `;
 
-const Video = ({ videoUrl, videoPlayerRef, socket }) => {
+const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
@@ -41,6 +42,26 @@ const Video = ({ videoUrl, videoPlayerRef, socket }) => {
 				'qualitySelector',
 			],
 		},
+	};
+	const saveVideoHistory = () => {
+		socket.disconnect();
+		let token = localStorage.getItem('token');
+		let player = videojs(videoPlayerRef.current);
+		let currentTime = player.currentTime();
+
+		axios.post(
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
+			{
+				video_id: storeState.id,
+				endTime: currentTime,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		history.go(0);
 	};
 
 	useEffect(() => {
@@ -67,8 +88,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket }) => {
 			// 	player.pause();
 			// 	socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			// });
-			socket.emit('sendChangePlay');
-			socket.emit('sendChangePause');
 
 			player.controlBar.playToggle.on('click', () => {
 				console.log('playbuttonclickevent');
@@ -113,30 +132,12 @@ const Video = ({ videoUrl, videoPlayerRef, socket }) => {
 				},
 			);
 		});
-		window.onpopstate = () => {
+		window.addEventListener('popstate', async () => {
 			console.log('onpopstate');
-
-			//history.go(0);
-		};
-		return async () => {
 			console.log('useEffect Return');
-			socket.disconnect();
-			let token = localStorage.getItem('token');
-			let player = videojs(videoPlayerRef.current);
-			let currentTime = player.currentTime();
-			await axios.post(
-				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
-				{
-					video_id: storeState.id,
-					endTime: currentTime,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
-			);
-		};
+		});
+
+		return saveVideoHistory;
 	}, []);
 
 	useEffect(() => {

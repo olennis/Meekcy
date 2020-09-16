@@ -259,7 +259,12 @@ const StreamingPage = () => {
 								)}
 							</ChatToggle>
 						</VideoIcon>
-						<Video videoUrl={videoUrl} videoPlayerRef={videoPlayerRef} socket={socketIo}></Video>
+						<Video
+							videoUrl={videoUrl}
+							videoPlayerRef={videoPlayerRef}
+							socket={socketIo}
+							history={history}
+						></Video>
 					</VideoWrap>
 
 					<ChatWrqp ChatToggleState={chatState}>

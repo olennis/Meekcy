@@ -215,7 +215,7 @@ const Chatting = ({
 						<ChatChatpgMessage key={index}>
 							<MessageProfile src={value.avatar}></MessageProfile>
 							<MessageText>
-								<MessageTextName>{value.username}</MessageTextName>
+								<MessageTextName>{value.nickname}</MessageTextName>
 								<MessageTextExplain>
 									{value.message ? (
 										<MessageTextChating>{value.message}</MessageTextChating>

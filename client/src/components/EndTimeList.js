@@ -27,6 +27,7 @@ const EndTimeList = ({ setDetailAction, changeModalTrue, changeModalFalse, Endmo
 							overview: movie.video.detail,
 							video: movie.video.url,
 							endTime: movie.endTime,
+							trailer: movie.video.trailer,
 						};
 						return (
 							<Poster

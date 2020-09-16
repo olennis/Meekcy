@@ -41,6 +41,7 @@ const ChattingContainer = ({ socket }) => {
 	//avatar change socket.io 통신
 	useEffect(() => {
 		socket.on('receiveChangeAvatar', (value) => {
+			console.log(value);
 			setMessages((oldMsgs) => {
 				const chagedMsg = oldMsgs.map((element) => {
 					if (element.value.id === value.userId) {
@@ -56,7 +57,6 @@ const ChattingContainer = ({ socket }) => {
 		// streaming page component에서 room정보를 받아 chatting componet에 준다. 받은정보를 이용해 서버의 room 정보를 준다.
 
 		socket.emit('joinRoom', { roomName });
-		console.log('client room join');
 	}, []);
 	useEffect(() => {
 		socket.on('receiveParticipants', (value) => {
@@ -90,7 +90,7 @@ const ChattingContainer = ({ socket }) => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
+				.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -142,6 +142,7 @@ const ChattingContainer = ({ socket }) => {
 		}
 		document.body.removeChild(tempTextArea);
 	}
+
 	return (
 		<Chatting
 			sendMessageEnterEvent={sendMessageEnterEvent}

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { moviesApi } from '../containers/moviesApi';
 
-const TrueContainer = styled.div`
+const Container = styled.div`
 	display: block;
 	position: fixed;
 	z-index: 1;
@@ -19,20 +19,10 @@ const TrueContainer = styled.div`
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 `;
-const FalseContainer = styled.div`
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-`;
+
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
+
 	float: left;
 	background-size: cover;
 	border-radius: 4px;
@@ -43,6 +33,15 @@ const ModalContent = styled.div`
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
+	@media (max-width: 823px) and (max-height: 540px) {
+		transform: translateY(-16%);
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		transform: translateY(-6%);
+		background-size: cover;
+		height: 100vh;
+	}
 `;
 
 const BGIMG = styled.div`
@@ -50,8 +49,28 @@ const BGIMG = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
+	@media (max-width: 823px) and (max-height: 540px) {
+		background-color: rgba(0, 0, 0, 0.8);
+		display: grid;
+		grid-auto-columns: minmax(100px, 1fr);
+		grid-template-areas:
+			'detail detail'
+			'footer footer';
+		grid-template-rows: 80vh 20vh;
+		width: 100%;
+		grid-gap: 10px;
+	}
+	@media (max-width: 540px) {
+		height: 100vh;
+	}
 `;
 
+const Footer = styled.div`
+	@media (max-width: 823px) and (max-height: 540px) {
+		grid-area: footer;
+		/* background-color: green; */
+	}
+`;
 const PlayBtn = styled.button`
 	width: 130px;
 	height: 40px;
@@ -73,6 +92,14 @@ const PlayBtn = styled.button`
 	&:hover {
 		background-color: #900c3f;
 		color: white;
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		top: 85vh;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		top: 91vh;
 	}
 `;
 
@@ -97,6 +124,17 @@ const PreviewBtn = styled.button`
 	&:hover {
 		background-color: #900c3f;
 		color: white;
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		display: none;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		display: none;
+	}
+	@media (max-width: 300px) {
+		display: none;
 	}
 `;
 
@@ -141,23 +179,23 @@ const NewModal = ({ changeModalFalse }) => {
 	return (
 		<>
 			{modalState === true ? (
-				<TrueContainer>
+				<Container>
 					<ModalContent bgUrl={storeState.poster}>
 						<BGIMG>
 							<Detail changeModalFalse={changeModalFalse}></Detail>
 
-							<PlayBtn onClick={() => playButton()}>
-								<FontAwesomeIcon icon={faPlay} />
-								{`  PLAY`}
-							</PlayBtn>
-							<PreviewBtn>예고편</PreviewBtn>
+							<Footer>
+								<PlayBtn onClick={() => playButton()}>
+									<FontAwesomeIcon icon={faPlay} />
+									{`  PLAY`}
+								</PlayBtn>
+								<PreviewBtn>예고편</PreviewBtn>
+							</Footer>
 						</BGIMG>
 					</ModalContent>
-				</TrueContainer>
+				</Container>
 			) : (
-				<FalseContainer>
-					<ModalContent></ModalContent>
-				</FalseContainer>
+				<></>
 			)}
 		</>
 	);

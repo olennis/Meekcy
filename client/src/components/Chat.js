@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { Popover, Avatar } from 'antd';
 import 'antd/dist/antd.dark.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip, faUser, faUserCircle, faShare } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = styled.div`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	background-color: #1f1f1f;
 `;
 const ChatHeader = styled.div`
 	width: 100%;
@@ -17,7 +18,7 @@ const ChatHeader = styled.div`
 	border-radius: 3px;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #262626;
+	background-color: #0d0d0d;
 	line-height: 1.8;
 	@media (min-width: 961px) and (max-width: 1291px) {
 		justify-content: space-between;
@@ -30,6 +31,9 @@ const ChatHeader = styled.div`
 		padding: 4% 0 3% 0;
 		margin: 0;
 		width: 100%;
+	}
+	&:hover {
+		border-bottom: 1px solid #b5b5b5;
 	}
 `;
 const ChatHeaderTitle = styled.span`
@@ -50,16 +54,16 @@ const HeaderRightWrap = styled.div`
 	}
 `;
 const Participant = styled.span`
-	padding: 2px 0 2px 10px;
+	padding: 2px 2% 2px 2%;
 	font-size: 8px;
 	width: 35px;
 	border: solid 1px white;
 	border-radius: 8px;
-	display: fixed;
-	position: absolute;
+	position: relative;
+	left: 90%;
 	right: 0;
-	bottom: 0;
-	margin: 0 3% 6vh 0;
+	bottom: 5px;
+	margin: 0 5% 6vh 0;
 	@media (max-width: 823px) and (max-height: 540px) {
 		margin: 0 3% 5vh 0;
 	}
@@ -142,23 +146,35 @@ const MessageTextCaption = styled.div`
 	font-size: 12px;
 	color: gray;
 `;
-const ChatForm = styled.form``;
+const ChatForm = styled.form`
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+`;
 const ChatFormInput = styled.input`
 	border-left-width: 0;
 	border-right-width: 0;
 	border-top-width: 0;
 	border-bottom-width: 1;
-	background-color: #333333;
+	background-color: #0d0d0d;
 	font-size: 18px;
 	border-radius: 3px;
 	border-bottom: 1.2px solid;
 	width: 100%;
-	height: 5vh;
+	height: 4vh;
 	padding: 5px 5px 7px 10px;
+
+	/* word-break: break-word; */
 	margin: 1px;
+	&:focus::placeholder {
+		color: transparent;
+	}
 	&:focus {
 		outline: none;
+		height: 8vh;
+		padding-top: 20px;
+		padding-bottom: 100px;
 	}
+
 	&:hover {
 		border-bottom: 1px solid #900c3f;
 	}
@@ -216,10 +232,7 @@ const Chatting = ({
 					</ChatHeaderProfile>
 				</HeaderRightWrap>
 			</ChatHeader>
-			<Participant>
-				<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-				{participant}
-			</Participant>
+
 			<ChatChatpg id="chatpg" ref={chatPg}>
 				{chatList.map(({ value }, index) => {
 					return (
@@ -240,6 +253,10 @@ const Chatting = ({
 				})}
 			</ChatChatpg>
 			<ChatForm onSubmit={sendMessageEnterEvent} autoComplete="off">
+				<Participant className="Participant">
+					<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+					{participant}
+				</Participant>
 				<ChatFormInput
 					id="chatInput"
 					onChange={handleChange}

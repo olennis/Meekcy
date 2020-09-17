@@ -17,19 +17,20 @@ library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		display: grid;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* @media (min-width: 376px) and (max-width: 667px) {
 		display: flex;
-	}
+	} */
 
-	@media (min-width: 668px) and (max-width: 960px) {
-		display: grid;
+	@media (max-width: 823px) and (max-height: 540px) {
+		display: flex;
 	}
 `;
 
@@ -52,7 +53,8 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 65vh;
 		${(props) => {
@@ -70,7 +72,7 @@ const VideoWrap = styled.div`
 		}}
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 80%;
 		height: 100vh;
 		${(props) => {
@@ -89,13 +91,13 @@ const VideoWrap = styled.div`
 		}}
 	}
 
-	@media (min-width: 668px) and (max-width: 960px) {
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 100%;
-		height: 65vh;
+		height: 100vh;
 		${(props) => {
 			if (props.ChatToggleState) {
 				return css`
-					height: 65vh;
+					height: 100vh;
 					transition: height 0.3s;
 				`;
 			} else {
@@ -125,19 +127,20 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 35vh;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* @media (min-width: 376px) and (max-width: 667px) {
 		width: 20%;
 		height: 100vh;
-	}
+	} */
 
-	@media (min-width: 668px) and (max-width: 960px) {
-		width: 100%;
-		height: 35vh;
+	@media (max-width: 823px) and (max-height: 540px) {
+		width: 30%;
+		height: 100vh;
 	}
 `;
 
@@ -155,12 +158,26 @@ const BackBtn = styled.div`
 	padding: 5px;
 	padding-left: 25px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+		/* opacity: 0.4; */
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const ChatToggle = styled.div`
 	padding: 5px;
 	padding-right: 20px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+		/* opacity: 0.4; */
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const token = localStorage.getItem('token');
@@ -210,7 +227,6 @@ const StreamingPage = () => {
 			console.log('this is ....', value);
 			history.push(`/warn`);
 		});
-
 		axios
 			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {

@@ -20,7 +20,7 @@ const Title = styled.span`
 
 	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
-		margin-left: 30px;
+		/* margin-left: 30px; */
 		border-bottom: 2px solid #900c3f;
 	}
 	/* 스마트폰 세로 */
@@ -34,7 +34,9 @@ const Grid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 125px);
 	grid-gap: 25px;
-	justify-content: center;
+	@media (max-width: 540px) {
+		justify-content: center;
+	}
 `;
 
 const Section = ({ title, children }) => (

@@ -11,6 +11,7 @@ const initialState = {
 	video: null,
 	runnigTime: null,
 	endTime: null,
+	trailer: null,
 };
 //리듀서 함수
 const changeDetaildata = (movieData = initialState, action) => {
@@ -25,6 +26,7 @@ const changeDetaildata = (movieData = initialState, action) => {
 				video: action.data.video,
 				runnigTime: action.data.runningTime,
 				endTime: action.data.endTime,
+				trailer: action.data.trailer,
 			};
 		default:
 			return movieData;

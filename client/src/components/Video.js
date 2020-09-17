@@ -39,13 +39,13 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
-	const saveVideoHistory = () => {
+	const saveVideoHistory = async () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
 		let player = videojs(videoPlayerRef.current);
 		let currentTime = player.currentTime();
 
-		axios.post(
+		await axios.post(
 			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 			{
 				video_id: storeState.id,
@@ -57,7 +57,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			},
 		);
-		history.go(0);
+		history.push('/');
 	};
 
 	useEffect(() => {
@@ -126,27 +126,17 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	}, []);
 
 	useEffect(() => {
-		window.addEventListener('beforeunload', async function (event) {
-			socket.disconnect();
-			const token = localStorage.getItem('token');
-			const player = videojs(videoPlayerRef.current);
-			const currentTime = player.currentTime();
+		window.addEventListener('beforeunload', saveVideoHistory);
+		window.history.pushState(null, '', window.location.href);
+		window.onpopstate = () => {
+			history.go(1);
+			saveVideoHistory();
+		};
 
-			await axios.post(
-				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
-				{
-					video_id: storeState.id,
-					endTime: currentTime,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
-			);
-		});
-
-		return saveVideoHistory;
+		return () => {
+			window.removeEventListener('beforeunload', saveVideoHistory);
+			window.onpopstate = null;
+		};
 	}, []);
 
 	useEffect(() => {

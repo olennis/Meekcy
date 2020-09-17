@@ -43,13 +43,13 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
-	const saveVideoHistory = () => {
+	const saveVideoHistory = async () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
 		let player = videojs(videoPlayerRef.current);
 		let currentTime = player.currentTime();
 
-		axios.post(
+		await axios.post(
 			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 			{
 				video_id: storeState.id,
@@ -61,7 +61,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			},
 		);
-		history.go(0);
+		history.push('/');
 	};
 
 	useEffect(() => {
@@ -108,53 +108,37 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 
 			player.controlBar.progressControl.children_[0].on('click', () => {
 				console.log(player.currentTime());
+
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
+			console.log(player.controlBar);
+			console.log(player.controlBar.seekBack);
+			console.log(player.seekButtons());
 		});
 	}, []);
 	useEffect(() => {
-		window.addEventListener('beforeunload', async function (event) {
-			socket.disconnect();
-			const token = localStorage.getItem('token');
-			const player = videojs(videoPlayerRef.current);
-			const currentTime = player.currentTime();
+		window.addEventListener('beforeunload', saveVideoHistory);
+		window.history.pushState(null, '', window.location.href);
+		window.onpopstate = () => {
+			history.go(1);
+			saveVideoHistory();
+		};
 
-			await axios.post(
-				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
-				{
-					video_id: storeState.id,
-					endTime: currentTime,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
-			);
-		});
-		window.addEventListener('popstate', async () => {
-			console.log('onpopstate');
-			console.log('useEffect Return');
-		});
-
-		return saveVideoHistory;
+		return () => {
+			window.removeEventListener('beforeunload', saveVideoHistory);
+			window.onpopstate = null;
+		};
 	}, []);
 
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
-			console.log('receiveSeeked');
-
 			player.currentTime(value.currentTime);
 		});
 		socket.on('receivePlay', () => {
-			console.log('receivePlay');
-
 			player.play();
 		});
 		socket.on('receivePause', () => {
-			console.log('receivePause');
-
 			player.pause();
 		});
 	}, []);
@@ -162,12 +146,9 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	function overClick(e) {
 		const player = videojs(videoPlayerRef.current);
 		if (e.target.className === 'vjs-tech') {
-			console.log('click');
 			if (player.controlBar.playToggle.controlText_ === 'Play') {
-				console.log('play');
 				socket.emit('sendChangePlay');
 			} else {
-				console.log('pause');
 				socket.emit('sendChangePause');
 			}
 		}

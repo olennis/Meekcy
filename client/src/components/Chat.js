@@ -126,8 +126,9 @@ const MessageText = styled.div`
 	padding-left: 5px;
 `;
 const MessageTextName = styled.div`
-	margin-bottom: 2%;
+	margin-bottom: 1%;
 	font-size: 14px;
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		font-size: 10px;
 	}
@@ -150,6 +151,7 @@ const ChatForm = styled.form`
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 `;
+
 const ChatFormInput = styled.input`
 	border-left-width: 0;
 	border-right-width: 0;
@@ -158,25 +160,32 @@ const ChatFormInput = styled.input`
 	background-color: #0d0d0d;
 	font-size: 18px;
 	border-radius: 3px;
-	border-bottom: 1.2px solid;
+	border: 0;
+	border-bottom: 2px solid white;
 	width: 100%;
-	height: 4vh;
+	outline: 0;
 	padding: 5px 5px 7px 10px;
+	height: 4vh;
+	outline: 0;
 
-	/* word-break: break-word; */
-	margin: 1px;
 	&:focus::placeholder {
 		color: transparent;
 	}
+
 	&:focus {
 		outline: none;
+		padding-top: 0;
+		padding-bottom: 0px;
+		background-color: #0d0d0d;
+		border-bottom: 1px solid white;
+		height: 5vh;
+	}
+	&:focus.Black {
 		height: 8vh;
-		padding-top: 20px;
-		padding-bottom: 100px;
 	}
 
 	&:hover {
-		border-bottom: 1px solid #900c3f;
+		/* border-bottom: 1px solid #900c3f; */
 	}
 
 	@media (max-width: 823px) and (max-height: 540px) {
@@ -257,6 +266,7 @@ const Chatting = ({
 					<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
 					{participant}
 				</Participant>
+
 				<ChatFormInput
 					id="chatInput"
 					onChange={handleChange}

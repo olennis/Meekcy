@@ -39,11 +39,7 @@ const ClipWrap = styled.div`
 const ChatHeaderProfile = styled(Popover)`
 	margin-right: 20px;
 `;
-const ChatHeaderProfileButton = styled(Avatar)`
-	height: 30px;
-	width: 30px;
-	cursor: pointer;
-`;
+
 const ChatChatpg = styled.div`
 	flex: 1;
 	overflow: scroll;

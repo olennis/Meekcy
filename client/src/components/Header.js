@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutClickevent } from '../modules/actions/changeLoginStatus';
 import styled from 'styled-components';

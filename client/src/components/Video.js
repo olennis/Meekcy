@@ -7,7 +7,6 @@ import 'videojs-contrib-quality-levels';
 import videojsqualityselector from 'videojs-hls-quality-selector';
 import 'video.js/dist/video-js.css';
 import '@silvermine/videojs-quality-selector';
-
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -27,8 +26,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		aspectRatio: '16:9',
 		sources: [
 			{
-				// src: `${videoUrl.url}`,
-				src: 'https://meekcyvideo.s3.ap-northeast-2.amazonaws.com/s3/video/avengers/master.m3u8',
+				src: `${videoUrl.url}`,
 				type: 'application/x-mpegurl',
 			},
 		],
@@ -42,6 +40,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
+
 	const saveVideoHistory = () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
@@ -75,6 +74,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				forward: 10,
 				back: 10,
 			});
+
 			player.qualityLevels();
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
@@ -99,16 +99,22 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			player.controlBar.progressControl.children_[0].on('click', () => {
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
+
+			player.ready(() => {
+				player.controlBar.seekBack.on('click', () => {
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
+				player.controlBar.seekForward.on('click', () => {
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
+			});
 		});
 	}, []);
 
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
-			let time = player.currentTime();
-			if (time === value.currentTime) {
-				player.currentTime(value.currentTime);
-			}
+			player.currentTime(value.currentTime);
 		});
 		socket.on('receivePlay', () => {
 			player.play();
@@ -138,7 +144,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			);
 		});
-
 		return saveVideoHistory;
 	}, []);
 
@@ -165,6 +170,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			}
 		}
 	}
+
 	return (
 		<Container>
 			<video

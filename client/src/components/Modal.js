@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { moviesApi } from '../containers/moviesApi';
 
 const Container = styled.div`
 	display: block;
@@ -164,6 +163,9 @@ const NewModal = ({ changeModalFalse }) => {
 			})
 			.catch((err) => {
 				console.log(err);
+				alert(
+					'2개 이상의 브라우저나 탭에서 Meekcy를 이용하고 계십니다. 필요없는 브라우저나 탭을 닫으신 후 페이지를 다시 로드해 주세요.',
+				);
 			});
 	};
 

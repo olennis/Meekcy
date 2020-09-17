@@ -21,10 +21,8 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
-		fluid: true,
 		controls: true,
 		muted: true,
-		aspectRatio: '16:9',
 		sources: [
 			{
 				// src: `${videoUrl.url}`,
@@ -78,7 +76,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			player.qualityLevels();
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
-				displayCurrentQuality: true,
+				displayCurrentQuality: false,
 			});
 			if (storeState.endTime) {
 				player.currentTime(storeState.endTime);

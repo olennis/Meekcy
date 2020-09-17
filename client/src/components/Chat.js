@@ -59,9 +59,9 @@ const Participant = styled.span`
 	position: absolute;
 	right: 0;
 	bottom: 0;
-	margin: 0 3% 5vh 0;
+	margin: 0 3% 6vh 0;
 	@media (max-width: 823px) and (max-height: 540px) {
-		margin: 0 3% 6vh 0;
+		margin: 0 3% 5vh 0;
 	}
 `;
 const ClipWrap = styled.div`
@@ -104,16 +104,16 @@ const ChatChatpgMessage = styled.div`
 	}
 `;
 const MessageProfile = styled(Avatar)`
-	min-width: 20px;
-	min-height: 20px;
-	width: 20px;
-	height: 20px;
+	min-width: 30px;
+	min-height: 30px;
+	width: 30px;
+	height: 30px;
 	color: red;
 	@media (max-width: 823px) and (max-height: 540px) {
-		min-width: 10px;
-		min-height: 10px;
-		width: 13px;
-		height: 13px;
+		min-width: 20px;
+		min-height: 20px;
+		width: 20px;
+		height: 20px;
 	}
 `;
 const MessageText = styled.div`
@@ -121,12 +121,22 @@ const MessageText = styled.div`
 	box-sizing: border-box;
 	padding-left: 5px;
 `;
-const MessageTextName = styled.div``;
+const MessageTextName = styled.div`
+	margin-bottom: 2%;
+	font-size: 14px;
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 10px;
+	}
+`;
 const MessageTextExplain = styled.div`
 	width: 100%;
 `;
 const MessageTextChating = styled.div`
 	font-size: 14px;
+	color: #b5b5b5;
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 10px;
+	}
 `;
 const MessageTextCaption = styled.div`
 	font-size: 12px;
@@ -143,8 +153,8 @@ const ChatFormInput = styled.input`
 	border-radius: 3px;
 	border-bottom: 1.2px solid;
 	width: 100%;
-	height: 3vh;
-	padding: 3px 5px 3px 10px;
+	height: 5vh;
+	padding: 5px 5px 7px 10px;
 	margin: 1px;
 	&:focus {
 		outline: none;
@@ -154,8 +164,9 @@ const ChatFormInput = styled.input`
 	}
 
 	@media (max-width: 823px) and (max-height: 540px) {
-		font-size: 13px;
+		font-size: 11px;
 		height: 4vh;
+		padding: 3% 0 3% 3%;
 	}
 `;
 

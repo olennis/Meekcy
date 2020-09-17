@@ -17,10 +17,11 @@ library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		display: grid;
 	}
 
@@ -52,7 +53,8 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 65vh;
 		${(props) => {
@@ -125,7 +127,8 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* 스마트폰 세로 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 35vh;
 	}

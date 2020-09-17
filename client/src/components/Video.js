@@ -25,8 +25,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		muted: true,
 		sources: [
 			{
-				// src: `${videoUrl.url}`,
-				src: 'https://meekcyvideo.s3.ap-northeast-2.amazonaws.com/s3/video/avengers/master.m3u8',
+				src: `${videoUrl.url}`,
 				type: 'application/x-mpegurl',
 			},
 		],
@@ -103,9 +102,9 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
-			let time = player.currentTime();
-			if (time === value.currentTime) {
-				player.currentTime(value.currentTime);
+			player.currentTime(value.currentTime);
+			if (value.status === 'play') {
+				player.play();
 			}
 		});
 		socket.on('receivePlay', () => {
@@ -113,6 +112,16 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		});
 		socket.on('receivePause', () => {
 			player.pause();
+		});
+
+		// url로 스트리밍화면 진입한 사람에게 현재 video 시간을 알려주는 트리거 역할
+		socket.on('currentVideoPosition', ({ target }) => {
+			console.dir(player);
+			socket.emit('sendCurrentVideoPostion', {
+				currentTime: player.currentTime(),
+				target,
+				status: player.paused() ? 'pause' : 'play',
+			});
 		});
 	}, []);
 

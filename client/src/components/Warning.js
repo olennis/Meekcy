@@ -28,7 +28,6 @@ const IconWrap = styled.div`
 	text-transform: uppercase;
 	text-shadow: 0 0 10px #900c3f;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 50%;
 		height: 90%;
@@ -39,7 +38,6 @@ const IconWrap = styled.div`
 		border-radius: 0;
 		box-shadow: none;
 	}
-	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
 		border: 0px none;
 		margin-left: 2%;
@@ -64,14 +62,12 @@ const Message = styled.div`
 	letter-spacing: 4px;
 	text-transform: uppercase;
 	line-height: 1.5;
-	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		top: 63%;
 		width: 40%;
 		height: 50%;
 		font-size: 13px;
 	}
-	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
 		top: 70%;
 		font-size: 11px;

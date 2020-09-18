@@ -126,8 +126,9 @@ const MessageText = styled.div`
 	padding-left: 5px;
 `;
 const MessageTextName = styled.div`
-	margin-bottom: 2%;
+	margin-bottom: 1%;
 	font-size: 14px;
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		font-size: 10px;
 	}
@@ -150,6 +151,7 @@ const ChatForm = styled.form`
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 `;
+
 const ChatFormInput = styled.input`
 	font-family: inherit;
 	width: 100%;

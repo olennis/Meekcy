@@ -1,6 +1,7 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import videojs from 'video.js';
 
 const Container = styled.div`
 	position: relative;
@@ -110,7 +111,7 @@ const Description = styled.div`
 		width: 100vw;
 	}
 `;
-const Video = styled.video`
+const PreVideo = styled.div`
 	width: 50vw;
 	height: 45vh;
 	max-width: 700px;
@@ -130,7 +131,7 @@ const Video = styled.video`
 		position: absolute;
 		top: 0px;
 		left: 0.5%;
-		height: 30vh;
+
 		width: 100%;
 		padding: 2%;
 	}
@@ -143,8 +144,24 @@ const Video = styled.video`
 `;
 
 const Detail = ({ changeModalFalse }) => {
+	const videoPlayerRef = useRef(null);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	const [size, setSize] = useState([]);
+	const options = {
+		autoplay: true,
+		controls: false,
+		muted: true,
+		sources: [
+			{
+				src: `${storeState.video}`,
+				type: 'application/x-mpegurl',
+			},
+		],
+	};
+
+	useEffect(() => {
+		const player = videojs(videoPlayerRef.current, options);
+	}, []);
 
 	const useWindowSize = () => {
 		useLayoutEffect(() => {
@@ -178,7 +195,13 @@ const Detail = ({ changeModalFalse }) => {
 				)}
 			</DescriptionWrap>
 
-			<Video src={storeState.video} autoPlay muted poster={storeState.poster}></Video>
+			<PreVideo>
+				<video
+					className="video-js"
+					ref={videoPlayerRef}
+					style={{ width: '100%', height: '100%' }}
+				></video>
+			</PreVideo>
 		</Container>
 	);
 };

@@ -27,7 +27,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
 		controls: true,
-		muted: true,
+		muted: false,
 		sources: [
 			{
 				src: `${videoUrl.url}`,
@@ -66,13 +66,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	};
 
 	useEffect(() => {
-		//리액트일때 사용법 찾기
-		//옵션값 넣는 법 찾기
 		let player = videojs(videoPlayerRef.current, options, () => {
-			player.on('ended', () => {
-				console.log('ended');
-			});
-
 			player.seekButtons({
 				forward: 10,
 				back: 10,
@@ -95,11 +89,25 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			});
 
 			player.controlBar.progressControl.on('click', () => {
+				// video 재생바를 감싸고 있는 컴트롤바를 클릭하면 소켓을 통해 현재 재생위치를 다른 사용자들과 맞출수있게 재생위치를 전달하는 click이벤트
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
 
 			player.controlBar.progressControl.children_[0].on('click', () => {
+				// video 재생바를 클릭하면 소켓을 통해 현재 재생위치를 다른 사용자들과 맞출수있게 재생위치를 전달하는 click이벤트
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+			});
+
+			player.ready(() => {
+				// video데이가 준비된 경우 트리거를 하는 함수
+				player.controlBar.seekBack.on('click', () => {
+					// video 10초 전 버튼을 클릭하면 소켓을 통해 현재 재생위치를 다른 사용자들과 맞출수있게 재생위치를 전달하는 click이벤트
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
+				player.controlBar.seekForward.on('click', () => {
+					//// video 10초 후 버튼을 클릭하면 소켓을 통해 현재 재생위치를 다른 사용자들과 맞출수있게 재생위치를 전달하는 click이벤트
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
 			});
 		});
 	}, []);
@@ -154,6 +162,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		return saveVideoHistory;
 	}, []);
 
+	// 다른 사용자가 재생위치를 변경하거나 재생버튼을 누르거나 멈추었을때 소켓을 통해서 환경을 동일하게 적용시켜주는 react의 Effect Hook함수
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
@@ -167,6 +176,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		});
 	}, []);
 
+	// video 영상화면을 클릭한 경우 현재 영상의 플레이환경에 따라 소켓을 이용해 다른 사용자들과 맞출수있게 환경을 전달하는 click이벤트에 연결된 메소드
 	function overClick(e) {
 		const player = videojs(videoPlayerRef.current);
 		if (e.target.className === 'vjs-tech') {
@@ -177,6 +187,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			}
 		}
 	}
+
 	return (
 		<Container>
 			<video

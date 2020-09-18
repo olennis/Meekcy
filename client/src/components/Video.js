@@ -11,7 +11,7 @@ import '@silvermine/videojs-quality-selector';
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import axios from 'axios';
-
+//
 const Container = styled.div`
 	width: 100%;
 	height: 100%;

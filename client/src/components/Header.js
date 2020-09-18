@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react';
+=======
+import React, { useEffect, useRef } from 'react';
+>>>>>>> 64d5f86f97c0d000ab90e120a7fb0938499c8414
 import { useDispatch } from 'react-redux';
 import { logoutClickevent } from '../modules/actions/changeLoginStatus';
 import styled from 'styled-components';
@@ -43,10 +47,15 @@ const LogoutBtn = styled.div`
 
 const Header = () => {
 	const dispatch = useDispatch();
+	const logo = useRef(null);
+
+	useEffect(() => {
+		logo.current.style.cssText = `background-image: url('images/Logo.png')`;
+	}, []);
 	return (
 		<Nav>
 			<LogoWrap>
-				<Logo></Logo>
+				<Logo ref={logo}></Logo>
 			</LogoWrap>
 			<LogoutBtn
 				onClick={() => {

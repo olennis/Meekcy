@@ -126,8 +126,9 @@ const MessageText = styled.div`
 	padding-left: 5px;
 `;
 const MessageTextName = styled.div`
-	margin-bottom: 2%;
+	margin-bottom: 1%;
 	font-size: 14px;
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		font-size: 10px;
 	}
@@ -150,40 +151,71 @@ const ChatForm = styled.form`
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 `;
-const ChatFormInput = styled.input`
-	border-left-width: 0;
-	border-right-width: 0;
-	border-top-width: 0;
-	border-bottom-width: 1;
-	background-color: #0d0d0d;
-	font-size: 18px;
-	border-radius: 3px;
-	border-bottom: 1.2px solid;
-	width: 100%;
-	height: 4vh;
-	padding: 5px 5px 7px 10px;
 
-	/* word-break: break-word; */
-	margin: 1px;
-	&:focus::placeholder {
+const ChatFormInput = styled.input`
+	font-family: inherit;
+	width: 100%;
+	border: 0;
+	border-bottom: 2px solid #9b9b9b;
+	outline: 0;
+	font-size: 18px;
+	color: white;
+	padding: 0 8px;
+	background: transparent;
+	transition: border-color 0.2s;
+	&:required,
+	&:invalid {
+		box-shadow: none;
+	}
+	&::placeholder {
 		color: transparent;
 	}
+	&:placeholder-shown ~ .form__label {
+		font-size: 12px;
+		cursor: text;
+		top: 20px;
+	}
 	&:focus {
-		outline: none;
-		height: 8vh;
-		padding-top: 20px;
-		padding-bottom: 100px;
+		~ .form__label {
+			position: absolute;
+			top: 0;
+			display: block;
+			transition: 0.5s;
+			font-size: 12px;
+			color: #11998e;
+			font-weight: 300;
+		}
+		padding-top: 10px;
+		padding-bottom: 6px;
+		font-weight: 300;
+		border-width: 3px;
+		border-image: linear-gradient(to right, #11998e, #38ef7d);
+		border-image-slice: 1;
 	}
 
-	&:hover {
-		border-bottom: 1px solid #900c3f;
-	}
+	margin: 1px;
 
 	@media (max-width: 823px) and (max-height: 540px) {
 		font-size: 11px;
 		height: 4vh;
 		padding: 3% 0 3% 3%;
 	}
+`;
+const ChatInputDiv = styled.div`
+	position: relative;
+	padding: 15px 0 0;
+	margin-top: 10px;
+	width: 100%;
+`;
+const CahtInputDivLabel = styled.label`
+	left: 8px;
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: 0.2s;
+	font-size: 1px;
+	color: gray;
+	font-weight: 300;
 `;
 
 const Chatting = ({
@@ -257,13 +289,21 @@ const Chatting = ({
 					<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
 					{participant}
 				</Participant>
-				<ChatFormInput
-					id="chatInput"
-					onChange={handleChange}
-					placeholder="Type messages..."
-					autoComplete="off"
-					ref={chatInput}
-				></ChatFormInput>
+				<ChatInputDiv className="form__group field">
+					<ChatFormInput
+						id="chatInput"
+						onChange={handleChange}
+						placeholder="Type a message..."
+						autoComplete="off"
+						ref={chatInput}
+						className="form__field"
+						name="chatInput"
+						type="input"
+					></ChatFormInput>
+					<CahtInputDivLabel htmlFor="chatInput" className="form__label">
+						Type a message...
+					</CahtInputDivLabel>
+				</ChatInputDiv>
 			</ChatForm>
 		</Chat>
 	);

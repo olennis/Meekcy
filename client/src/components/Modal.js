@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { moviesApi } from '../containers/moviesApi';
 
 const Container = styled.div`
 	display: block;
@@ -22,7 +21,6 @@ const Container = styled.div`
 
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
-
 	float: left;
 	background-size: cover;
 	border-radius: 4px;
@@ -65,12 +63,6 @@ const BGIMG = styled.div`
 	}
 `;
 
-const Footer = styled.div`
-	@media (max-width: 823px) and (max-height: 540px) {
-		grid-area: footer;
-		/* background-color: green; */
-	}
-`;
 const PlayBtn = styled.button`
 	width: 130px;
 	height: 40px;
@@ -164,6 +156,10 @@ const NewModal = ({ changeModalFalse }) => {
 			})
 			.catch((err) => {
 				console.log(err);
+				// 이미 방에 참여중인 유저가 ListPage에서 새로운 방 생성시 알람설정
+				alert(
+					'2개 이상의 브라우저나 탭에서 Meekcy를 이용하고 계십니다. 필요없는 브라우저나 탭을 닫으신 후 페이지를 다시 로드해 주세요.',
+				);
 			});
 	};
 
@@ -174,7 +170,7 @@ const NewModal = ({ changeModalFalse }) => {
 
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
-	// themoviedb api 영상불러오기
+	// 예고편버튼에 trailer가 있는 경우 trailer를 적용하고 없는 경우 youtube로 연결
 	let trailer = storeState.trailer || 'https://www.youtube.com';
 
 	return (

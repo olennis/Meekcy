@@ -12,6 +12,7 @@ const Container = styled.div`
 		text-align: center;
 	}
 `;
+
 const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {

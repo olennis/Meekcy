@@ -21,7 +21,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
 		controls: true,
-		muted: true,
+		muted: false,
 		sources: [
 			{
 				src: `${videoUrl.url}`,
@@ -60,13 +60,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	};
 
 	useEffect(() => {
-		//리액트일때 사용법 찾기
-		//옵션값 넣는 법 찾기
 		let player = videojs(videoPlayerRef.current, options, () => {
-			player.on('ended', () => {
-				console.log('ended');
-			});
-
 			player.seekButtons({
 				forward: 10,
 				back: 10,

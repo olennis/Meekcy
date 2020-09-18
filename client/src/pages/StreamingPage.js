@@ -224,7 +224,6 @@ const StreamingPage = () => {
 		setSocketIO(socketIO);
 		socketIO.on('overlapUser', (value) => {
 			socketIO.disconnect();
-			console.log('this is ....', value);
 			history.push(`/warn`);
 		});
 		axios

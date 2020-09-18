@@ -17,7 +17,6 @@ const initialState = {
 const changeDetaildata = (movieData = initialState, action) => {
 	switch (action.type) {
 		case SETDETAIL:
-			// console.log(action, 'dortus!');
 			return {
 				id: action.data.id,
 				title: action.data.original_title,

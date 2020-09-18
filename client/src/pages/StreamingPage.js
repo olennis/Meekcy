@@ -20,15 +20,12 @@ const Container = styled.div`
 	height: 100%;
 	display: flex;
 
-	/* 스마트폰 세로 */
+	/* pc 줄었을 때 */
 	@media (max-width: 1024px) {
 		display: grid;
 	}
 
-	/* @media (min-width: 376px) and (max-width: 667px) {
-		display: flex;
-	} */
-
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		display: flex;
 	}
@@ -53,7 +50,7 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	/* 스마트폰 세로 */
+	/* pc 줄었을 때 */
 	@media (max-width: 1024px) {
 		width: 100%;
 		height: 65vh;
@@ -71,7 +68,7 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 80%;
 		height: 100vh;
@@ -90,7 +87,7 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 100%;
 		height: 100vh;
@@ -127,17 +124,13 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	/* 스마트폰 세로 */
+	/* pc 줄었을 때 */
 	@media (max-width: 1024px) {
 		width: 100%;
 		height: 35vh;
 	}
 
-	/* @media (min-width: 376px) and (max-width: 667px) {
-		width: 20%;
-		height: 100vh;
-	} */
-
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 30%;
 		height: 100vh;
@@ -160,8 +153,8 @@ const BackBtn = styled.div`
 	cursor: pointer;
 	&:hover {
 		color: gray;
-		/* opacity: 0.4; */
 	}
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		padding-top: 0;
 	}
@@ -175,6 +168,7 @@ const ChatToggle = styled.div`
 		color: gray;
 		/* opacity: 0.4; */
 	}
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		padding-top: 0;
 	}

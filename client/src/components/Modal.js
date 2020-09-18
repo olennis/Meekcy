@@ -31,6 +31,7 @@ const ModalContent = styled.div`
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		transform: translateY(-16%);
 	}
@@ -47,6 +48,7 @@ const BGIMG = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		background-color: rgba(0, 0, 0, 0.8);
 		display: grid;
@@ -58,6 +60,7 @@ const BGIMG = styled.div`
 		width: 100%;
 		grid-gap: 10px;
 	}
+	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
 		height: 100vh;
 	}
@@ -125,6 +128,7 @@ const PreviewBtn = styled.button`
 	@media (max-width: 540px) {
 		display: none;
 	}
+	/* 스마트폰 소형 */
 	@media (max-width: 300px) {
 		display: none;
 	}

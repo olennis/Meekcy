@@ -116,7 +116,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 
 		// url로 스트리밍화면 진입한 사람에게 현재 video 시간을 알려주는 트리거 역할
 		socket.on('currentVideoPosition', ({ target }) => {
-			console.dir(player);
 			socket.emit('sendCurrentVideoPosition', {
 				currentTime: player.currentTime(),
 				target,

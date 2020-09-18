@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Detail from './Detail';
@@ -6,9 +6,8 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { moviesApi } from '../containers/moviesApi';
 
-const TrueContainer = styled.div`
+const Container = styled.div`
 	display: block;
 	position: fixed;
 	z-index: 1;
@@ -19,18 +18,7 @@ const TrueContainer = styled.div`
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 `;
-const FalseContainer = styled.div`
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-`;
+
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
 	float: left;
@@ -43,6 +31,16 @@ const ModalContent = styled.div`
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		transform: translateY(-16%);
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		transform: translateY(-6%);
+		background-size: cover;
+		height: 100vh;
+	}
 `;
 
 const BGIMG = styled.div`
@@ -50,6 +48,22 @@ const BGIMG = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		background-color: rgba(0, 0, 0, 0.8);
+		display: grid;
+		grid-auto-columns: minmax(100px, 1fr);
+		grid-template-areas:
+			'detail detail'
+			'footer footer';
+		grid-template-rows: 80vh 20vh;
+		width: 100%;
+		grid-gap: 10px;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		height: 100vh;
+	}
 `;
 
 const PlayBtn = styled.button`
@@ -73,6 +87,14 @@ const PlayBtn = styled.button`
 	&:hover {
 		background-color: #900c3f;
 		color: white;
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		top: 85vh;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		top: 91vh;
 	}
 `;
 
@@ -98,23 +120,40 @@ const PreviewBtn = styled.button`
 		background-color: #900c3f;
 		color: white;
 	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		display: none;
+	}
+	/* 스마트폰 세로 */
+	@media (max-width: 540px) {
+		display: none;
+	}
+	/* 스마트폰 소형 */
+	@media (max-width: 300px) {
+		display: none;
+	}
 `;
 
 const NewModal = ({ changeModalFalse }) => {
+	//모달 데이터를 가져오기 위한 리덕스 스토어
 	const storeState = useSelector((state) => state.changeDetaildata, []);
+
+	//streming page로 가기 위한 history 선언
 	const history = useHistory();
 
+	//비디오 룸을 만들어주기 위한 함수
 	const createRoom = () => {
 		let token = localStorage.getItem('token');
 
 		axios
 			.post(
-				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
-					video_id: storeState.id,
+					video_id: storeState.id, //비디오 id가 겹치면 안되기 때문에 id 보냄
 					end_time: 0,
 				},
 				{
+					//bearer 요청을 위한 헤더 세팅
 					headers: {
 						Authorization: `Bearer ${token}`,
 						'Content-Type': 'application/json',
@@ -122,33 +161,32 @@ const NewModal = ({ changeModalFalse }) => {
 				},
 			)
 			.then((res) => {
-				console.log(res.data.roomname);
+				//응답이 오면 응답의 roomname데이터를 받아서 페이지 이동
 				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {
 				console.log(err);
+				// 이미 방에 참여중인 유저가 ListPage에서 새로운 방 생성시 알람설정
+				alert(
+					'2개 이상의 브라우저나 탭에서 Meekcy를 이용하고 계십니다. 필요없는 브라우저나 탭을 닫으신 후 페이지를 다시 로드해 주세요.',
+				);
 			});
 	};
 
 	const playButton = () => {
-		changeModalFalse();
-		createRoom();
+		changeModalFalse(); //모달 상태 변경
+		createRoom(); // 방 생성
 	};
-
+	//모달 상태를 가져오는 리덕스 스토어
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
-	// themoviedb api 영상불러오기
-	const [youtube, setYoutube] = useState(null);
-	useEffect(() => {
-		moviesApi.youtubeVideo(storeState.id).then((response) => {
-			setYoutube(`https://youtu.be/${response.data.results[0].key}`);
-		});
-	}, []);
+	// 예고편버튼에 trailer가 있는 경우 trailer를 적용하고 없는 경우 youtube로 연결
+	let trailer = storeState.trailer || 'https://www.youtube.com';
 
 	return (
 		<>
 			{modalState === true ? (
-				<TrueContainer>
+				<Container>
 					<ModalContent bgUrl={storeState.poster}>
 						<BGIMG>
 							<Detail changeModalFalse={changeModalFalse}></Detail>
@@ -157,14 +195,14 @@ const NewModal = ({ changeModalFalse }) => {
 								<FontAwesomeIcon icon={faPlay} />
 								{`  PLAY`}
 							</PlayBtn>
-							<PreviewBtn>예고편</PreviewBtn>
+							<a href={trailer} target="_blank">
+								<PreviewBtn>예고편</PreviewBtn>
+							</a>
 						</BGIMG>
 					</ModalContent>
-				</TrueContainer>
+				</Container>
 			) : (
-				<FalseContainer>
-					<ModalContent></ModalContent>
-				</FalseContainer>
+				<></>
 			)}
 		</>
 	);

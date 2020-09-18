@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutClickevent } from '../modules/actions/changeLoginStatus';
 import styled from 'styled-components';
@@ -10,9 +10,6 @@ const Nav = styled.div`
 	font-size: 13px;
 	display: flex;
 	justify-content: space-between;
-	@media (min-width: 376px) and (max-width: 667px) {
-		height: 15vh;
-	}
 `;
 
 const LogoWrap = styled.h1`
@@ -46,10 +43,15 @@ const LogoutBtn = styled.div`
 
 const Header = () => {
 	const dispatch = useDispatch();
+	const logo = useRef(null);
+
+	useEffect(() => {
+		logo.current.style.cssText = `background-image: url('images/Logo.png')`;
+	}, []);
 	return (
 		<Nav>
 			<LogoWrap>
-				<Logo></Logo>
+				<Logo ref={logo}></Logo>
 			</LogoWrap>
 			<LogoutBtn
 				onClick={() => {

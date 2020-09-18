@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
-import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-const ChattingContainer = () => {
+const ChattingContainer = ({ socket }) => {
 	/**
 	 * state hook style
 	 * avatarPopover : 아바타 설정 popup창 visible상태
@@ -17,6 +16,10 @@ const ChattingContainer = () => {
 	const [message, setMessage] = useState('');
 	const [avatars, setAvatars] = useState([]);
 	const [myinfo, setMyinfo] = useState({});
+	const [participant, setParticipant] = useState(0);
+
+	const chatPg = useRef(null);
+	const chatInput = useRef(null);
 
 	const history = useHistory();
 	const roomName = history.location.pathname.substring(7);
@@ -26,13 +29,11 @@ const ChattingContainer = () => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
 			//scroll
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 		socket.on('receiveHistoryMessages', (value) => {
 			setMessages(value);
-			const chatpg = document.getElementById('chatpg');
-			chatpg.scrollTop = chatpg.scrollHeight;
+			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 	}, []);
 	//avatar change socket.io 통신
@@ -53,13 +54,12 @@ const ChattingContainer = () => {
 		// streaming page component에서 room정보를 받아 chatting componet에 준다. 받은정보를 이용해 서버의 room 정보를 준다.
 
 		socket.emit('joinRoom', { roomName });
-		console.log('client room join');
-
-		// socket.on('overlapUser', () => {
-		// 	console.log('this is ....');
-		// 	//socket.disconnect();
-		// });
 	}, []);
+	useEffect(() => {
+		socket.on('receiveParticipants', (value) => {
+			setParticipant(value.countParticipants);
+		});
+	});
 	//socket으로 받은 메세지를 render하는 chatting state에 추가
 	function receivedMessage(message) {
 		setMessages((oldMsgs) => [...oldMsgs, message]);
@@ -67,11 +67,10 @@ const ChattingContainer = () => {
 	//message 입력후 server로 socket을 날려주는 이벤트
 	const sendMessageEnterEvent = (e) => {
 		e.preventDefault();
-		const inputBox = document.getElementById('chatInput');
-		if (inputBox.value === '') {
+		if (chatInput.current.value === '') {
 			return;
 		}
-		inputBox.value = '';
+		chatInput.current.value = '';
 		setMessage('');
 		socket.emit('sendMessage', { message: message });
 	};
@@ -88,7 +87,7 @@ const ChattingContainer = () => {
 		if (avatarPopover) {
 			const token = localStorage.getItem('token');
 			axios
-				.get('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
+				.get('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/avatars', {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -97,7 +96,6 @@ const ChattingContainer = () => {
 					setAvatars(res?.data);
 				});
 		}
-		//socket.emit('changeAvartar', {});
 	}
 	//나열된 avartar들 중 하나를 클릭하면 해당 url을 server에 전달
 	function changeAvartarClickEvent(e) {
@@ -106,7 +104,7 @@ const ChattingContainer = () => {
 
 		axios
 			.patch(
-				'http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/user/profile',
 				{
 					avatar_id: e.target.parentNode.id,
 				},
@@ -141,6 +139,7 @@ const ChattingContainer = () => {
 		}
 		document.body.removeChild(tempTextArea);
 	}
+
 	return (
 		<Chatting
 			sendMessageEnterEvent={sendMessageEnterEvent}
@@ -151,6 +150,9 @@ const ChattingContainer = () => {
 			copyLinkClickEvent={copyLinkClickEvent}
 			changeAvartarClickEvent={changeAvartarClickEvent}
 			myinfo={myinfo}
+			chatPg={chatPg}
+			chatInput={chatInput}
+			participant={participant}
 		/>
 	);
 };

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import styled, { css } from 'styled-components';
 import Video from '../components/Video';
+import Loading from '../components/Loading';
 import Chat from '../containers/chattingContainer';
 import { useHistory } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -10,23 +11,23 @@ import { faArrowLeft, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faComments as faCommentsRegular } from '@fortawesome/free-regular-svg-icons';
 import { faComments as faCommentsSolid } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import videojs from 'video.js';
+import { useSelector } from 'react-redux';
 library.add(faComments, faCommentsRegular, faCommentsSolid);
 
 const Container = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 
-	@media (max-width: 375px) {
+	/* pc 줄었을 때 */
+	@media (max-width: 1024px) {
 		display: grid;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
 		display: flex;
-	}
-
-	@media (min-width: 668px) and (max-width: 960px) {
-		display: grid;
 	}
 `;
 
@@ -49,7 +50,8 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* pc 줄었을 때 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 65vh;
 		${(props) => {
@@ -66,8 +68,8 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-
-	@media (min-width: 376px) and (max-width: 667px) {
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 80%;
 		height: 100vh;
 		${(props) => {
@@ -85,14 +87,14 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-
-	@media (min-width: 668px) and (max-width: 960px) {
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
 		width: 100%;
-		height: 65vh;
+		height: 100vh;
 		${(props) => {
 			if (props.ChatToggleState) {
 				return css`
-					height: 65vh;
+					height: 100vh;
 					transition: height 0.3s;
 				`;
 			} else {
@@ -109,7 +111,6 @@ const ChatWrqp = styled.div`
 	width: 20%;
 	height: 100vh;
 	font-size: 20px;
-	background-color: red;
 
 	${(props) => {
 		if (props.ChatToggleState) {
@@ -123,19 +124,16 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	@media (max-width: 375px) {
+	/* pc 줄었을 때 */
+	@media (max-width: 1024px) {
 		width: 100%;
 		height: 35vh;
 	}
 
-	@media (min-width: 376px) and (max-width: 667px) {
-		width: 20%;
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		width: 30%;
 		height: 100vh;
-	}
-
-	@media (min-width: 668px) and (max-width: 960px) {
-		width: 100%;
-		height: 35vh;
 	}
 `;
 
@@ -153,45 +151,101 @@ const BackBtn = styled.div`
 	padding: 5px;
 	padding-left: 25px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const ChatToggle = styled.div`
 	padding: 5px;
 	padding-right: 20px;
 	cursor: pointer;
+	&:hover {
+		color: gray;
+		/* opacity: 0.4; */
+	}
+	/* 스마트폰 가로 */
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding-top: 0;
+	}
 `;
 
 const token = localStorage.getItem('token');
 
-const socket = io.connect('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000', {
-	query: 'token=' + token,
-});
-export { socket };
-
 const StreamingPage = () => {
-	// 	const a = useParams();
-	//   console.log(a);
-
 	const [videoUrl, setVideoUrl] = useState(null);
 	const [chatState, setChatState] = useState(true);
 	const history = useHistory();
-	const goToBack = () => {
+	const [socketIo, setSocketIO] = useState();
+	const videoPlayerRef = useRef(null);
+	const storeState = useSelector((state) => state.changeDetaildata, []);
+
+	//뒤로 가기 버튼 함수
+	const goToBack = async () => {
+		try {
+			//뒤로 가기 버튼을 누를때, 소켓과의 연결 x
+			socketIo.disconnect();
+			const player = videojs(videoPlayerRef.current);
+
+			//유저가 본 영상의 마지막 시간을 기록하기 위한 함수
+			const currentTime = player.currentTime();
+			await axios.post(
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
+				{
+					video_id: storeState.id,
+					endTime: currentTime,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		} catch (error) {}
+
 		history.push(`/`);
-		history.go(0);
 	};
+	//url 주소를 가져오기 위한 상수 선언
 	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {
-		console.log('roomName:', roomName);
+		let socketIO = io.connect(
+			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000',
+			{
+				query: 'token=' + token,
+			},
+		);
+
+		setSocketIO(socketIO);
+		socketIO.on('overlapUser', (value) => {
+			socketIO.disconnect();
+			history.push(`/warn`);
+		});
 		axios
-			.get(`http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
+			.get(`http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms/${roomName}`, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				},
 			})
 			.then((res) => setVideoUrl(res.data))
 
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+				socketIO.disconnect();
+				history.push('/');
+			});
+	}, []);
+
+	// 링크로 스트리밍페이지 접속시 로그인여부확인하는 react의 Effect Hook함수
+	useEffect(() => {
+		let LoginChecking = localStorage.getItem('token');
+		if (!LoginChecking) {
+			history.push(`/`);
+		}
 	}, []);
 
 	return (
@@ -219,19 +273,23 @@ const StreamingPage = () => {
 								)}
 							</ChatToggle>
 						</VideoIcon>
-						<Video videoUrl={videoUrl}></Video>
+						<Video
+							videoUrl={videoUrl}
+							videoPlayerRef={videoPlayerRef}
+							socket={socketIo}
+							history={history}
+						></Video>
 					</VideoWrap>
 
 					<ChatWrqp ChatToggleState={chatState}>
-						<Chat socket={socket}></Chat>
+						<Chat socket={socketIo}></Chat>
 					</ChatWrqp>
 				</>
 			) : (
-				<div>loading</div>
+				<Loading></Loading>
 			)}
 		</Container>
 	);
 };
 
 export default StreamingPage;
-//401 페이지 만들기

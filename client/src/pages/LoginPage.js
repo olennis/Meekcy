@@ -76,18 +76,17 @@ const LoginStrongText = styled.span`
 
 const LoginBtn = styled.div``;
 
-const Login = (props) => {
+const Login = () => {
 	const dispatch = useDispatch();
 
+	// googleLogin으로 전달받은 토큰을 서버로 전달 후 서버에서 전달받은 JWT토큰을 localstorage에 저장하는 함수
 	const responseGoogle = (res) => {
 		axios
-			.post('http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth', {
-				//http://ec2-15-164-214-96.ap-northeast-2.compute.amazonaws.com:4000/auth     http://localhost:4000/auth
+			.post('http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/auth', {
 				id_token: res.tokenId,
 			})
 			.then(function (response) {
 				localStorage.setItem('token', response.data.token);
-
 				// isLogin 상태값을 true로 변경한다.
 				dispatch(loginCheck());
 			})

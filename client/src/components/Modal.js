@@ -64,12 +64,6 @@ const BGIMG = styled.div`
 	}
 `;
 
-const Footer = styled.div`
-	@media (max-width: 823px) and (max-height: 540px) {
-		grid-area: footer;
-		/* background-color: green; */
-	}
-`;
 const PlayBtn = styled.button`
 	width: 130px;
 	height: 40px;
@@ -138,9 +132,13 @@ const PreviewBtn = styled.button`
 `;
 
 const NewModal = ({ changeModalFalse }) => {
+	//모달 데이터를 가져오기 위한 리덕스 스토어
 	const storeState = useSelector((state) => state.changeDetaildata, []);
+
+	//streming page로 가기 위한 history 선언
 	const history = useHistory();
 
+	//비디오 룸을 만들어주기 위한 함수
 	const createRoom = () => {
 		let token = localStorage.getItem('token');
 
@@ -148,10 +146,11 @@ const NewModal = ({ changeModalFalse }) => {
 			.post(
 				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
-					video_id: storeState.id,
+					video_id: storeState.id, //비디오 id가 겹치면 안되기 때문에 id 보냄
 					end_time: 0,
 				},
 				{
+					//bearer 요청을 위한 헤더 세팅
 					headers: {
 						Authorization: `Bearer ${token}`,
 						'Content-Type': 'application/json',
@@ -159,6 +158,7 @@ const NewModal = ({ changeModalFalse }) => {
 				},
 			)
 			.then((res) => {
+				//응답이 오면 응답의 roomname데이터를 받아서 페이지 이동
 				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {
@@ -170,10 +170,10 @@ const NewModal = ({ changeModalFalse }) => {
 	};
 
 	const playButton = () => {
-		changeModalFalse();
-		createRoom();
+		changeModalFalse(); //모달 상태 변경
+		createRoom(); // 방 생성
 	};
-
+	//모달 상태를 가져오는 리덕스 스토어
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
 	// themoviedb api 영상불러오기

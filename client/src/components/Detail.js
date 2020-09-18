@@ -111,6 +111,7 @@ const Description = styled.div`
 		width: 100vw;
 	}
 `;
+
 const PreVideo = styled.div`
 	width: 50vw;
 	height: 45vh;
@@ -147,6 +148,8 @@ const Detail = ({ changeModalFalse }) => {
 	const videoPlayerRef = useRef(null);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	const [size, setSize] = useState([]);
+
+	//videojs option
 	const options = {
 		autoplay: true,
 		controls: false,
@@ -160,9 +163,10 @@ const Detail = ({ changeModalFalse }) => {
 	};
 
 	useEffect(() => {
-		const player = videojs(videoPlayerRef.current, options);
+		videojs(videoPlayerRef.current, options);
 	}, []);
 
+	// 윈도우 화면이 변경 될 때 실행되는 함수
 	const useWindowSize = () => {
 		useLayoutEffect(() => {
 			function updateSize() {

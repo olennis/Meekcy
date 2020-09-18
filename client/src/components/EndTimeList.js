@@ -18,6 +18,7 @@ const EndTimeList = ({ setDetailAction, changeModalTrue, changeModalFalse, Endmo
 			<Container>
 				<Section title="시청중인 컨텐츠">
 					{Endmovie.map((movie, index) => {
+						//api가 다르기 때문에 렌더하는 값을 다르게 하기 위한 객체 설정
 						let favoriteMovie = {
 							id: movie.video.id,
 							poster_path: movie.video.thumbnail,

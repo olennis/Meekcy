@@ -56,14 +56,16 @@ const HeaderRightWrap = styled.div`
 const Participant = styled.span`
 	padding: 2px 2% 2px 2%;
 	font-size: 8px;
+	min-width: 20px;
 	width: 35px;
 	border: solid 1px white;
 	border-radius: 8px;
 	position: relative;
-	left: 90%;
-	right: 0;
+	left: 85%;
+	margin-right: 5%;
+	right: 5px;
 	bottom: 5px;
-	margin: 0 5% 6vh 0;
+	margin: 0 5px 6vh 0;
 	@media (max-width: 823px) and (max-height: 540px) {
 		margin: 0 3% 5vh 0;
 	}
@@ -287,7 +289,7 @@ const Chatting = ({
 			<ChatForm onSubmit={sendMessageEnterEvent} autoComplete="off">
 				<Participant className="Participant">
 					<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-					{participant}
+					{` ${participant}`}
 				</Participant>
 				<ChatInputDiv className="form__group field">
 					<ChatFormInput

@@ -7,6 +7,7 @@ import 'videojs-contrib-quality-levels';
 import videojsqualityselector from 'videojs-hls-quality-selector';
 import 'video.js/dist/video-js.css';
 import '@silvermine/videojs-quality-selector';
+
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -14,6 +15,11 @@ import axios from 'axios';
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
+	@media (min-width: 0) {
+		.vjs-big-play-centered .vjs-big-play-button {
+			display: none;
+		}
+	}
 `;
 
 const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
@@ -38,13 +44,13 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
-	const saveVideoHistory = async () => {
+	const saveVideoHistory = () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
 		let player = videojs(videoPlayerRef.current);
 		let currentTime = player.currentTime();
 
-		await axios.post(
+		axios.post(
 			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 			{
 				video_id: storeState.id,
@@ -56,7 +62,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			},
 		);
-		history.push('/');
+		history.go(0);
 	};
 
 	useEffect(() => {
@@ -65,7 +71,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				forward: 10,
 				back: 10,
 			});
-
 			player.qualityLevels();
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
@@ -90,15 +95,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			player.controlBar.progressControl.children_[0].on('click', () => {
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
 			});
-
-			player.ready(() => {
-				player.controlBar.seekBack.on('click', () => {
-					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
-				});
-				player.controlBar.seekForward.on('click', () => {
-					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
-				});
-			});
 		});
 	}, []);
 
@@ -119,6 +115,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 
 		// url로 스트리밍화면 진입한 사람에게 현재 video 시간을 알려주는 트리거 역할
 		socket.on('currentVideoPosition', ({ target }) => {
+			console.dir(player);
 			socket.emit('sendCurrentVideoPosition', {
 				currentTime: player.currentTime(),
 				target,
@@ -128,17 +125,27 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	}, []);
 
 	useEffect(() => {
-		window.addEventListener('beforeunload', saveVideoHistory);
-		window.history.pushState(null, '', window.location.href);
-		window.onpopstate = () => {
-			history.go(1);
-			saveVideoHistory();
-		};
+		window.addEventListener('beforeunload', async function (event) {
+			socket.disconnect();
+			const token = localStorage.getItem('token');
+			const player = videojs(videoPlayerRef.current);
+			const currentTime = player.currentTime();
 
-		return () => {
-			window.removeEventListener('beforeunload', saveVideoHistory);
-			window.onpopstate = null;
-		};
+			await axios.post(
+				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
+				{
+					video_id: storeState.id,
+					endTime: currentTime,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		});
+
+		return saveVideoHistory;
 	}, []);
 
 	useEffect(() => {
@@ -164,7 +171,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			}
 		}
 	}
-
 	return (
 		<Container>
 			<video

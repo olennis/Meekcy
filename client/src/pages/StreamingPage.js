@@ -20,12 +20,15 @@ const Container = styled.div`
 	height: 100%;
 	display: flex;
 
-	/* pc 줄었을 때 */
+	/* 스마트폰 세로 */
 	@media (max-width: 1024px) {
 		display: grid;
 	}
 
-	/* 스마트폰 가로 */
+	/* @media (min-width: 376px) and (max-width: 667px) {
+		display: flex;
+	} */
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		display: flex;
 	}
@@ -50,7 +53,7 @@ const VideoWrap = styled.div`
 		}
 	}}
 
-	/* pc 줄었을 때 */
+	/* 스마트폰 세로 */
 	@media (max-width: 1024px) {
 		width: 100%;
 		height: 65vh;
@@ -68,7 +71,7 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-	/* 스마트폰 가로 */
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 80%;
 		height: 100vh;
@@ -87,7 +90,7 @@ const VideoWrap = styled.div`
 			}
 		}}
 	}
-	/* 스마트폰 가로 */
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 100%;
 		height: 100vh;
@@ -124,13 +127,17 @@ const ChatWrqp = styled.div`
 		}
 	}}
 
-	/* pc 줄었을 때 */
+	/* 스마트폰 세로 */
 	@media (max-width: 1024px) {
 		width: 100%;
 		height: 35vh;
 	}
 
-	/* 스마트폰 가로 */
+	/* @media (min-width: 376px) and (max-width: 667px) {
+		width: 20%;
+		height: 100vh;
+	} */
+
 	@media (max-width: 823px) and (max-height: 540px) {
 		width: 30%;
 		height: 100vh;
@@ -153,8 +160,8 @@ const BackBtn = styled.div`
 	cursor: pointer;
 	&:hover {
 		color: gray;
+		/* opacity: 0.4; */
 	}
-	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		padding-top: 0;
 	}
@@ -168,7 +175,6 @@ const ChatToggle = styled.div`
 		color: gray;
 		/* opacity: 0.4; */
 	}
-	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		padding-top: 0;
 	}
@@ -184,14 +190,10 @@ const StreamingPage = () => {
 	const videoPlayerRef = useRef(null);
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 
-	//뒤로 가기 버튼 함수
 	const goToBack = async () => {
 		try {
-			//뒤로 가기 버튼을 누를때, 소켓과의 연결 x
 			socketIo.disconnect();
 			const player = videojs(videoPlayerRef.current);
-
-			//유저가 본 영상의 마지막 시간을 기록하기 위한 함수
 			const currentTime = player.currentTime();
 			await axios.post(
 				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
@@ -209,7 +211,6 @@ const StreamingPage = () => {
 
 		history.push(`/`);
 	};
-	//url 주소를 가져오기 위한 상수 선언
 	const roomName = history.location.pathname.substring(7);
 
 	useEffect(() => {

@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-//영화 데이터를 받아오기 위한 요청 생성
 const api = axios.create({
 	baseURL: 'https://api.themoviedb.org/3/',
 	params: {
@@ -9,7 +8,20 @@ const api = axios.create({
 	},
 });
 
-//영화 데이터를 받아오기 위한 get 요청
 export const moviesApi = {
 	nowPlaying: () => api.get('movie/now_playing'),
+	upcoming: () => api.get('movie/upcoming'),
+	popular: () => api.get('movie/popular'),
+	movieDetail: (id) =>
+		api.get(`movie/${id}`, {
+			params: {
+				append_to_response: 'videos',
+			},
+		}),
+	search: (term) =>
+		api.get('search/movie', {
+			params: {
+				query: encodeURIComponent(term),
+			},
+		}),
 };

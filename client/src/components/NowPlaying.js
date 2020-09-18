@@ -8,24 +8,20 @@ import styled from 'styled-components';
 const Container = styled.div`
 	padding-left: 15px;
 	padding-top: 20px;
-	/** 스마트폰 가로 */
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		padding-left: 30;
 	}
-	/**스마트폰 세로 */
 	@media (max-width: 540px) {
 		text-align: center;
 	}
 `;
-
 const NowPlaying = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
-	//영화 데이터를 set 하기 위한 useState
 	const [movie, setMovie] = useState(null);
 
 	useEffect(() => {
-		//영화 데이터를 받아오기 위한 Api
-		moviesApi.nowPlaying().then((res) => {
-			setMovie(res);
+		moviesApi.nowPlaying().then((response) => {
+			setMovie(response);
 		});
 	}, []);
 
@@ -35,7 +31,6 @@ const NowPlaying = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 			<Container>
 				<Section title="Now Playing">
 					{movie?.data.results.map((movie, index) => {
-						//api가 다르기 때문에 렌더하는 값을 다르게 하기 위한 객체 설정
 						let listMovie = {
 							id: movie.id,
 							poster_path: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,

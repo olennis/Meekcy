@@ -1,13 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useSelector } from 'react';
 import videojs from 'video.js';
 import seekButtons from 'videojs-seek-buttons';
 import 'videojs-contrib-quality-levels';
 import videojsqualityselector from 'videojs-hls-quality-selector';
 import 'video.js/dist/video-js.css';
 import '@silvermine/videojs-quality-selector';
-
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -15,16 +12,13 @@ import axios from 'axios';
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
-	@media (min-width: 0) {
-		.vjs-big-play-centered .vjs-big-play-button {
-			display: none;
-		}
-	}
 `;
 
 const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
+	//모달 데이터를 가져오기 위한 리덕스 스토어
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	//videojs options추가,m3u8 샘플 찾아서 구현
+
+	//videojs option
 	const options = {
 		controls: true,
 		muted: false,
@@ -67,15 +61,26 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 
 	useEffect(() => {
 		let player = videojs(videoPlayerRef.current, options, () => {
+			//영상 플레이어 구축 videojs(id,option,callback)
+
 			player.seekButtons({
+				//앞으로 가기, 뒤로가기 버튼
 				forward: 10,
 				back: 10,
 			});
-			player.qualityLevels();
+
+			player
+				.qualityLevels
+				//화질 만들기
+				();
+
+			//화질 선택 버튼 만들기
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
 				displayCurrentQuality: false,
 			});
+
+			//리덕스에서 endTime 가져옴
 			if (storeState.endTime) {
 				player.currentTime(storeState.endTime);
 			}

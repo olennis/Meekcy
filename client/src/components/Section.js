@@ -5,6 +5,7 @@ const Container = styled.div`
 	:not(:last-child) {
 		margin-bottom: 50px;
 	}
+	/* 스마트폰 세로 */
 	@media (max-width: 375px) {
 		margin-top: 30px;
 	}
@@ -34,6 +35,7 @@ const Grid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 125px);
 	grid-gap: 25px;
+	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
 		justify-content: center;
 	}

@@ -29,7 +29,6 @@ const ChattingContainer = ({ socket }) => {
 	useEffect(() => {
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
-			console.log(value);
 			//scroll
 			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});

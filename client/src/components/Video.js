@@ -44,6 +44,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
+	//마지막 비디오 실행시간을 저장 하기위한 server와의 API 통신을 하는 함수
 	const saveVideoHistory = () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
@@ -112,6 +113,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		});
 	}, []);
 
+	//다른 이용자가 재생위치 변경, 동영상시작, 멈추는 행위를 했을때 발생하는 이벤트
 	useEffect(() => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
@@ -138,6 +140,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		});
 	}, []);
 
+	//브라우저 강제종료시 발생하는 이벤트처리를 위한 useEffect
 	useEffect(() => {
 		window.addEventListener('beforeunload', async function (event) {
 			socket.disconnect();

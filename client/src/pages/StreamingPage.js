@@ -212,6 +212,7 @@ const StreamingPage = () => {
 	//url 주소를 가져오기 위한 상수 선언
 	const roomName = history.location.pathname.substring(7);
 
+	//socket 연결을 위해 connect 시켜주는 useEffect
 	useEffect(() => {
 		let socketIO = io.connect(
 			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000',
@@ -219,8 +220,9 @@ const StreamingPage = () => {
 				query: 'token=' + token,
 			},
 		);
-
 		setSocketIO(socketIO);
+
+		//이미 방에 들어간 유저가 다른 방에 접속했을때 발생하는 이벤트
 		socketIO.on('overlapUser', (value) => {
 			socketIO.disconnect();
 			history.push(`/warn`);

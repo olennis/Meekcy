@@ -24,7 +24,6 @@ const Container = styled.div`
 
 const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
-	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
 		controls: true,
 		muted: true,
@@ -66,8 +65,6 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	};
 
 	useEffect(() => {
-		//리액트일때 사용법 찾기
-		//옵션값 넣는 법 찾기
 		let player = videojs(videoPlayerRef.current, options, () => {
 			player.on('ended', () => {
 				console.log('ended');
@@ -108,6 +105,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
 			player.currentTime(value.currentTime);
+			// url로 중간에 스트리밍화면에 진입한 유저에게 재생상태에 맞춰 비디오 컨트롤
 			if (value.status === 'play') {
 				player.play();
 			}
@@ -119,9 +117,13 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			player.pause();
 		});
 
-		// url로 스트리밍화면 진입한 사람에게 현재 video 시간을 알려주는 트리거 역할
+		/* 
+			@Description  url로 스트리밍화면에 진입한 사람에게 현재 동영상 위치를 알려주는 기능
+		                  서버가 임의의 유저를 고른 대상만 이벤트가 발생함 
+			@params       { string } target 
+		*/
 		socket.on('currentVideoPosition', ({ target }) => {
-			console.dir(player);
+			// target(url 진입한 소켓 Id) , currentTime(현재 동영상 위치) , status(동영상 재생여부)를 서버에 전달
 			socket.emit('sendCurrentVideoPosition', {
 				currentTime: player.currentTime(),
 				target,

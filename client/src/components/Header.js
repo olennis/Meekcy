@@ -45,6 +45,7 @@ const Header = () => {
 	const dispatch = useDispatch();
 	const logo = useRef(null);
 
+	//list page가 reRandering 됐을때 로고가 안보이는 현상을 막기위한 useEffect
 	useEffect(() => {
 		logo.current.style.cssText = `background-image: url('images/Logo.png')`;
 	}, []);

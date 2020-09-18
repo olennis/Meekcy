@@ -12,7 +12,9 @@ const Container = styled.div`
 		text-align: center;
 	}
 `;
+
 const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
+	//영화 데이터를 set 하기 위한 useState
 	const [movie, setMovie] = useState(null);
 	useEffect(() => {
 		axios
@@ -32,6 +34,7 @@ const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) 
 				<Section title="Recommendation">
 					{movie?.data.map((movie, index) => {
 						let favoriteMovie = {
+							//api가 다르기 때문에 렌더하는 값을 다르게 하기 위한 객체 설정
 							id: movie.id,
 							poster_path: movie.thumbnail,
 							original_title: movie.title,

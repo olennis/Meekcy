@@ -9,13 +9,13 @@ const ChattingContainer = ({ socket }) => {
 	 * state hook style
 	 * avatarPopover : 아바타 설정 popup창 visible상태
 	 * message : 현재 작성 message 저장
-	 * message : 서버에서 받아온 message 저장
+	 * messages : 서버에서 받아온 message 저장
+	 * participant : 참여자들의 수를 저장
 	 */
 	const [avatarPopover, setAvatarVisible] = useState(true);
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState('');
 	const [avatars, setAvatars] = useState([]);
-	const [myinfo, setMyinfo] = useState({});
 	const [participant, setParticipant] = useState(0);
 
 	const chatPg = useRef(null);
@@ -24,22 +24,23 @@ const ChattingContainer = ({ socket }) => {
 	const history = useHistory();
 	const roomName = history.location.pathname.substring(7);
 
-	//message and caption socket.io 통신
+	//message and caption socket.io 통신 useEffect
 	useEffect(() => {
+		//하나의 message 추가.
 		socket.on('receiveMessage', (value) => {
 			receivedMessage(value);
 			//scroll
 			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
+		//이전 message의 모든 정보를 저장
 		socket.on('receiveHistoryMessages', (value) => {
 			setMessages(value);
 			chatPg.current.scrollTop = chatPg.current.scrollHeight;
 		});
 	}, []);
-	//avatar change socket.io 통신
+	//avatar change에 관한 내용을 server에서 받아 message state의 내용을 변경하는 useEffect
 	useEffect(() => {
 		socket.on('receiveChangeAvatar', (value) => {
-			console.log(value);
 			setMessages((oldMsgs) => {
 				const chagedMsg = oldMsgs.map((element) => {
 					if (element.value.id === value.userId) {
@@ -51,21 +52,23 @@ const ChattingContainer = ({ socket }) => {
 			});
 		});
 	}, []);
+	// 해당 방에 접속을 server에서 관리하기 위해
+	// streaming page component에서 room정보를 받아 서버에게 room 정보를 주는 useEffect
 	useEffect(() => {
-		// streaming page component에서 room정보를 받아 chatting componet에 준다. 받은정보를 이용해 서버의 room 정보를 준다.
-
 		socket.emit('joinRoom', { roomName });
 	}, []);
+	//server에서 보내온 참여자의 수를 받아 state값 변경하기 위한 useEffect
 	useEffect(() => {
 		socket.on('receiveParticipants', (value) => {
 			setParticipant(value.countParticipants);
 		});
-	});
-	//socket으로 받은 메세지를 render하는 chatting state에 추가
+	}, []);
+
+	//socket으로 받은 메세지지 state에 추가 하는 함수
 	function receivedMessage(message) {
 		setMessages((oldMsgs) => [...oldMsgs, message]);
 	}
-	//message 입력후 server로 socket을 날려주는 이벤트
+	//message 입력후 server로 socket을 날려주는 이벤트 함수
 	const sendMessageEnterEvent = (e) => {
 		e.preventDefault();
 		if (chatInput.current.value === '') {
@@ -75,13 +78,13 @@ const ChattingContainer = ({ socket }) => {
 		setMessage('');
 		socket.emit('sendMessage', { message: message });
 	};
+
 	//input 창에 text 쓸때마다 현재 메세지 state 변경
 	function handleChange(e) {
 		setMessage(e.target.value);
 	}
-	/**avatar 변경을위한 개인 avartar 클릭시 server에서 avatar들의 url을 받아와 배열에 저장 후
-	 * props로 넘겨주기위해 저장
-	 * popup을 띄어주는
+	/**
+	 * avatar들을 받아 오기위해 server와 API 통신하는 이벤트
 	 */
 	function popoverAvatarClickEvent() {
 		setAvatarVisible(!avatarPopover);
@@ -98,7 +101,7 @@ const ChattingContainer = ({ socket }) => {
 				});
 		}
 	}
-	//나열된 avartar들 중 하나를 클릭하면 해당 url을 server에 전달
+	//	 * avatar 변경을 위해 server와 API 통신하는 이벤트
 	function changeAvartarClickEvent(e) {
 		e.persist();
 		const token = localStorage.getItem('token');
@@ -124,7 +127,7 @@ const ChattingContainer = ({ socket }) => {
 				console.log(err);
 			});
 	}
-	//링크 복사 click event
+	//링크 복사 click event 함수
 	function copyLinkClickEvent() {
 		const tempTextArea = document.createElement('textarea');
 

@@ -21,7 +21,6 @@ const Container = styled.div`
 
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
-
 	float: left;
 	background-size: cover;
 	border-radius: 4px;
@@ -32,6 +31,7 @@ const ModalContent = styled.div`
 	width: 100%;
 	height: 60vh;
 	min-height: 450px;
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		transform: translateY(-16%);
 	}
@@ -48,6 +48,7 @@ const BGIMG = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
+	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		background-color: rgba(0, 0, 0, 0.8);
 		display: grid;
@@ -59,17 +60,12 @@ const BGIMG = styled.div`
 		width: 100%;
 		grid-gap: 10px;
 	}
+	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
 		height: 100vh;
 	}
 `;
 
-const Footer = styled.div`
-	@media (max-width: 823px) and (max-height: 540px) {
-		grid-area: footer;
-		/* background-color: green; */
-	}
-`;
 const PlayBtn = styled.button`
 	width: 130px;
 	height: 40px;
@@ -132,15 +128,20 @@ const PreviewBtn = styled.button`
 	@media (max-width: 540px) {
 		display: none;
 	}
+	/* 스마트폰 소형 */
 	@media (max-width: 300px) {
 		display: none;
 	}
 `;
 
 const NewModal = ({ changeModalFalse }) => {
+	//모달 데이터를 가져오기 위한 리덕스 스토어
 	const storeState = useSelector((state) => state.changeDetaildata, []);
+
+	//streming page로 가기 위한 history 선언
 	const history = useHistory();
 
+	//비디오 룸을 만들어주기 위한 함수
 	const createRoom = () => {
 		let token = localStorage.getItem('token');
 
@@ -148,10 +149,11 @@ const NewModal = ({ changeModalFalse }) => {
 			.post(
 				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/rooms',
 				{
-					video_id: storeState.id,
+					video_id: storeState.id, //비디오 id가 겹치면 안되기 때문에 id 보냄
 					end_time: 0,
 				},
 				{
+					//bearer 요청을 위한 헤더 세팅
 					headers: {
 						Authorization: `Bearer ${token}`,
 						'Content-Type': 'application/json',
@@ -159,10 +161,12 @@ const NewModal = ({ changeModalFalse }) => {
 				},
 			)
 			.then((res) => {
+				//응답이 오면 응답의 roomname데이터를 받아서 페이지 이동
 				history.push(`/rooms/${res.data.roomname}`);
 			})
 			.catch((err) => {
 				console.log(err);
+				// 이미 방에 참여중인 유저가 ListPage에서 새로운 방 생성시 알람설정
 				alert(
 					'2개 이상의 브라우저나 탭에서 Meekcy를 이용하고 계십니다. 필요없는 브라우저나 탭을 닫으신 후 페이지를 다시 로드해 주세요.',
 				);
@@ -170,13 +174,13 @@ const NewModal = ({ changeModalFalse }) => {
 	};
 
 	const playButton = () => {
-		changeModalFalse();
-		createRoom();
+		changeModalFalse(); //모달 상태 변경
+		createRoom(); // 방 생성
 	};
-
+	//모달 상태를 가져오는 리덕스 스토어
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
-	// themoviedb api 영상불러오기
+	// 예고편버튼에 trailer가 있는 경우 trailer를 적용하고 없는 경우 youtube로 연결
 	let trailer = storeState.trailer || 'https://www.youtube.com';
 
 	return (

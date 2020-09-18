@@ -7,7 +7,6 @@ import 'videojs-contrib-quality-levels';
 import videojsqualityselector from 'videojs-hls-quality-selector';
 import 'video.js/dist/video-js.css';
 import '@silvermine/videojs-quality-selector';
-
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -72,6 +71,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				forward: 10,
 				back: 10,
 			});
+
 			player.qualityLevels();
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
@@ -95,6 +95,15 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 
 			player.controlBar.progressControl.children_[0].on('click', () => {
 				socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+			});
+
+			player.ready(() => {
+				player.controlBar.seekBack.on('click', () => {
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
+				player.controlBar.seekForward.on('click', () => {
+					socket.emit('sendChangeSeeked', { currentTime: player.currentTime() });
+				});
 			});
 		});
 	}, []);
@@ -161,6 +170,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			}
 		}
 	}
+
 	return (
 		<Container>
 			<video

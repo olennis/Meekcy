@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chatting from '../components/Chat';
-//import { socket } from '../pages/StreamingPage';
 import { message as antdM } from 'antd';
 import axios from 'axios';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const ChattingContainer = ({ socket }) => {
 	/**

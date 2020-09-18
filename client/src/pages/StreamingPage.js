@@ -241,7 +241,6 @@ const StreamingPage = () => {
 				history.push('/');
 			});
 	}, []);
-	useEffect(() => {}, []);
 
 	useEffect(() => {
 		let LoginChecking = localStorage.getItem('token');

@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	width: 100%;
+	position: relative;
+	width: 100vw;
 	height: 100vh;
 	background: #262626;
+	overflow: hidden;
 `;
 
 const IconWrap = styled.div`
@@ -26,6 +28,23 @@ const IconWrap = styled.div`
 	text-transform: uppercase;
 	text-shadow: 0 0 10px #900c3f;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	@media (max-width: 823px) and (max-height: 540px) {
+		width: 50%;
+		height: 90%;
+		line-height: 150px;
+		border: 0px none;
+		margin-left: 2%;
+		margin-bottom: 10%;
+		border-radius: 0;
+		box-shadow: none;
+	}
+	@media (max-width: 540px) {
+		border: 0px none;
+		margin-left: 2%;
+		margin-bottom: 10%;
+		border-radius: 0;
+		box-shadow: none;
+	}
 `;
 
 const Message = styled.div`
@@ -43,6 +62,18 @@ const Message = styled.div`
 	letter-spacing: 4px;
 	text-transform: uppercase;
 	line-height: 1.5;
+	@media (max-width: 823px) and (max-height: 540px) {
+		top: 63%;
+		width: 40%;
+		height: 50%;
+		font-size: 13px;
+	}
+	@media (max-width: 540px) {
+		top: 70%;
+		font-size: 11px;
+		width: 100%;
+		padding: 0 5% 0 5%;
+	}
 `;
 
 const Warning = () => {

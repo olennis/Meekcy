@@ -1,48 +1,102 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Popover, Avatar } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.dark.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip, faUser, faUserCircle, faShare } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = styled.div`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	position: relative;
+	background-color: #1f1f1f;
 `;
 const ChatHeader = styled.div`
 	width: 100%;
 	display: flex;
+	border-radius: 3px;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #333333;
+	background-color: #0d0d0d;
 	line-height: 1.8;
-`;
-const ChatHeaderTitle = styled.span`
-	@media (min-width: 376px) and (max-width: 667px) {
-		display: none;
+	@media (min-width: 961px) and (max-width: 1291px) {
+		justify-content: space-between;
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		justify-content: space-between;
+		font-size: 13px;
+		display: block;
+		height: 5%;
+		padding: 4% 0 3% 0;
+		margin: 0;
+		width: 100%;
+	}
+	&:hover {
+		border-bottom: 1px solid #b5b5b5;
 	}
 `;
-const HeaderLeftWrap = styled.div`
-	display: flex;
-	font-size: 14px;
+const ChatHeaderTitle = styled.span`
+	margin-right: 3px;
 `;
-const Participant = styled.div`
-	@media (min-width: 376px) and (max-width: 667px) {
-		display: none;
+const HeaderRightWrap = styled.div`
+	width: 100%;
+	display: flex;
+	font-size: 20px;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 4%;
+
+	@media (max-width: 823px) and (max-height: 540px) {
+		height: 10px;
+		font-size: 10px;
+		padding-bottom: 1%;
+	}
+`;
+const Participant = styled.span`
+	padding: 2px 2% 2px 2%;
+	font-size: 8px;
+	width: 35px;
+	border: solid 1px white;
+	border-radius: 8px;
+	position: relative;
+	left: 90%;
+	right: 0;
+	bottom: 5px;
+	margin: 0 5% 6vh 0;
+	@media (max-width: 823px) and (max-height: 540px) {
+		margin: 0 3% 5vh 0;
 	}
 `;
 const ClipWrap = styled.div`
 	cursor: pointer;
-	padding: 0px 15px 0px 20px;
+	padding: 0px 15px 0px 0px;
+	&:hover {
+		color: gray;
+	}
+	@media (max-width: 823px) and (max-height: 540px) {
+		padding: 5px 4px 4px 15px;
+		size: 5px;
+	}
 `;
 const ChatHeaderProfile = styled(Popover)`
 	margin-right: 20px;
+	cursor: pointer;
+	&:hover {
+		color: gray;
+	}
 `;
+const ChatHeaderProfileButton = styled(Avatar)`
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 1px;
+	}
 
+	height: 30px;
+	width: 30px;
+`;
 const ChatChatpg = styled.div`
 	flex: 1;
-	overflow: scroll;
+	overflow: auto;
 	padding: 10px 0px;
 `;
 const ChatChatpgMessage = styled.div`
@@ -50,50 +104,88 @@ const ChatChatpgMessage = styled.div`
 	align-items: center;
 	padding: 5px 0px 5px 10px;
 	word-break: break-word;
-	@media (min-width: 376px) and (max-width: 667px) {
-		overflow: auto;
-		overflow-x: hidden;
+	@media (max-width: 823px) and (max-height: 540px) {
 	}
 `;
 const MessageProfile = styled(Avatar)`
 	min-width: 30px;
 	min-height: 30px;
+	width: 30px;
+	height: 30px;
+	color: red;
+	@media (max-width: 823px) and (max-height: 540px) {
+		min-width: 20px;
+		min-height: 20px;
+		width: 20px;
+		height: 20px;
+	}
 `;
 const MessageText = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	padding-left: 5px;
 `;
-const MessageTextName = styled.div``;
+const MessageTextName = styled.div`
+	margin-bottom: 2%;
+	font-size: 14px;
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 10px;
+	}
+`;
 const MessageTextExplain = styled.div`
 	width: 100%;
 `;
 const MessageTextChating = styled.div`
 	font-size: 14px;
+	color: #b5b5b5;
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 10px;
+	}
 `;
 const MessageTextCaption = styled.div`
 	font-size: 12px;
 	color: gray;
 `;
-const ChatForm = styled.form``;
+const ChatForm = styled.form`
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+`;
 const ChatFormInput = styled.input`
 	border-left-width: 0;
 	border-right-width: 0;
 	border-top-width: 0;
 	border-bottom-width: 1;
-	background-color: #333333;
+	background-color: #0d0d0d;
 	font-size: 18px;
+	border-radius: 3px;
 	border-bottom: 1.2px solid;
 	width: 100%;
 	height: 4vh;
-	padding: 3px 5px 3px 10px;
+	padding: 5px 5px 7px 10px;
+
+	/* word-break: break-word; */
+	margin: 1px;
+	&:focus::placeholder {
+		color: transparent;
+	}
 	&:focus {
 		outline: none;
+		height: 8vh;
+		padding-top: 20px;
+		padding-bottom: 100px;
 	}
-	@media (min-width: 376px) and (max-width: 667px) {
-		font-size: 13px;
+
+	&:hover {
+		border-bottom: 1px solid #900c3f;
+	}
+
+	@media (max-width: 823px) and (max-height: 540px) {
+		font-size: 11px;
+		height: 4vh;
+		padding: 3% 0 3% 3%;
 	}
 `;
+
 const Chatting = ({
 	sendMessageEnterEvent,
 	chatList,
@@ -110,35 +202,37 @@ const Chatting = ({
 	return (
 		<Chat>
 			<ChatHeader>
-				<HeaderLeftWrap>
+				<HeaderRightWrap>
 					<ClipWrap onClick={copyLinkClickEvent}>
 						<FontAwesomeIcon icon={faPaperclip} size={'1x'} />
 					</ClipWrap>
-					<Participant>
-						<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-						{` ${participant}`}
-					</Participant>
-				</HeaderLeftWrap>
-				<ChatHeaderTitle>Meekcy Party</ChatHeaderTitle>
-				<ChatHeaderProfile
-					content={avatars.map((value, index) => {
-						return (
-							<Avatar
-								key={index}
-								size="32"
-								id={value.id}
-								src={value.url}
-								onClick={changeAvartarClickEvent}
-							></Avatar>
-						);
-					})}
-					placement="left"
-					title="Avatar"
-					trigger="click"
-				>
-					<FontAwesomeIcon icon={faUserCircle} onClick={popoverAvatarClickEvent}></FontAwesomeIcon>
-				</ChatHeaderProfile>
+					<ChatHeaderTitle>MEEKCY</ChatHeaderTitle>
+
+					<ChatHeaderProfile
+						content={avatars.map((value, index) => {
+							return (
+								<ChatHeaderProfileButton
+									key={index}
+									size="32"
+									id={value.id}
+									src={value.url}
+									onClick={changeAvartarClickEvent}
+								></ChatHeaderProfileButton>
+							);
+						})}
+						placement="left"
+						title="Avatar"
+						trigger="click"
+					>
+						<FontAwesomeIcon
+							icon={faUserCircle}
+							onClick={popoverAvatarClickEvent}
+							size={'1x'}
+						></FontAwesomeIcon>
+					</ChatHeaderProfile>
+				</HeaderRightWrap>
 			</ChatHeader>
+
 			<ChatChatpg id="chatpg" ref={chatPg}>
 				{chatList.map(({ value }, index) => {
 					return (
@@ -159,6 +253,10 @@ const Chatting = ({
 				})}
 			</ChatChatpg>
 			<ChatForm onSubmit={sendMessageEnterEvent} autoComplete="off">
+				<Participant className="Participant">
+					<FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+					{participant}
+				</Participant>
 				<ChatFormInput
 					id="chatInput"
 					onChange={handleChange}

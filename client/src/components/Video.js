@@ -20,10 +20,8 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 	const storeState = useSelector((state) => state.changeDetaildata, []);
 	//videojs options추가,m3u8 샘플 찾아서 구현
 	const options = {
-		fluid: true,
 		controls: true,
 		muted: true,
-		aspectRatio: '16:9',
 		sources: [
 			{
 				src: `${videoUrl.url}`,
@@ -40,14 +38,13 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			],
 		},
 	};
-
-	const saveVideoHistory = () => {
+	const saveVideoHistory = async () => {
 		socket.disconnect();
 		let token = localStorage.getItem('token');
 		let player = videojs(videoPlayerRef.current);
 		let currentTime = player.currentTime();
 
-		axios.post(
+		await axios.post(
 			'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
 			{
 				video_id: storeState.id,
@@ -59,7 +56,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 				},
 			},
 		);
-		history.go(0);
+		history.push('/');
 	};
 
 	useEffect(() => {
@@ -78,7 +75,7 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 			player.qualityLevels();
 			player.hlsQualitySelector = videojsqualityselector;
 			player.hlsQualitySelector({
-				displayCurrentQuality: true,
+				displayCurrentQuality: false,
 			});
 			if (storeState.endTime) {
 				player.currentTime(storeState.endTime);
@@ -115,6 +112,9 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		const player = videojs(videoPlayerRef.current);
 		socket.on('receiveSeeked', (value) => {
 			player.currentTime(value.currentTime);
+			if (value.status === 'play') {
+				player.play();
+			}
 		});
 		socket.on('receivePlay', () => {
 			player.play();
@@ -122,29 +122,30 @@ const Video = ({ videoUrl, videoPlayerRef, socket, history }) => {
 		socket.on('receivePause', () => {
 			player.pause();
 		});
+
+		// url로 스트리밍화면 진입한 사람에게 현재 video 시간을 알려주는 트리거 역할
+		socket.on('currentVideoPosition', ({ target }) => {
+			console.dir(player);
+			socket.emit('sendCurrentVideoPosition', {
+				currentTime: player.currentTime(),
+				target,
+				status: player.paused() ? 'pause' : 'play',
+			});
+		});
 	}, []);
 
 	useEffect(() => {
-		window.addEventListener('beforeunload', async function (event) {
-			socket.disconnect();
-			const token = localStorage.getItem('token');
-			const player = videojs(videoPlayerRef.current);
-			const currentTime = player.currentTime();
+		window.addEventListener('beforeunload', saveVideoHistory);
+		window.history.pushState(null, '', window.location.href);
+		window.onpopstate = () => {
+			history.go(1);
+			saveVideoHistory();
+		};
 
-			await axios.post(
-				'http://ec2-13-124-190-63.ap-northeast-2.compute.amazonaws.com:4000/videoHistory',
-				{
-					video_id: storeState.id,
-					endTime: currentTime,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
-			);
-		});
-		return saveVideoHistory;
+		return () => {
+			window.removeEventListener('beforeunload', saveVideoHistory);
+			window.onpopstate = null;
+		};
 	}, []);
 
 	useEffect(() => {

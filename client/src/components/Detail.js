@@ -15,8 +15,6 @@ const Container = styled.div`
 			'description video';
 		grid-gap: 10px;
 		grid-template-rows: 10vh 90vh;
-
-		/* background-color: aquamarine; */
 	}
 `;
 
@@ -26,7 +24,6 @@ const ModalHeader = styled.div`
 	@media (max-width: 823px) and (max-height: 540px) {
 		grid-area: title;
 		top: 20px;
-		/* background-color: red; */
 	}
 	/* 스마트폰 세로 */
 	@media (max-width: 540px) {
@@ -81,7 +78,6 @@ const DescriptionWrap = styled.div`
 		position: fixed;
 		top: 25vh;
 		grid-area: description;
-		/* background-color: blue; */
 		overflow: auto;
 		height: 160px;
 		width: 45vw;
@@ -105,7 +101,6 @@ const Description = styled.div`
 		position: fixed;
 		top: 56vh;
 		grid-area: description;
-		/* background-color: blue; */
 		overflow: auto;
 		height: 185px;
 		width: 100vw;
@@ -121,7 +116,6 @@ const PreVideo = styled.div`
 	/* 스마트폰 가로 */
 	@media (max-width: 823px) and (max-height: 540px) {
 		grid-area: video;
-		/* background-color: pink; */
 		height: 70vh;
 		width: 40vw;
 		top: 8vh;
@@ -160,9 +154,10 @@ const Detail = ({ changeModalFalse }) => {
 	};
 
 	useEffect(() => {
-		const player = videojs(videoPlayerRef.current, options);
+		videojs(videoPlayerRef.current, options);
 	}, []);
 
+	// 모달창 text에 웹반응형 적용을 위한 브라우저 width를 구하는 react의 Effect Hook함수
 	const useWindowSize = () => {
 		useLayoutEffect(() => {
 			function updateSize() {

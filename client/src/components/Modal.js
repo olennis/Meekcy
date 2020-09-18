@@ -21,7 +21,6 @@ const Container = styled.div`
 
 const ModalContent = styled.div`
 	background-image: url(${(props) => props.bgUrl});
-
 	float: left;
 	background-size: cover;
 	border-radius: 4px;
@@ -163,6 +162,7 @@ const NewModal = ({ changeModalFalse }) => {
 			})
 			.catch((err) => {
 				console.log(err);
+				// 이미 방에 참여중인 유저가 ListPage에서 새로운 방 생성시 알람설정
 				alert(
 					'2개 이상의 브라우저나 탭에서 Meekcy를 이용하고 계십니다. 필요없는 브라우저나 탭을 닫으신 후 페이지를 다시 로드해 주세요.',
 				);
@@ -176,7 +176,7 @@ const NewModal = ({ changeModalFalse }) => {
 	//모달 상태를 가져오는 리덕스 스토어
 	const modalState = useSelector((state) => state.changeModalStatus, []);
 
-	// themoviedb api 영상불러오기
+	// 예고편버튼에 trailer가 있는 경우 trailer를 적용하고 없는 경우 youtube로 연결
 	let trailer = storeState.trailer || 'https://www.youtube.com';
 
 	return (

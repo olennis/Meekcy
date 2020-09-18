@@ -12,6 +12,7 @@ const Container = styled.div`
 		text-align: center;
 	}
 `;
+
 const Recommendation = ({ setDetailAction, changeModalTrue, changeModalFalse }) => {
 	//영화 데이터를 set 하기 위한 useState
 	const [movie, setMovie] = useState(null);

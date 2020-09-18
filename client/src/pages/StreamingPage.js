@@ -229,7 +229,6 @@ const StreamingPage = () => {
 		setSocketIO(socketIO);
 		socketIO.on('overlapUser', (value) => {
 			socketIO.disconnect();
-			console.log('this is ....', value);
 			history.push(`/warn`);
 		});
 		axios
@@ -247,6 +246,7 @@ const StreamingPage = () => {
 			});
 	}, []);
 
+	// 링크로 스트리밍페이지 접속시 로그인여부확인하는 react의 Effect Hook함수
 	useEffect(() => {
 		let LoginChecking = localStorage.getItem('token');
 		if (!LoginChecking) {

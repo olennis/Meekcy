@@ -39,7 +39,6 @@ const ChattingContainer = ({ socket }) => {
 	//avatar change socket.io 통신
 	useEffect(() => {
 		socket.on('receiveChangeAvatar', (value) => {
-			console.log(value);
 			setMessages((oldMsgs) => {
 				const chagedMsg = oldMsgs.map((element) => {
 					if (element.value.id === value.userId) {
